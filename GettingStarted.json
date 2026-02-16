@@ -15,7 +15,7 @@
     {
       "parameters": {
         "resource": "folder",
-        "name": "KB-System2",
+        "name": "KB-System",
         "driveId": {
           "__rl": true,
           "value": "=My Drive",
