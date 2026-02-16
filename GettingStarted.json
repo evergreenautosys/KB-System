@@ -1,0 +1,6775 @@
+{
+  "name": "GettingStarted",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2352,
+        544
+      ],
+      "id": "eec271f9-eafe-4b55-bfc9-b51e1f2a94f5",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "KB-System2",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root folder)",
+          "cachedResultUrl": "https://drive.google.com/drive"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2128,
+        544
+      ],
+      "id": "7bd7ad06-f7a6-488e-abae-641a9c6e9841",
+      "name": "Create KB-System Folder",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Manager",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        1216
+      ],
+      "id": "51fb7039-8971-4569-84c3-2653ec75e763",
+      "name": "Create Manager Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        336,
+        -704
+      ],
+      "id": "33dd33cf-2c2d-471e-826e-3372492b8739",
+      "name": "Move Manager Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Input",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        1312
+      ],
+      "id": "1017a004-fbaf-4657-87e9-d4d7e7b11f0e",
+      "name": "Create Input Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "077da776-ec6c-4d1a-aa94-579bb0329273",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49af4135-ae41-4e3b-bba1-c3ee7f155ebe",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -512
+      ],
+      "id": "dc44f310-7502-4286-a0c4-72b8c1b33c9e",
+      "name": "Set Header (Input)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Input Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Input Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        -512
+      ],
+      "id": "de6aa052-ef9f-40d8-8abf-ecff2e52dcd5",
+      "name": "Append Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Error",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        1408
+      ],
+      "id": "524612d4-4562-48df-849d-46df4918af3e",
+      "name": "Create Error Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "114cb87a-82df-495c-b039-858dbe46e94d",
+              "name": "Error",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        -320
+      ],
+      "id": "94df451b-f03a-46a1-ad8f-182fee9cab27",
+      "name": "Set Header (Error)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Error Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Error Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        -320
+      ],
+      "id": "5be53642-9e17-4389-8f9d-199a2e7b2b54",
+      "name": "Append Error",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Processed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        1504
+      ],
+      "id": "ab376412-9d9a-40de-b03e-79d84253cae3",
+      "name": "Create Processed Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1008,
+        -128
+      ],
+      "id": "b09f2a7e-e55b-4304-ab0c-901b55897e33",
+      "name": "Set Header (Processed)"
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        1600
+      ],
+      "id": "a832f34c-e7a4-4dc8-a480-5374d082b941",
+      "name": "Cleanup (Manager)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Processed Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Processed Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1232,
+        -128
+      ],
+      "id": "59ea9a8c-6861-420d-8234-8b9b41b5b90d",
+      "name": "Append Processed",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Environment ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1904,
+        544
+      ],
+      "id": "34075d36-e605-475d-9115-ca13c1a53caf",
+      "name": "Create Environment Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1680,
+        448
+      ],
+      "id": "7797c88c-0186-4213-b1f8-2757332c8451",
+      "name": "Move Environment Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Name",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "4b2dcea3-6960-4012-8e04-9118eaad1d85",
+              "name": "ID",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1456,
+        544
+      ],
+      "id": "d4efc123-1fa4-4424-8c09-72ea7d5ca07d",
+      "name": "Set Header (Enviornment)"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Variables",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1680,
+        640
+      ],
+      "id": "e64e6375-1355-43bc-993f-244069ae726f",
+      "name": "Create Variables Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1456,
+        736
+      ],
+      "id": "9f58ffcf-32a8-4c24-98cb-4399952be9f6",
+      "name": "Cleanup (Enviornment)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1232,
+        544
+      ],
+      "id": "4ece88ae-5e93-49b5-a386-144547dd21a8",
+      "name": "Append Variables",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "manager_sheet_input",
+            "ID": "={{ $('Create Input Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        -512
+      ],
+      "id": "25622e22-9d69-4ce0-a44e-0d9164d29258",
+      "name": "Update Variables (Input)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "manager_doc",
+            "ID": "={{ $('Create Manager Spreadsheet').item.json.spreadsheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        -704
+      ],
+      "id": "414a8da3-3902-48c2-98c6-77f4de21b1e0",
+      "name": "Update Variables (Manager)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "manager_sheet_error",
+            "ID": "={{ $('Create Error Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1232,
+        -320
+      ],
+      "id": "bd982e0b-4b40-48db-a59f-007224ef2b58",
+      "name": "Update Variables (Error)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "manager_sheet_processed",
+            "ID": "={{ $('Create Processed Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1456,
+        -128
+      ],
+      "id": "94c77697-d5c5-4567-b0f7-cfa543c15e9c",
+      "name": "Update Variables (Processed)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Crawl",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1232,
+        1600
+      ],
+      "id": "d7b37e77-eba0-4f9e-acb3-14953b7576f6",
+      "name": "Create Crawl Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1456,
+        64
+      ],
+      "id": "75fbd8a9-9fa5-4bd1-b3cb-71b82dcd4960",
+      "name": "Move Crawl Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "crawl_doc",
+            "ID": "={{ $('Create Crawl Spreadsheet').item.json.spreadsheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1680,
+        64
+      ],
+      "id": "b3d7f72d-21a1-4c78-97aa-8a8c2d62e43b",
+      "name": "Update Variables (Crawl)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1456,
+        1696
+      ],
+      "id": "984be062-4d7c-41ef-a462-bf9e0ebf1af0",
+      "name": "Create Crawl-Output Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1680,
+        256
+      ],
+      "id": "5a3f892b-666f-4030-a275-1d47ac3edc79",
+      "name": "Set Header (Crawl-Output)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Crawl-Output Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Crawl-Output Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1904,
+        256
+      ],
+      "id": "212ab464-6f31-41b9-9c0c-6dc983d3a4a7",
+      "name": "Append Crawl-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "crawl_sheet_output",
+            "ID": "={{ $('Create Crawl-Output Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2128,
+        256
+      ],
+      "id": "8e51933d-e927-4b51-bac3-4c1433de6ba7",
+      "name": "Update Variables (Crawl-Output)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1680,
+        1792
+      ],
+      "id": "93ac24c8-6225-423b-9bfe-0fa66cace746",
+      "name": "Cleanup (Crawl)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Scrape",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1904,
+        1792
+      ],
+      "id": "6291c14b-dc5c-477b-82cc-1ddc3e0a1da0",
+      "name": "Create Scrape Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2128,
+        448
+      ],
+      "id": "2165a5dd-dff8-40b1-95ee-9bde32119f04",
+      "name": "Move Scrape Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "scrape_doc",
+            "ID": "={{ $('Create Scrape Spreadsheet').item.json.spreadsheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2352,
+        448
+      ],
+      "id": "ab855eb5-12c8-4099-a793-49dfe8c72120",
+      "name": "Update Variables (Scrape)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2128,
+        1888
+      ],
+      "id": "18240ef9-04de-4416-8fc9-f9f9b1124793",
+      "name": "Create Scrape-Output Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "077da776-ec6c-4d1a-aa94-579bb0329273",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49af4135-ae41-4e3b-bba1-c3ee7f155ebe",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2352,
+        640
+      ],
+      "id": "a23f2579-ab3f-42ed-91ae-372d012fc8d6",
+      "name": "Set Header (Scrape-Output)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Scrape-Output Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Scrape-Output Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2576,
+        640
+      ],
+      "id": "b84193c1-55cf-4b86-9a4e-dc2768cfdfcb",
+      "name": "Append Scrape-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "scrape_sheet_output",
+            "ID": "={{ $('Create Scrape-Output Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2800,
+        640
+      ],
+      "id": "365efcb4-599f-47cd-8904-3b09fee80574",
+      "name": "Update Variables (Scrape-Output)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2352,
+        1984
+      ],
+      "id": "66186646-6c38-47eb-95d2-2b307278cd49",
+      "name": "Cleanup (Scrape)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Documents",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2576,
+        1984
+      ],
+      "id": "b5fc4733-6c11-46c6-9a05-c07049897049",
+      "name": "Create Documents Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2800,
+        832
+      ],
+      "id": "1d925348-cbc5-44dc-99fd-f96154b5226c",
+      "name": "Move Documents Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "documents_doc",
+            "ID": "={{ $('Create Documents Spreadsheet').item.json.spreadsheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3024,
+        832
+      ],
+      "id": "6bf7952e-c37a-4da0-8a88-beefe619a3d5",
+      "name": "Update Variables (Documents)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Unformatted-HTML",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2800,
+        2080
+      ],
+      "id": "3a5acd67-f447-490a-a898-808f0d55a7d3",
+      "name": "Create Unformatted-HTML Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49af4135-ae41-4e3b-bba1-c3ee7f155ebe",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3024,
+        1024
+      ],
+      "id": "454f7609-4afb-4aa3-a54e-20938ed80e7d",
+      "name": "Set Header (Unformatted-HTML)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Unformatted-HTML Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Unformatted-HTML Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3248,
+        1024
+      ],
+      "id": "142111fe-3f31-4bc7-b560-244a8d8d54ec",
+      "name": "Append Unformatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "documents_sheet_unformatted_html",
+            "ID": "={{ $('Create Unformatted-HTML Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3472,
+        1024
+      ],
+      "id": "d35f8a66-1cfd-4a27-9da3-f3940a6c3743",
+      "name": "Update Variables (Unformatted-HTML)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Formatted-HTML",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3024,
+        2176
+      ],
+      "id": "93d8f7b4-2a1c-4e6b-b7ff-9d2643e57b73",
+      "name": "Create Formatted-HTML Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49af4135-ae41-4e3b-bba1-c3ee7f155ebe",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3248,
+        1216
+      ],
+      "id": "6c0e74cc-3c45-40d7-a266-96c5c28e9575",
+      "name": "Set Header (Formatted-HTML)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Formatted-HTML Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Formatted-HTML Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3472,
+        1216
+      ],
+      "id": "e5016ef8-7aa5-4db5-997f-ab34cfcf815b",
+      "name": "Append Formatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "documents_sheet_formatted_html",
+            "ID": "={{ $('Create Formatted-HTML Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3696,
+        1216
+      ],
+      "id": "b5e7063c-d7bd-4c17-a47e-6c3efd74fc4d",
+      "name": "Update Variables (Formatted-HTML)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Unformatted-PDF",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3248,
+        2272
+      ],
+      "id": "1ee6db59-276e-4092-ba81-dc2c8846f34a",
+      "name": "Create Unformatted-PDF Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "077da776-ec6c-4d1a-aa94-579bb0329273",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3472,
+        1408
+      ],
+      "id": "77214909-2bae-49df-b23e-753daf946674",
+      "name": "Set Header (Unformatted-PDF)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Unformatted-PDF Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Unformatted-PDF Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3696,
+        1408
+      ],
+      "id": "5b20a2bd-cc55-434c-95fb-f7037813f6f8",
+      "name": "Append Unformatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "documents_sheet_unformatted_pdf",
+            "ID": "={{ $('Create Unformatted-PDF Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3920,
+        1408
+      ],
+      "id": "733c36ca-fcf9-45dd-bcc6-081b039aed90",
+      "name": "Update Variables (Unformatted-PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Formatted-PDF",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3472,
+        2368
+      ],
+      "id": "f79bf751-b944-4496-bc10-6fb74584c7b7",
+      "name": "Create Formatted-PDF Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "077da776-ec6c-4d1a-aa94-579bb0329273",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3696,
+        1600
+      ],
+      "id": "79a8d3fa-f18d-4a54-a428-8700bb0b7323",
+      "name": "Set Header (Formatted-PDF)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Formatted-PDF Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Formatted-PDF Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3920,
+        1600
+      ],
+      "id": "427b0d0d-25df-4a6e-8833-99ad01856314",
+      "name": "Append Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "documents_sheet_formatted_pdf",
+            "ID": "={{ $('Create Formatted-PDF Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4144,
+        1600
+      ],
+      "id": "858c9ec9-c390-42b4-8d93-dea7ac80e2c5",
+      "name": "Update Variables (Formatted-PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3696,
+        2464
+      ],
+      "id": "c1185d0a-c2a1-42c3-b012-b0abb2bcc79d",
+      "name": "Cleanup (Documents)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Upsert",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3920,
+        2464
+      ],
+      "id": "371e04c3-1b3f-4614-a97c-29a9deab1ce9",
+      "name": "Create Upsert Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        4144,
+        1792
+      ],
+      "id": "dc12bc1d-ff88-407c-86b3-06687f8d4c8b",
+      "name": "Move Upsert Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "upsert_doc",
+            "ID": "={{ $('Create Upsert Spreadsheet').item.json.spreadsheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4368,
+        1792
+      ],
+      "id": "a2707454-d88c-4d27-b2d9-87697809f0be",
+      "name": "Update Variables (Upsert)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "077da776-ec6c-4d1a-aa94-579bb0329273",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49af4135-ae41-4e3b-bba1-c3ee7f155ebe",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4368,
+        1984
+      ],
+      "id": "1096ad62-440c-469e-a7fc-8a65ddf021c1",
+      "name": "Set Header (Upsert-Output)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Upsert-Output Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Upsert-Output Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4592,
+        1984
+      ],
+      "id": "42a83b37-027e-4b85-91f3-a3da299dd4e5",
+      "name": "Append Upsert-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4144,
+        2560
+      ],
+      "id": "adee17e3-8148-4b83-8aea-4dbc97bf9e27",
+      "name": "Create Upsert-Output Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "upsert_sheet_output",
+            "ID": "={{ $('Create Upsert-Output Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4816,
+        1984
+      ],
+      "id": "2cb00315-fe3d-4897-b430-494b162c8a28",
+      "name": "Update Variables (Upsert-Output)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4368,
+        2656
+      ],
+      "id": "c6bec2c8-eea5-4e5e-a2d9-e2a13a3b2398",
+      "name": "Cleanup (Upsert)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Update",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4592,
+        2656
+      ],
+      "id": "98b43509-8aee-4453-9af7-f3d4e0e75da6",
+      "name": "Create Update Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        4816,
+        2176
+      ],
+      "id": "4baec647-e23e-4610-bc34-3cd67f0ddb0b",
+      "name": "Move Update Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "update_doc",
+            "ID": "={{ $('Create Update Spreadsheet').item.json.spreadsheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5040,
+        2176
+      ],
+      "id": "b3e0c0e4-3a9d-4050-9041-f9f256aa809e",
+      "name": "Update Variables (Update)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Same",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4816,
+        2752
+      ],
+      "id": "15c5d80b-e0cf-4dcc-80fc-745b671ab956",
+      "name": "Create Update-Same Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "077da776-ec6c-4d1a-aa94-579bb0329273",
+              "name": "Created Date (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "530773ca-301b-47b2-ab89-1163cf92e066",
+              "name": "Created Date (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "8318b136-0655-440d-8a56-d1887bdc6fed",
+              "name": "Last Modified (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49af4135-ae41-4e3b-bba1-c3ee7f155ebe",
+              "name": "Etag (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "0d41ce89-89a6-4abf-8cf0-74498c9997af",
+              "name": "Etag (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6c6ff368-21e1-4966-8fba-96c9bb4ea48e",
+              "name": "Hash (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5040,
+        2368
+      ],
+      "id": "47b69d5a-11ff-4012-bf03-e485a4f23116",
+      "name": "Set Header (Update-Same)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Update-Same Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Update-Same Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5264,
+        2368
+      ],
+      "id": "c3d93844-e584-483b-a9a0-7674c0402606",
+      "name": "Append Update-Same",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "update_sheet_same",
+            "ID": "={{ $('Create Update-Same Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5488,
+        2368
+      ],
+      "id": "880c7f34-4532-4985-935d-772a3614f203",
+      "name": "Update Variables (Update-Same)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Different",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5040,
+        2848
+      ],
+      "id": "4726861e-7eb4-4ca2-8c98-3d2e63e799c1",
+      "name": "Create Update-Different Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f0b537f6-ca3c-4bf7-89f4-f1fa31163259",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "daefeedd-f1a9-4cdf-a569-12e56fb0e44e",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "077da776-ec6c-4d1a-aa94-579bb0329273",
+              "name": "Created Date (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "530773ca-301b-47b2-ab89-1163cf92e066",
+              "name": "Created Date (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a90ae4a5-fe4f-4696-8405-134ce5e2c54b",
+              "name": "Last Modified (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "8318b136-0655-440d-8a56-d1887bdc6fed",
+              "name": "Last Modified (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "49af4135-ae41-4e3b-bba1-c3ee7f155ebe",
+              "name": "Etag (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "0d41ce89-89a6-4abf-8cf0-74498c9997af",
+              "name": "Etag (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6b0d5b8e-5ca5-43a2-84fd-72267bf0fd2c",
+              "name": "Hash (A)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6c6ff368-21e1-4966-8fba-96c9bb4ea48e",
+              "name": "Hash (B)",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9aeabd34-2e75-47be-a708-7697d1a3d7a1",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5264,
+        2560
+      ],
+      "id": "fec1b8e8-d3ab-4f75-a705-4ada6f6c617f",
+      "name": "Set Header (Update-Different)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Update-Different Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Update-Different Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5488,
+        2560
+      ],
+      "id": "37be5284-0b3b-4e94-8af1-7772692ddb7a",
+      "name": "Append Update-Different",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "update_sheet_different",
+            "ID": "={{ $('Create Update-Different Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5712,
+        2560
+      ],
+      "id": "131535d9-3271-4130-b3cd-207a4b281b7d",
+      "name": "Update Variables (Update-Different)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5264,
+        2944
+      ],
+      "id": "2eb20af0-cda7-4217-83cc-9c700eeccd6a",
+      "name": "Cleanup (Update)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "Sitemap",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5488,
+        2944
+      ],
+      "id": "15fdc077-dbf9-4fc3-ad8d-ac3029648c0d",
+      "name": "Create Sitemap Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        5712,
+        2752
+      ],
+      "id": "e5c8f49c-7c7a-43cf-8e65-1ab9cd07ff96",
+      "name": "Move Sitemap Spreadsheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "sitemap_doc",
+            "ID": "={{ $('Create Sitemap Spreadsheet').item.json.spreadsheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5936,
+        2752
+      ],
+      "id": "775ccd5d-b364-4844-9956-49ac07790ed4",
+      "name": "Update Variables (Sitemap)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "title": "Output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5712,
+        3040
+      ],
+      "id": "e5b0bd02-c6a7-4550-bd21-369411865463",
+      "name": "Create Sitemap-Output Sheet",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c47b85e-042d-4326-9b54-eeea83cc9537",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "af09aab7-3b2f-4685-bedf-bc2becfb7b61",
+              "name": "Datetime",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fc45df4c-6b00-4b4b-9dac-c63695120f5c",
+              "name": "Job",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "d207d90e-3318-4ad6-bf22-eede2f97f8ad",
+              "name": "Execution",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5936,
+        2944
+      ],
+      "id": "8f4e1d25-b091-421c-891c-3c4ed727ffc5",
+      "name": "Set Header (Sitemap-Output)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Sitemap-Output Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Sitemap-Output Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6160,
+        2944
+      ],
+      "id": "0710c414-72d3-4cc7-a9fe-af4cf59ae81f",
+      "name": "Append Sitemap-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "sitemap_sheet_output",
+            "ID": "={{ $('Create Sitemap-Output Sheet').item.json.sheetId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6384,
+        2944
+      ],
+      "id": "006e444f-f183-4fe0-9924-03985e7d7ea0",
+      "name": "Update Variables (Sitemap-Output)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "remove",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5936,
+        3136
+      ],
+      "id": "8e0690bf-6216-46e2-a345-7055f1cca0c4",
+      "name": "Cleanup (Sitemap)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Unformatted-HTML",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create Documents Folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1008,
+        736
+      ],
+      "id": "55340da7-e3be-4e67-8c82-59d7e973b987",
+      "name": "Create folder Unformatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Formatted-HTML",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create Documents Folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -784,
+        832
+      ],
+      "id": "b266163b-0dfa-4110-9cb0-69c5eb7a8ccd",
+      "name": "Create folder Formatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Unformatted-PDF",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create Documents Folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -560,
+        928
+      ],
+      "id": "6824371a-081a-4145-beb6-0937c736bf6a",
+      "name": "Create folder Unformatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Formatted-PDF",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create Documents Folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -336,
+        1024
+      ],
+      "id": "e338a89e-3150-4168-b5f4-bbfbc2095a7b",
+      "name": "Create folder Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Documents",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1232,
+        736
+      ],
+      "id": "8baec0fc-33dc-4173-89f2-e2a2131a3502",
+      "name": "Create Documents Folder",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "folder_unformatted_html",
+            "ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -784,
+        640
+      ],
+      "id": "442c3ce2-6ed0-41ba-a2eb-fd1ae27e09fd",
+      "name": "Update Variables (Folder-Unformatted-HTML)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Archive",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create KB-System Folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -112,
+        1120
+      ],
+      "id": "6b2e6dbf-0d63-4ef4-92b0-9b5dc81cda35",
+      "name": "Create Archive Folder",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "x095DzpEDdr2AtbK",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "folder_formatted_html",
+            "ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -560,
+        736
+      ],
+      "id": "74ea133b-eeca-4869-84fb-0eb1b6cd41b6",
+      "name": "Update Variables (Folder-Formatted-HTML)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "folder_unformatted_pdf",
+            "ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -336,
+        832
+      ],
+      "id": "c8bedd04-7f36-464f-8394-479193b9e2a8",
+      "name": "Update Variables (Folder-Unformatted-PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "folder_formatted_pdf",
+            "ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        928
+      ],
+      "id": "febda87c-8df8-4d69-a201-b04b3ac3edf6",
+      "name": "Update Variables (Folder-Formatted-PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "folder_archive",
+            "ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        1024
+      ],
+      "id": "306579a2-afb1-4d4b-8186-b8861bf544ed",
+      "name": "Update Variables (Folder-Archive)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $('Create Variables Sheet').item.json.sheetId }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "folder_kb_system",
+            "ID": "={{ $('Create KB-System Folder').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1008,
+        544
+      ],
+      "id": "27dc433b-cd61-482b-8b91-f2bce8ed5a65",
+      "name": "Update Variables (Folder-KB-System)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bvSV8rPQjdSED0CB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Getting Started\nThis workflow creates the complete folder structure and Google Sheets required to run the Knowledge Base System.\nThe Environment Google Sheet contains the Names and IDs of all items that will be loaded as Custom Variables in your project.\n",
+        "height": 96,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2400,
+        304
+      ],
+      "id": "f784fc47-2008-4090-a539-953af9d7aa4c",
+      "name": "Sticky Note6",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Create KB-System Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create KB-System Folder": {
+      "main": [
+        [
+          {
+            "node": "Create Environment Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Manager Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Create Input Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Move Manager Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Input Sheet": {
+      "main": [
+        [
+          {
+            "node": "Create Error Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Header (Input)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Input)": {
+      "main": [
+        [
+          {
+            "node": "Append Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Error Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Error)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Processed Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Error)": {
+      "main": [
+        [
+          {
+            "node": "Append Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Processed Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Processed)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Manager)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Processed)": {
+      "main": [
+        [
+          {
+            "node": "Append Processed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Environment Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Move Environment Spreadsheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Variables Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Manager Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Manager)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Variables Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Enviornment)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Enviornment)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Enviornment)": {
+      "main": [
+        [
+          {
+            "node": "Append Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Input": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Input)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Enviornment)": {
+      "main": [
+        [
+          {
+            "node": "Create Documents Folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Processed": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Processed)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Manager)": {
+      "main": [
+        [
+          {
+            "node": "Create Crawl Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Crawl Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Move Crawl Spreadsheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Crawl-Output Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Crawl Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Crawl-Output Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Crawl-Output)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Crawl-Output)": {
+      "main": [
+        [
+          {
+            "node": "Append Crawl-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Crawl-Output": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Crawl-Output)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Crawl)": {
+      "main": [
+        [
+          {
+            "node": "Create Scrape Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Scrape Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Create Scrape-Output Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Move Scrape Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Scrape Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Scrape)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Scrape-Output Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Scrape-Output)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Scrape)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Scrape-Output)": {
+      "main": [
+        [
+          {
+            "node": "Append Scrape-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Scrape-Output": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Scrape-Output)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Scrape)": {
+      "main": [
+        [
+          {
+            "node": "Create Documents Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Documents Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Create Unformatted-HTML Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Move Documents Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Documents Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Documents)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Unformatted-HTML Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Unformatted-HTML)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Formatted-HTML Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Unformatted-HTML)": {
+      "main": [
+        [
+          {
+            "node": "Append Unformatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Unformatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Unformatted-HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Formatted-HTML Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Formatted-HTML)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Unformatted-PDF Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Formatted-HTML)": {
+      "main": [
+        [
+          {
+            "node": "Append Formatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Formatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Formatted-HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Unformatted-PDF Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Unformatted-PDF)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Formatted-PDF Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Unformatted-PDF)": {
+      "main": [
+        [
+          {
+            "node": "Append Unformatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Unformatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Unformatted-PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Formatted-PDF Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Formatted-PDF)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Documents)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Formatted-PDF)": {
+      "main": [
+        [
+          {
+            "node": "Append Formatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Formatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Formatted-PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Documents)": {
+      "main": [
+        [
+          {
+            "node": "Create Upsert Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Upsert Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Create Upsert-Output Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Move Upsert Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Upsert Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Upsert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Upsert-Output)": {
+      "main": [
+        [
+          {
+            "node": "Append Upsert-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Upsert-Output": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Upsert-Output)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Upsert-Output Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Upsert-Output)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Upsert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Upsert)": {
+      "main": [
+        [
+          {
+            "node": "Create Update Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Update Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Create Update-Same Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Move Update Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Update Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Update)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Update-Same Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Update-Same)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Update-Different Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Update-Same)": {
+      "main": [
+        [
+          {
+            "node": "Append Update-Same",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Update-Same": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Update-Same)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Update-Different Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Update-Different)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Update)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Update-Different)": {
+      "main": [
+        [
+          {
+            "node": "Append Update-Different",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Update-Different": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Update-Different)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Update)": {
+      "main": [
+        [
+          {
+            "node": "Create Sitemap Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Sitemap Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Create Sitemap-Output Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Move Sitemap Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Sitemap Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Sitemap)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Sitemap-Output Sheet": {
+      "main": [
+        [
+          {
+            "node": "Set Header (Sitemap-Output)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cleanup (Sitemap)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Header (Sitemap-Output)": {
+      "main": [
+        [
+          {
+            "node": "Append Sitemap-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Sitemap-Output": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Sitemap-Output)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder Unformatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Create folder Formatted-HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Variables (Folder-Unformatted-HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder Formatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Create folder Unformatted-PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Variables (Folder-Formatted-HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder Unformatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Create folder Formatted-PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Variables (Folder-Unformatted-PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Documents Folder": {
+      "main": [
+        [
+          {
+            "node": "Create folder Unformatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup (Sitemap)": {
+      "main": [
+        []
+      ]
+    },
+    "Create folder Formatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Create Archive Folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Variables (Folder-Formatted-PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Archive Folder": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Folder-Archive)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Manager Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Variables": {
+      "main": [
+        [
+          {
+            "node": "Update Variables (Folder-KB-System)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "4b393a5a-eadd-4e67-b708-a275e59d95a9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "5SVLzo2GS4le8oOYEwZet",
+  "tags": []
+}
