@@ -5295,6 +5295,39 @@
       "retryOnFail": true,
       "maxTries": 2,
       "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "content": "## Getting Started\nThis workflow creates the complete folder structure and Google Sheets required to run the Knowledge Base System.\nThe Environment Google Sheet contains the Names and IDs of all items that will be loaded as Custom Variables in your project.\n",
+        "height": 96,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2736,
+        1008
+      ],
+      "id": "0dabda6e-08ea-46b6-8661-ec5951fcf1cf",
+      "name": "Sticky Note6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "Setup Instructions\n\nThis template intentionally ships with no credentials attached.\n\nAfter import:\n1. Open each Google Drive / Google Sheets node type as needed\n2. Select or create your local credentials\n\nThis avoids carrying over any instance-specific credential references.",
+        "width": 420,
+        "height": 220,
+        "color": 5
+      },
+      "id": "public-template-setup-note",
+      "name": "Public Template Setup",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -900,
+        -500
+      ]
     }
   ],
   "pinData": {},
