@@ -6,10 +6,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -2352,
-        544
+        -2688,
+        1248
       ],
-      "id": "eec271f9-eafe-4b55-bfc9-b51e1f2a94f5",
+      "id": "d1e22d83-b93f-41d8-b655-ead7701c6656",
       "name": "When clicking ‘Execute workflow’"
     },
     {
@@ -33,20 +33,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -2128,
-        544
+        -2464,
+        1248
       ],
-      "id": "7bd7ad06-f7a6-488e-abae-641a9c6e9841",
+      "id": "8f07a74e-bf1d-4b41-b993-0dc87fe65bd9",
       "name": "Create KB-System Folder",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -57,20 +51,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        112,
-        1216
+        -224,
+        1920
       ],
-      "id": "51fb7039-8971-4569-84c3-2653ec75e763",
+      "id": "8b93fba8-da6d-4f2c-a514-d9ea7c83aea5",
       "name": "Create Manager Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -94,20 +82,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        336,
-        -704
+        0,
+        0
       ],
-      "id": "33dd33cf-2c2d-471e-826e-3372492b8739",
+      "id": "2904e02d-b6b8-4757-a07d-b74ec1cda533",
       "name": "Move Manager Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -123,20 +105,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        336,
-        1312
+        0,
+        2016
       ],
-      "id": "1017a004-fbaf-4657-87e9-d4d7e7b11f0e",
+      "id": "4f9b2d73-50d4-4604-a9cd-87931b28e0a0",
       "name": "Create Input Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -209,10 +185,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        560,
-        -512
+        224,
+        192
       ],
-      "id": "dc44f310-7502-4286-a0c4-72b8c1b33c9e",
+      "id": "d009f691-0bf2-40cc-9002-f775342028a1",
       "name": "Set Header (Input)"
     },
     {
@@ -342,20 +318,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        784,
-        -512
+        448,
+        192
       ],
-      "id": "de6aa052-ef9f-40d8-8abf-ecff2e52dcd5",
+      "id": "fb262647-b4f0-4356-850a-0387de97a861",
       "name": "Append Input",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -371,20 +341,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        560,
-        1408
+        224,
+        2112
       ],
-      "id": "524612d4-4562-48df-849d-46df4918af3e",
+      "id": "fe2e41f7-3271-4afe-b10a-de2048f34f04",
       "name": "Create Error Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -427,10 +391,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        784,
-        -320
+        448,
+        384
       ],
-      "id": "94df451b-f03a-46a1-ad8f-182fee9cab27",
+      "id": "0ce0cff7-2b41-45b1-8e4c-a37509d10f21",
       "name": "Set Header (Error)"
     },
     {
@@ -510,20 +474,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1008,
-        -320
+        672,
+        384
       ],
-      "id": "5be53642-9e17-4389-8f9d-199a2e7b2b54",
+      "id": "fb1985e1-807d-4bdb-bdfe-5e8393137628",
       "name": "Append Error",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -539,20 +497,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        784,
-        1504
+        448,
+        2208
       ],
-      "id": "ab376412-9d9a-40de-b03e-79d84253cae3",
+      "id": "cb045ddf-2fff-457a-8610-caf7122fdc2e",
       "name": "Create Processed Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -589,10 +541,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1008,
-        -128
+        672,
+        576
       ],
-      "id": "b09f2a7e-e55b-4304-ab0c-901b55897e33",
+      "id": "83e60d7c-58c3-4632-81c7-a69623517080",
       "name": "Set Header (Processed)"
     },
     {
@@ -612,20 +564,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1008,
-        1600
+        672,
+        2304
       ],
-      "id": "a832f34c-e7a4-4dc8-a480-5374d082b941",
+      "id": "02601fe1-6b91-4628-81af-b91faeb9c171",
       "name": "Cleanup (Manager)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -694,20 +640,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1232,
-        -128
+        896,
+        576
       ],
-      "id": "59ea9a8c-6861-420d-8234-8b9b41b5b90d",
+      "id": "c8cbff8d-8321-42dd-ab0e-2403ba3671f7",
       "name": "Append Processed",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -718,20 +658,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1904,
-        544
+        -2240,
+        1248
       ],
-      "id": "34075d36-e605-475d-9115-ca13c1a53caf",
+      "id": "413832d3-32fc-473c-9114-ac5894867b52",
       "name": "Create Environment Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -755,20 +689,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -1680,
-        448
+        -2016,
+        1152
       ],
-      "id": "7797c88c-0186-4213-b1f8-2757332c8451",
+      "id": "f215013b-fe66-4a46-8e57-7510857d88ee",
       "name": "Move Environment Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -793,10 +721,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1456,
-        544
+        -1792,
+        1248
       ],
-      "id": "d4efc123-1fa4-4424-8c09-72ea7d5ca07d",
+      "id": "b009c674-9576-4993-bbe0-240d8603c74a",
       "name": "Set Header (Enviornment)"
     },
     {
@@ -813,20 +741,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1680,
-        640
+        -2016,
+        1344
       ],
-      "id": "e64e6375-1355-43bc-993f-244069ae726f",
+      "id": "b38cd56d-cac3-4dde-98e3-cacfc8a2d84b",
       "name": "Create Variables Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -845,20 +767,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1456,
-        736
+        -1792,
+        1440
       ],
-      "id": "9f58ffcf-32a8-4c24-98cb-4399952be9f6",
+      "id": "fd672c37-96be-43a9-8f71-49b63799001b",
       "name": "Cleanup (Enviornment)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -907,20 +823,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1232,
-        544
+        -1568,
+        1248
       ],
-      "id": "4ece88ae-5e93-49b5-a386-144547dd21a8",
+      "id": "67fd5bae-cb3d-4ec1-99e1-dd07f2de954e",
       "name": "Append Variables",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -972,20 +882,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1008,
-        -512
+        672,
+        192
       ],
-      "id": "25622e22-9d69-4ce0-a44e-0d9164d29258",
+      "id": "ee5d403a-2627-4566-82ba-8aeee1a371fd",
       "name": "Update Variables (Input)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1037,20 +941,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        560,
-        -704
+        224,
+        0
       ],
-      "id": "414a8da3-3902-48c2-98c6-77f4de21b1e0",
+      "id": "e638e258-c52a-4f53-a8ca-40a3acb3e443",
       "name": "Update Variables (Manager)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1102,20 +1000,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1232,
-        -320
+        896,
+        384
       ],
-      "id": "bd982e0b-4b40-48db-a59f-007224ef2b58",
+      "id": "b2576d39-23af-41fa-8306-cbbd7cf8d8f7",
       "name": "Update Variables (Error)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1167,20 +1059,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1456,
-        -128
+        1120,
+        576
       ],
-      "id": "94c77697-d5c5-4567-b0f7-cfa543c15e9c",
+      "id": "54e75083-bca3-41ae-9fb9-ec577579a89e",
       "name": "Update Variables (Processed)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1191,20 +1077,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1232,
-        1600
+        896,
+        2304
       ],
-      "id": "d7b37e77-eba0-4f9e-acb3-14953b7576f6",
+      "id": "30601d12-2434-4112-891f-1c6b9f487a63",
       "name": "Create Crawl Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1228,20 +1108,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1456,
-        64
+        1120,
+        768
       ],
-      "id": "75fbd8a9-9fa5-4bd1-b3cb-71b82dcd4960",
+      "id": "75f934be-b5e6-4495-94fc-0376aa2c2136",
       "name": "Move Crawl Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1293,20 +1167,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1680,
-        64
+        1344,
+        768
       ],
-      "id": "b3d7f72d-21a1-4c78-97aa-8a8c2d62e43b",
+      "id": "07f15d49-9095-4bc1-99cb-84e1fa75245f",
       "name": "Update Variables (Crawl)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1322,20 +1190,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1456,
-        1696
+        1120,
+        2400
       ],
-      "id": "984be062-4d7c-41ef-a462-bf9e0ebf1af0",
+      "id": "00d0b767-cbf2-47aa-a430-a2972148cf02",
       "name": "Create Crawl-Output Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1372,10 +1234,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1680,
-        256
+        1344,
+        960
       ],
-      "id": "5a3f892b-666f-4030-a275-1d47ac3edc79",
+      "id": "3fe628c6-fc92-4f16-9b29-d8cab2a6306f",
       "name": "Set Header (Crawl-Output)"
     },
     {
@@ -1505,20 +1367,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1904,
-        256
+        1568,
+        960
       ],
-      "id": "212ab464-6f31-41b9-9c0c-6dc983d3a4a7",
+      "id": "1f3b7e5d-1609-4bff-804b-865ebbd0bdba",
       "name": "Append Crawl-Output",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1570,20 +1426,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2128,
-        256
+        1792,
+        960
       ],
-      "id": "8e51933d-e927-4b51-bac3-4c1433de6ba7",
+      "id": "df6b2733-7b27-430a-b6de-9e13ff7b29b3",
       "name": "Update Variables (Crawl-Output)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1602,20 +1452,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1680,
-        1792
+        1344,
+        2496
       ],
-      "id": "93ac24c8-6225-423b-9bfe-0fa66cace746",
+      "id": "c4dc223e-824e-45c2-9958-324686270d35",
       "name": "Cleanup (Crawl)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1626,20 +1470,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1904,
-        1792
+        1568,
+        2496
       ],
-      "id": "6291c14b-dc5c-477b-82cc-1ddc3e0a1da0",
+      "id": "118276d5-5ec8-45a6-88d5-7a86834cc359",
       "name": "Create Scrape Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1663,20 +1501,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        2128,
-        448
+        1792,
+        1152
       ],
-      "id": "2165a5dd-dff8-40b1-95ee-9bde32119f04",
+      "id": "ff711f43-d710-4bee-b3b1-e8f60e282f66",
       "name": "Move Scrape Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1728,20 +1560,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2352,
-        448
+        2016,
+        1152
       ],
-      "id": "ab855eb5-12c8-4099-a793-49dfe8c72120",
+      "id": "6c40fd4d-7c32-43cd-a7b6-078ea032ab05",
       "name": "Update Variables (Scrape)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1757,20 +1583,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2128,
-        1888
+        1792,
+        2592
       ],
-      "id": "18240ef9-04de-4416-8fc9-f9f9b1124793",
+      "id": "93f5bc26-f255-49ac-a69a-273f662b864a",
       "name": "Create Scrape-Output Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1843,10 +1663,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2352,
-        640
+        2016,
+        1344
       ],
-      "id": "a23f2579-ab3f-42ed-91ae-372d012fc8d6",
+      "id": "24f3c339-183c-41cf-98ac-d224888b174b",
       "name": "Set Header (Scrape-Output)"
     },
     {
@@ -1976,20 +1796,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2576,
-        640
+        2240,
+        1344
       ],
-      "id": "b84193c1-55cf-4b86-9a4e-dc2768cfdfcb",
+      "id": "9985ce95-806e-4034-bfeb-da24f5d3ea9d",
       "name": "Append Scrape-Output",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2041,20 +1855,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2800,
-        640
+        2464,
+        1344
       ],
-      "id": "365efcb4-599f-47cd-8904-3b09fee80574",
+      "id": "d6705760-021a-4d04-8d72-d470c33cae4b",
       "name": "Update Variables (Scrape-Output)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2073,20 +1881,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2352,
-        1984
+        2016,
+        2688
       ],
-      "id": "66186646-6c38-47eb-95d2-2b307278cd49",
+      "id": "08b7b27c-c5ff-4d95-aa6a-e9667275c9c4",
       "name": "Cleanup (Scrape)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2097,20 +1899,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2576,
-        1984
+        2240,
+        2688
       ],
-      "id": "b5fc4733-6c11-46c6-9a05-c07049897049",
+      "id": "1674eab2-d2dc-409a-847e-32cfb110fc9f",
       "name": "Create Documents Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2134,20 +1930,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        2800,
-        832
+        2464,
+        1536
       ],
-      "id": "1d925348-cbc5-44dc-99fd-f96154b5226c",
+      "id": "11b6475c-4e5d-4e98-845e-8fb625565107",
       "name": "Move Documents Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2199,20 +1989,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3024,
-        832
+        2688,
+        1536
       ],
-      "id": "6bf7952e-c37a-4da0-8a88-beefe619a3d5",
+      "id": "2293aaaf-d66e-44bb-aba7-1aa11fec922b",
       "name": "Update Variables (Documents)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2228,20 +2012,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2800,
-        2080
+        2464,
+        2784
       ],
-      "id": "3a5acd67-f447-490a-a898-808f0d55a7d3",
+      "id": "5f239f6f-057b-408b-a4c2-5c32b8fa3eb4",
       "name": "Create Unformatted-HTML Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2308,10 +2086,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3024,
-        1024
+        2688,
+        1728
       ],
-      "id": "454f7609-4afb-4aa3-a54e-20938ed80e7d",
+      "id": "92ff2eb7-8b80-482f-8816-79a308478fcb",
       "name": "Set Header (Unformatted-HTML)"
     },
     {
@@ -2441,20 +2219,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3248,
-        1024
+        2912,
+        1728
       ],
-      "id": "142111fe-3f31-4bc7-b560-244a8d8d54ec",
+      "id": "9740af29-b3bf-4807-bdb2-4b81a347d64f",
       "name": "Append Unformatted-HTML",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2506,20 +2278,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3472,
-        1024
+        3136,
+        1728
       ],
-      "id": "d35f8a66-1cfd-4a27-9da3-f3940a6c3743",
+      "id": "329c6530-df97-4a96-af73-aef1005a37cd",
       "name": "Update Variables (Unformatted-HTML)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2535,20 +2301,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3024,
-        2176
+        2688,
+        2880
       ],
-      "id": "93d8f7b4-2a1c-4e6b-b7ff-9d2643e57b73",
+      "id": "0cbdd9cb-e6fb-4812-99d6-63811435f009",
       "name": "Create Formatted-HTML Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2615,10 +2375,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3248,
-        1216
+        2912,
+        1920
       ],
-      "id": "6c0e74cc-3c45-40d7-a266-96c5c28e9575",
+      "id": "8bcc39cc-66dc-4ba1-942e-344921c2250d",
       "name": "Set Header (Formatted-HTML)"
     },
     {
@@ -2748,20 +2508,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3472,
-        1216
+        3136,
+        1920
       ],
-      "id": "e5016ef8-7aa5-4db5-997f-ab34cfcf815b",
+      "id": "b195ada8-fa5f-4559-b371-11fc271ee29f",
       "name": "Append Formatted-HTML",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2813,20 +2567,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3696,
-        1216
+        3360,
+        1920
       ],
-      "id": "b5e7063c-d7bd-4c17-a47e-6c3efd74fc4d",
+      "id": "ad0e3178-9427-46eb-910c-7c256a73d793",
       "name": "Update Variables (Formatted-HTML)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2842,20 +2590,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3248,
-        2272
+        2912,
+        2976
       ],
-      "id": "1ee6db59-276e-4092-ba81-dc2c8846f34a",
+      "id": "c1498728-e3c3-4470-8f62-b4afdc0d67eb",
       "name": "Create Unformatted-PDF Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -2922,10 +2664,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3472,
-        1408
+        3136,
+        2112
       ],
-      "id": "77214909-2bae-49df-b23e-753daf946674",
+      "id": "bda31607-4a0e-475c-bb86-69584b205d32",
       "name": "Set Header (Unformatted-PDF)"
     },
     {
@@ -3055,20 +2797,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3696,
-        1408
+        3360,
+        2112
       ],
-      "id": "5b20a2bd-cc55-434c-95fb-f7037813f6f8",
+      "id": "46539229-a651-45c3-b9d7-bcdad3cf8297",
       "name": "Append Unformatted-PDF",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3120,20 +2856,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3920,
-        1408
+        3584,
+        2112
       ],
-      "id": "733c36ca-fcf9-45dd-bcc6-081b039aed90",
+      "id": "f3aa6ca4-06f9-4dac-94f7-ce5d170dfb9f",
       "name": "Update Variables (Unformatted-PDF)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3149,20 +2879,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3472,
-        2368
+        3136,
+        3072
       ],
-      "id": "f79bf751-b944-4496-bc10-6fb74584c7b7",
+      "id": "0c1cf180-7efa-4397-8565-562cd1cf0ddd",
       "name": "Create Formatted-PDF Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3229,10 +2953,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3696,
-        1600
+        3360,
+        2304
       ],
-      "id": "79a8d3fa-f18d-4a54-a428-8700bb0b7323",
+      "id": "aee663f3-23a2-444a-9c72-e74c40cbf2b1",
       "name": "Set Header (Formatted-PDF)"
     },
     {
@@ -3362,20 +3086,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3920,
-        1600
+        3584,
+        2304
       ],
-      "id": "427b0d0d-25df-4a6e-8833-99ad01856314",
+      "id": "72f72616-73b2-4820-8790-d47c6cdff34b",
       "name": "Append Formatted-PDF",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3427,20 +3145,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4144,
-        1600
+        3808,
+        2304
       ],
-      "id": "858c9ec9-c390-42b4-8d93-dea7ac80e2c5",
+      "id": "0c3a3473-8efa-4b62-bbc2-1fe57c229653",
       "name": "Update Variables (Formatted-PDF)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3459,20 +3171,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3696,
-        2464
+        3360,
+        3168
       ],
-      "id": "c1185d0a-c2a1-42c3-b012-b0abb2bcc79d",
+      "id": "2216305b-529f-4eaf-ba61-08a12511beba",
       "name": "Cleanup (Documents)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3483,20 +3189,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3920,
-        2464
+        3584,
+        3168
       ],
-      "id": "371e04c3-1b3f-4614-a97c-29a9deab1ce9",
+      "id": "0ee0297a-e438-497f-949b-dac1414b79f3",
       "name": "Create Upsert Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3520,20 +3220,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        4144,
-        1792
+        3808,
+        2496
       ],
-      "id": "dc12bc1d-ff88-407c-86b3-06687f8d4c8b",
+      "id": "7ab9c809-9f39-4b37-96fe-5e377784bf34",
       "name": "Move Upsert Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3585,20 +3279,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4368,
-        1792
+        4032,
+        2496
       ],
-      "id": "a2707454-d88c-4d27-b2d9-87697809f0be",
+      "id": "8c76ccda-e3ea-472a-bed0-b8a007e4f1d2",
       "name": "Update Variables (Upsert)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3671,10 +3359,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4368,
-        1984
+        4032,
+        2688
       ],
-      "id": "1096ad62-440c-469e-a7fc-8a65ddf021c1",
+      "id": "26aa3702-35c4-48af-a0cf-53e3f823d2f0",
       "name": "Set Header (Upsert-Output)"
     },
     {
@@ -3804,20 +3492,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4592,
-        1984
+        4256,
+        2688
       ],
-      "id": "42a83b37-027e-4b85-91f3-a3da299dd4e5",
+      "id": "d438781b-b065-4676-82f0-0d4db43d3716",
       "name": "Append Upsert-Output",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3833,20 +3515,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4144,
-        2560
+        3808,
+        3264
       ],
-      "id": "adee17e3-8148-4b83-8aea-4dbc97bf9e27",
+      "id": "5d543485-ef7e-4837-b1e5-af13ba8b17fa",
       "name": "Create Upsert-Output Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3898,20 +3574,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4816,
-        1984
+        4480,
+        2688
       ],
-      "id": "2cb00315-fe3d-4897-b430-494b162c8a28",
+      "id": "4d551b7d-0fe6-4e74-9b8e-f09520f21536",
       "name": "Update Variables (Upsert-Output)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3930,20 +3600,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4368,
-        2656
+        4032,
+        3360
       ],
-      "id": "c6bec2c8-eea5-4e5e-a2d9-e2a13a3b2398",
+      "id": "6b2a4dc7-d592-4347-8dfe-dbec87ff09d9",
       "name": "Cleanup (Upsert)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3954,20 +3618,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4592,
-        2656
+        4256,
+        3360
       ],
-      "id": "98b43509-8aee-4453-9af7-f3d4e0e75da6",
+      "id": "bd93ac74-1a2a-4f27-ba36-fd8f77a5d8db",
       "name": "Create Update Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -3991,20 +3649,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        4816,
-        2176
+        4480,
+        2880
       ],
-      "id": "4baec647-e23e-4610-bc34-3cd67f0ddb0b",
+      "id": "10a7d831-21d3-4757-96b2-2069b0191c83",
       "name": "Move Update Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4056,20 +3708,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5040,
-        2176
+        4704,
+        2880
       ],
-      "id": "b3e0c0e4-3a9d-4050-9041-f9f256aa809e",
+      "id": "fb2c61be-c35c-4a02-8fa3-a381592f7e8b",
       "name": "Update Variables (Update)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4085,20 +3731,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        4816,
-        2752
+        4480,
+        3456
       ],
-      "id": "15c5d80b-e0cf-4dcc-80fc-745b671ab956",
+      "id": "2310a846-bdde-438c-8ea8-52bed36c806d",
       "name": "Create Update-Same Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4195,10 +3835,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5040,
-        2368
+        4704,
+        3072
       ],
-      "id": "47b69d5a-11ff-4012-bf03-e485a4f23116",
+      "id": "08f7f86c-a9a0-4da4-b0a7-14fe44a5ec9a",
       "name": "Set Header (Update-Same)"
     },
     {
@@ -4328,20 +3968,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5264,
-        2368
+        4928,
+        3072
       ],
-      "id": "c3d93844-e584-483b-a9a0-7674c0402606",
+      "id": "aee7f4a9-8adc-4009-aa55-73a21544560a",
       "name": "Append Update-Same",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4393,20 +4027,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5488,
-        2368
+        5152,
+        3072
       ],
-      "id": "880c7f34-4532-4985-935d-772a3614f203",
+      "id": "4d505893-29ed-481b-9154-1769cb887ed2",
       "name": "Update Variables (Update-Same)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4422,20 +4050,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5040,
-        2848
+        4704,
+        3552
       ],
-      "id": "4726861e-7eb4-4ca2-8c98-3d2e63e799c1",
+      "id": "c3b4bfce-ef10-4e2c-b3ee-1c5f61dede15",
       "name": "Create Update-Different Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4532,10 +4154,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5264,
-        2560
+        4928,
+        3264
       ],
-      "id": "fec1b8e8-d3ab-4f75-a705-4ada6f6c617f",
+      "id": "ef8f7187-7577-449a-b418-3e7127f9fa28",
       "name": "Set Header (Update-Different)"
     },
     {
@@ -4665,20 +4287,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5488,
-        2560
+        5152,
+        3264
       ],
-      "id": "37be5284-0b3b-4e94-8af1-7772692ddb7a",
+      "id": "25b1e644-aec5-4e05-8f8d-552a1866e13d",
       "name": "Append Update-Different",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4730,20 +4346,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5712,
-        2560
+        5376,
+        3264
       ],
-      "id": "131535d9-3271-4130-b3cd-207a4b281b7d",
+      "id": "6c6584b6-a05c-4e35-998d-61d89e8b688f",
       "name": "Update Variables (Update-Different)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4762,20 +4372,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5264,
-        2944
+        4928,
+        3648
       ],
-      "id": "2eb20af0-cda7-4217-83cc-9c700eeccd6a",
+      "id": "145e665f-1aa8-4dca-ac76-6009d9bd6506",
       "name": "Cleanup (Update)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4786,20 +4390,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5488,
-        2944
+        5152,
+        3648
       ],
-      "id": "15fdc077-dbf9-4fc3-ad8d-ac3029648c0d",
+      "id": "4ba91e62-3e32-4a9f-81c7-60e7204b6f0b",
       "name": "Create Sitemap Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4823,20 +4421,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        5712,
-        2752
+        5376,
+        3456
       ],
-      "id": "e5c8f49c-7c7a-43cf-8e65-1ab9cd07ff96",
+      "id": "2066c48b-b8ae-48a8-9a5b-a409f2359168",
       "name": "Move Sitemap Spreadsheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4888,20 +4480,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5936,
-        2752
+        5600,
+        3456
       ],
-      "id": "775ccd5d-b364-4844-9956-49ac07790ed4",
+      "id": "5e601a44-a26b-4cf6-960b-77df5da55d88",
       "name": "Update Variables (Sitemap)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4917,20 +4503,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5712,
-        3040
+        5376,
+        3744
       ],
-      "id": "e5b0bd02-c6a7-4550-bd21-369411865463",
+      "id": "1466d5d8-2845-43ab-be62-9a15905b98a9",
       "name": "Create Sitemap-Output Sheet",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4967,10 +4547,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5936,
-        2944
+        5600,
+        3648
       ],
-      "id": "8f4e1d25-b091-421c-891c-3c4ed727ffc5",
+      "id": "284a8ee5-6b6f-4d75-8a92-45f2314f3bb1",
       "name": "Set Header (Sitemap-Output)"
     },
     {
@@ -5100,20 +4680,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        6160,
-        2944
+        5824,
+        3648
       ],
-      "id": "0710c414-72d3-4cc7-a9fe-af4cf59ae81f",
+      "id": "6201b929-ba59-4f82-9fa5-8d9c827123fb",
       "name": "Append Sitemap-Output",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5165,20 +4739,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        6384,
-        2944
+        6048,
+        3648
       ],
-      "id": "006e444f-f183-4fe0-9924-03985e7d7ea0",
+      "id": "2a4942df-4125-42c0-a127-815b5e913487",
       "name": "Update Variables (Sitemap-Output)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5197,20 +4765,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5936,
-        3136
+        5600,
+        3840
       ],
-      "id": "8e0690bf-6216-46e2-a345-7055f1cca0c4",
+      "id": "c002d142-adb4-491c-8e49-8e181ea48795",
       "name": "Cleanup (Sitemap)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5231,20 +4793,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -1008,
-        736
+        -1344,
+        1440
       ],
-      "id": "55340da7-e3be-4e67-8c82-59d7e973b987",
+      "id": "0a55da81-9d3d-4270-9395-18adf8eda0e6",
       "name": "Create folder Unformatted-HTML",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5265,20 +4821,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -784,
-        832
+        -1120,
+        1536
       ],
-      "id": "b266163b-0dfa-4110-9cb0-69c5eb7a8ccd",
+      "id": "edf093bb-673f-44ce-bb51-0f536fd6630c",
       "name": "Create folder Formatted-HTML",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5299,20 +4849,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -560,
-        928
+        -896,
+        1632
       ],
-      "id": "6824371a-081a-4145-beb6-0937c736bf6a",
+      "id": "70c2cc83-4882-4708-9af9-22caaa8c9153",
       "name": "Create folder Unformatted-PDF",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5333,20 +4877,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -336,
-        1024
+        -672,
+        1728
       ],
-      "id": "e338a89e-3150-4168-b5f4-bbfbc2095a7b",
+      "id": "2793eb6e-288e-47ec-8e59-655600750bfa",
       "name": "Create folder Formatted-PDF",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5367,20 +4905,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -1232,
-        736
+        -1568,
+        1440
       ],
-      "id": "8baec0fc-33dc-4173-89f2-e2a2131a3502",
+      "id": "e761660e-71d0-4768-8409-d3739ac384bf",
       "name": "Create Documents Folder",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5432,20 +4964,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -784,
-        640
+        -1120,
+        1344
       ],
-      "id": "442c3ce2-6ed0-41ba-a2eb-fd1ae27e09fd",
+      "id": "698f4b27-7604-4f26-ac13-878979141e0f",
       "name": "Update Variables (Folder-Unformatted-HTML)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5466,20 +4992,14 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -112,
-        1120
+        -448,
+        1824
       ],
-      "id": "6b2e6dbf-0d63-4ef4-92b0-9b5dc81cda35",
+      "id": "9263c5d7-7781-4f4e-8c12-d6a05b2fb6f8",
       "name": "Create Archive Folder",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "x095DzpEDdr2AtbK",
-          "name": "Google Drive account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5531,20 +5051,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -560,
-        736
+        -896,
+        1440
       ],
-      "id": "74ea133b-eeca-4869-84fb-0eb1b6cd41b6",
+      "id": "c6322478-9fab-4729-af8f-574cb01933fc",
       "name": "Update Variables (Folder-Formatted-HTML)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5596,20 +5110,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -336,
-        832
+        -672,
+        1536
       ],
-      "id": "c8bedd04-7f36-464f-8394-479193b9e2a8",
+      "id": "bbe4d788-6cf2-4194-8325-1a71cadcb473",
       "name": "Update Variables (Folder-Unformatted-PDF)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5661,20 +5169,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -112,
-        928
+        -448,
+        1632
       ],
-      "id": "febda87c-8df8-4d69-a201-b04b3ac3edf6",
+      "id": "b55ad481-5b44-4280-b531-0592d6cad0f3",
       "name": "Update Variables (Folder-Formatted-PDF)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5726,20 +5228,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        112,
-        1024
+        -224,
+        1728
       ],
-      "id": "306579a2-afb1-4d4b-8186-b8861bf544ed",
+      "id": "ebd44d12-6b03-4844-a6a9-820dfa4a4df9",
       "name": "Update Variables (Folder-Archive)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -5791,37 +5287,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1008,
-        544
+        -1344,
+        1248
       ],
-      "id": "27dc433b-cd61-482b-8b91-f2bce8ed5a65",
+      "id": "21e22821-52d6-4ffb-9dd3-bced9f511307",
       "name": "Update Variables (Folder-KB-System)",
       "retryOnFail": true,
       "maxTries": 2,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "bvSV8rPQjdSED0CB",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "content": "## Getting Started\nThis workflow creates the complete folder structure and Google Sheets required to run the Knowledge Base System.\nThe Environment Google Sheet contains the Names and IDs of all items that will be loaded as Custom Variables in your project.\n",
-        "height": 96,
-        "width": 880,
-        "color": 4
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        -2400,
-        304
-      ],
-      "id": "f784fc47-2008-4090-a539-953af9d7aa4c",
-      "name": "Sticky Note6",
-      "disabled": true
+      "waitBetweenTries": 5000
     }
   ],
   "pinData": {},
@@ -6710,11 +6183,6 @@
         ]
       ]
     },
-    "Cleanup (Sitemap)": {
-      "main": [
-        []
-      ]
-    },
     "Create folder Formatted-PDF": {
       "main": [
         [
@@ -6765,11 +6233,10 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "4b393a5a-eadd-4e67-b708-a275e59d95a9",
+  "versionId": "4ecd45b8-f84a-4932-9592-341e13d035d4",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
   },
-  "id": "5SVLzo2GS4le8oOYEwZet",
+  "id": "4uJqUh09lgKVG5x5cj92o",
   "tags": []
 }
