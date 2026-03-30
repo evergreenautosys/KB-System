@@ -1,0 +1,152 @@
+{
+  "name": "ClearNamespace",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Clear Namespace\nThis workflows clears the selected Pinecone Namespace\nSet Namespace (ie demo, test, ready, etc)",
+        "height": 92,
+        "width": 696,
+        "color": 4
+      },
+      "id": "ef7b931c-2640-4cfa-9a70-844af1943cf0",
+      "name": "Trigger Instructions2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        560
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a5640e47-de68-43de-9969-1b0ae83ffb41",
+              "name": "pinecone_host",
+              "value": "https://YOURHOST.pinecone.io",
+              "type": "string"
+            },
+            {
+              "id": "7f8b699c-6e5a-4b25-8294-c38a61f3c3b0",
+              "name": "namespace",
+              "value": "test",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        272,
+        672
+      ],
+      "id": "d38b6d54-4c83-4771-923f-a4f8e9441b81",
+      "name": "Set Host & Namespace"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nPinecone_Host\n(https://YOURHOST.pinecone.io)\nNamespace\n(test)",
+        "height": 240,
+        "width": 246,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        192,
+        672
+      ],
+      "id": "f48d1a12-ca64-42c6-a7dd-513fab91ee5d",
+      "name": "Sticky Note42",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "={{ $json.pinecone_host }}/vectors/delete",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"namespace\": \"{{ $json.namespace }}\",\n  \"deleteAll\": \"true\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        672
+      ],
+      "id": "75fa36a4-bdc7-4d4f-9263-9c62b82c159e",
+      "name": "Pinecone Vectors Delete"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        448,
+        672
+      ],
+      "id": "6159718f-528c-4785-9c1e-be6647648ec3",
+      "name": "Sticky Note43"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        48,
+        672
+      ],
+      "id": "8ce14387-fdce-4e04-8797-97395065cf3a",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Set Host & Namespace": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vectors Delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Set Host & Namespace",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e06f70ca-72b3-4f9f-ba05-09f9b7f1c913",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "dYHO5DpuNYtUIIUg1BGsb",
+  "tags": []
+}

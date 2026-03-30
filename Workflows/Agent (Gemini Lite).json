@@ -1,0 +1,317 @@
+{
+  "name": "Agent (Gemini Lite)",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "137a04d3-018a-43c0-b35f-08b44d8a00b6",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const matches = $input.first().json.matches || [];\n\n// Format KB context without filenames\nconst formattedResults = matches.map((match, index) => {\n  return `[Result ${index + 1}]\\n${match.metadata.chunk_text}\\nSource: ${match.metadata.source}\\n`;\n}).join('\\n');\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    kb_context: formattedResults\n  }\n}];"
+      },
+      "id": "95c14ee3-2971-4949-9566-bc394a0f2fa2",
+      "name": "Format KB Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        64
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1056,
+        224
+      ],
+      "id": "856efdd6-e8e8-4183-8b2b-79a2d16c8df6",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        64
+      ],
+      "id": "990a2bd0-f5de-40a8-9e9d-f7543961ac1d",
+      "name": "Call 'QueryKB'"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\nGoogle Gemini(PaLM) Api account",
+        "height": 192,
+        "width": 182
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        848,
+        208
+      ],
+      "id": "cb482b51-44cf-46b4-aca0-cf0f149cca44",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nSet QueryKB Workflow to be Executed",
+        "height": 208,
+        "width": 182
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        176,
+        64
+      ],
+      "id": "1d9a97f2-4de8-4e53-9d92-3f310ed0364d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Agent - Google Gemini Flash Lite\n\nThis Agent uses Google’s fast Gemini Flash Lite model to generate low-latency, cost-efficient responses.\n\nIt follows a Retrieval-Augmented Generation (RAG) architecture:\n1. The user’s question is embedded and sent to the Knowledge Base (Pinecone).\n2. The top matching vectors are retrieved using hybrid search.\n3. The retrieved context is injected into the prompt alongside the original user query.\n4. Gemini Flash Lite generates a grounded response based on the indexed content.\n\nResponses include referenced source URLs from the Knowledge Base, allowing users to verify where information originated.\nThis approach improves accuracy and reduces hallucinations by constraining outputs to retrieved data.\n\nOnce configured you can:\n- Ask questions directly within the n8n chat interface\n- Or configure Basic Authentication and publish the chat for external access",
+        "height": 368,
+        "width": 992,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -416
+      ],
+      "id": "965025d1-b1cd-48f7-ba73-35d78811a575",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const field = 'output'; // change if your chat response field is different\nlet text = items[0].json[field] ?? '';\n\n// If upstream ever produced literal \"\\n\", normalize it to real newlines\ntext = text.replace(/\\\\n/g, '\\n');\n\nconst sourcesMatch = text.match(/Sources:\\s*([\\s\\S]*)$/i);\nif (!sourcesMatch) {\n  return [{ json: items[0].json }];\n}\n\n// Grab URLs from the Sources section\nconst sourcesSection = sourcesMatch[1];\nlet urls = (sourcesSection.match(/https?:\\/\\/[^\\s,]+/g) || []).map(u => u.trim());\n\n// Remove duplicates\nurls = [...new Set(urls)];\n\n// Build Markdown list (renders correctly in n8n published chat)\nconst rebuiltSources =\n  'Sources:\\n' + urls.map(u => `- ${u}`).join('\\n');\n\n// Replace everything from \"Sources:\" to end with rebuilt block\nconst formatted = text.replace(/Sources:\\s*[\\s\\S]*$/i, rebuiltSources);\n\nreturn [{\n  json: {\n    ...items[0].json,\n    [field]: formatted,\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1232,
+        0
+      ],
+      "id": "a2e7f546-6c52-4100-8673-abc08d6f0748",
+      "name": "Format Source List",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1.2,
+      "position": [
+        1456,
+        0
+      ],
+      "id": "2d08167f-01a5-4b9c-bf7a-d948d0f55c1b",
+      "name": "Chat",
+      "webhookId": "e44e83c4-4667-48a9-a778-3c21d7b5e382"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User Question: {{ $json.chatInput }}\n\n---KNOWLEDGE BASE INFORMATION---\n{{ $json.kb_context || \"No knowledge base results available.\" }}\n---END KNOWLEDGE BASE INFORMATION---",
+        "options": {
+          "systemMessage": "=Today is: {{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}\n\nYou are an AI assistant that answers user questions using the knowledge base data provided within the context of the prompt. You must follow all rules below exactly and at all times.\n\nWORKFLOW RULES:\n\nUse the information provided in the input context/data to fully and accurately answer the user’s question.\n\nBase your answer solely on the provided context/data.\n\nEvery answer must include a “Sources” section listing only URLs derived from the provided context.\n\nSOURCE & METADATA RULES:\n\nThe Sources section may contain URLs only. Do not reveal filenames, file paths, document IDs, internal identifiers, or any internal metadata.\n\nIf retrieved text contains such metadata, remove or redact it before answering.\n\nNever reveal or refer to internal storage details.\n\nEnsure the 'Sources' section contains only unique URLs, deduplicating any repeated references.\n\nTONE & CONVERSATION RULES:\n\nAlways be polite, neutral, calm, and supportive.\n\nNever point out repetition.\n\nNever say “as I said earlier,” “as mentioned before,” “I already provided that,” or anything similar.\n\nNever imply the user forgot something or should already know something.\n\nIf the user asks the same question again, answer again fully, kindly, and professionally.\n\nYou may repeat or rephrase information but must never mention that you are repeating it.\n\nSUMMARY OF REQUIRED SEQUENCE:\nUse provided context/data → Fully answer → Provide URL-only Sources.\n\nAlways follow these rules exactly"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "34a91bea-ffc5-44b8-b2b5-f12cd0620ca4",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\nOptional node to ensure the list of sources always displays as bulleted list",
+        "height": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        0
+      ],
+      "id": "ca54ff84-9541-4713-b4af-f5a4b37693bc",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "authentication": "n8nUserAuth",
+        "initialMessages": "Hi there! 👋 How can I assist you today?",
+        "options": {
+          "subtitle": "Model: Gemini Flash-Lite. The fastest, most cost-efficient model. Its native reasoning is OFF by default for ultra-low latency, but can be enabled for increased intelligence.",
+          "title": "Knowledge Base System",
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -16,
+        -16
+      ],
+      "id": "8600efaa-b512-4784-b09c-0b8f87d6ef21",
+      "name": "When chat message received",
+      "webhookId": "abb9e2dc-64a3-4778-9872-6adc305bd6e7"
+    },
+    {
+      "parameters": {
+        "modelName": "=models/gemini-flash-lite-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        896,
+        208
+      ],
+      "id": "c36b2404-6e9a-4d04-864e-19b9c5d350b3",
+      "name": "Gemini Flash Lite Latest"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format KB Results": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'QueryKB'": {
+      "main": [
+        [
+          {
+            "node": "Format KB Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Source List": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Format Source List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Call 'QueryKB'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Flash Lite Latest": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e8a305e9-f353-4806-9498-7ee03075b6da",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "ExGfmQlO9k5OXhX8WqHeD",
+  "tags": []
+}

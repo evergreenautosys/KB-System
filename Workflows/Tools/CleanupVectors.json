@@ -1,0 +1,232 @@
+{
+  "name": "CleanupVectors",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b7c5831a-45fa-4bc7-918d-79a3d44bb436",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        624,
+        0
+      ],
+      "id": "986badcd-30ab-42cb-a5ca-dd5366fc9732",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "={{ $(\"Set Inputs\").all()[0].json.pinecone_host }}/vectors/delete",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"filter\": {\"filename\": {\"$eq\": \"{{ $json.Filename }}\"}},\n  \"namespace\": \"{{ $(\"Set Inputs\").all()[0].json[\"namespace\"] }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        832,
+        16
+      ],
+      "id": "090359f9-83c5-46aa-9696-10599a6db002",
+      "name": "Delete Vectors"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ed9c6b51-e4fd-498e-bc14-ed697adf1615",
+              "name": "pinecone_host",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "4d6b05aa-6534-4667-bb13-e7e1bd7c66db",
+              "name": "namespace",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "72a99a8e-6ff9-4061-9027-8c2d2eed1110",
+              "name": "Filename",
+              "value": "={{ $json.Filename }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "ff26b799-7581-4844-a376-474c637c190c",
+      "name": "Set Inputs"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.update_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.update_sheet_different }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        0
+      ],
+      "id": "8bc8f2b1-60a0-42d9-b42b-2a68354ed8e8",
+      "name": "Get Update-Different",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "content": "## Cleanup Vectors\nAfter running the Update workflow and scraping fresh data based on detected differences, this workflow removes outdated vectors that are still stored in the index.\nIt identifies vectors by filename to ensure newly upserted data is not accidentally deleted during the cleanup process.",
+        "height": 108,
+        "width": 1112,
+        "color": 4
+      },
+      "id": "52dd0bdd-7d37-4587-bab4-2bd32bfa2616",
+      "name": "Trigger Instructions2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -144
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nPinecone_Host\n(https://YOURHOST.pinecone.io)\n\nNamespace\n(test)",
+        "height": 272,
+        "width": 246,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        336,
+        0
+      ],
+      "id": "71c717c9-9737-4bc6-b8de-8779fe922a1d",
+      "name": "Sticky Note42",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        768,
+        16
+      ],
+      "id": "541ddc2f-bb12-4552-b907-edd731a7d69f",
+      "name": "Sticky Note43"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Update-Different",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Delete Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Vectors": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Update-Different": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "1362ac67-753b-4e05-a796-807dc86b5f3b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "7nhBYqK6Vzf-D3Lwu-slR",
+  "tags": []
+}

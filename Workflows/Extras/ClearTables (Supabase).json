@@ -1,0 +1,251 @@
+{
+  "name": "ClearTables (Supabase)",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "=Input",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "neq",
+              "keyValue": "0"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "cfb813cc-5418-4cf2-85c7-78eb2e8ea48e",
+      "name": "Clear Input",
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        480,
+        0
+      ],
+      "id": "726f532e-929a-49b4-9108-30c52dc63a82",
+      "name": "Limit 1 (Input)"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "=Error",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "neq",
+              "keyValue": "0"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        704,
+        0
+      ],
+      "id": "29be1e54-de5e-471e-8f98-f44587abdd18",
+      "name": "Clear Error",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        928,
+        0
+      ],
+      "id": "efd95daa-9484-491c-b9cf-1d3106760144",
+      "name": "Limit 1 (Error)"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "=Processed",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "neq",
+              "keyValue": "0"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        0
+      ],
+      "id": "ca9e9a3d-2fed-4f74-9f72-0377f899583c",
+      "name": "Clear Processed",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        0
+      ],
+      "id": "cfdd3233-66f9-49bc-839e-fcb50fa28ae8",
+      "name": "Limit 1 (Processed)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        32,
+        0
+      ],
+      "id": "4aaae279-e21f-4cd5-8006-6268c272bc62",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "=Sitemap-Output",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "neq",
+              "keyValue": "0"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        0
+      ],
+      "id": "aa850c23-8853-4427-b450-8a215ba9c774",
+      "name": "Clear Sitemap-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Clear Input": {
+      "main": [
+        [
+          {
+            "node": "Limit 1 (Input)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit 1 (Input)": {
+      "main": [
+        [
+          {
+            "node": "Clear Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Error": {
+      "main": [
+        [
+          {
+            "node": "Limit 1 (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit 1 (Error)": {
+      "main": [
+        [
+          {
+            "node": "Clear Processed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Processed": {
+      "main": [
+        [
+          {
+            "node": "Limit 1 (Processed)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit 1 (Processed)": {
+      "main": [
+        [
+          {
+            "node": "Clear Sitemap-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Clear Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "217610d4-5c35-48ac-9f87-c003869a18df",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "DzTnBCktFQpscTFp-_q8k",
+  "tags": []
+}

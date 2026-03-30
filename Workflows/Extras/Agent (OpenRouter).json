@@ -1,0 +1,305 @@
+{
+  "name": "Agent (OpenRouter)",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const matches = $input.first().json.matches || [];\n\n// Format KB context without filenames\nconst formattedResults = matches.map((match, index) => {\n  return `[Result ${index + 1}]\\n${match.metadata.chunk_text}\\nSource: ${match.metadata.source}\\n`;\n}).join('\\n');\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    kb_context: formattedResults\n  }\n}];"
+      },
+      "id": "54bf43c0-47d2-4995-a3f0-6fab19e535df",
+      "name": "Format KB Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1072,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -848,
+        160
+      ],
+      "id": "2888403b-bef2-4b7a-b2f6-caec1fabdfd6",
+      "name": "Merge Input"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9306d756-7882-4022-9663-0a6ad3000a47",
+              "name": "chatInput",
+              "value": "={{ $json.output ?? $('When chat message received').item.json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1520,
+        288
+      ],
+      "id": "d5b88cbf-7f30-4f7e-a8b2-1236a32290c0",
+      "name": "Set Output"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -1296,
+        288
+      ],
+      "id": "95e6fdfd-faa4-45f1-8e3f-c3e5eece94fe",
+      "name": "Call 'QueryKB'"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -512,
+        368
+      ],
+      "id": "72814e7c-1f2c-4226-9d46-c6ae785f536a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": "=nvidia/nemotron-3-nano-30b-a3b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        368
+      ],
+      "id": "e0f042f8-f283-4182-be9e-d319a3e84573",
+      "name": "OpenRouter Large Model"
+    },
+    {
+      "parameters": {
+        "model": "=nvidia/nemotron-nano-9b-v2:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -1808,
+        496
+      ],
+      "id": "c4f5e152-4fe9-4861-8fd5-80f3621d24ae",
+      "name": "OpenRouter Small Model"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=Role: Keyword Extraction & Query Refinement Specialist\n\nYou are a specialized NLP agent focused on Keyword Extraction and Noise Reduction. Your primary goal is to distill raw user queries into their essential technical components by stripping away all conversational \"fluff\" while strictly preserving proprietary acronyms and product names.\n\nPrimary Directives\n\nExtraction & Purification (High Priority):\n\nIdentify the core technical keywords in the user's input.\n\nREMOVE all conversational filler, polite phrasing, and meta-requests (e.g., \"I need,\" \"please find,\" \"documentation for,\" \"articles about,\" \"help with\").\n\nThe output should only contain the essential terms needed to match a database record.\n\nAcronym & Entity Preservation (Critical):\n\nNEVER expand, guess, or modify technical acronyms (e.g., \"CRM\", \"SaaS\", \"API\", \"GUI\") or specific product names.\n\nThe vector store is indexed on these exact terms. Altering them (e.g., changing \"CRM\" to \"Customer Relationship Management\") will break retrieval. Keep them exact.\n\nContextual Retention:\n\nKeep specific constraints provided by the user (e.g., error codes, version numbers, specific OS names like \"Linux\" or \"Windows\"). These are not \"fluff\"—they are critical filters.\n\nMinimalist Enrichment:\n\nOnly append 1-2 technical synonyms if they are absolutely necessary to describe the type of issue (e.g., adding \"troubleshooting\" if the user describes a failure).\n\nDo not add generic tags like \"best practices,\" \"overview,\" or \"guide\" unless the user explicitly asks for them.\n\nStep-by-Step Execution Logic\n\nIsolate: Identify the proper nouns, acronyms, and technical verbs.\n\nStrip: Remove all stop words, pronouns, and conversational openers.\n\nVerify: Ensure no acronyms were expanded.\n\nOutput: Return the single space-separated string.\n\nExample Transformation\n\nUser Input:\n\"I'm looking for some articles that explain how to handle login failures in the CRM portal on Android devices.\"\n\nOptimized Response:\nlogin failures CRM portal Android devices troubleshooting credential error\n\nUser Input:\n\"We are seeing high CPU usage on the SQL server when users run the nightly batch job.\"\n\nOptimized Response:\nhigh CPU usage SQL server nightly batch job performance optimization\n\nSafety and Guardrails\n\nNO conversational filler.\n\nNO answering the question.\n\nNO defining terms.\n\nONLY output the extracted keyword string.",
+          "enableStreaming": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1840,
+        288
+      ],
+      "id": "3bfaaad4-3cb5-4cf1-9fda-0ad48badc3b1",
+      "name": "Query Enhancement",
+      "notesInFlow": false,
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User Question: {{ $json.chatInput }}\n\n---KNOWLEDGE BASE INFORMATION---\n{{ $json.kb_context || \"No knowledge base results available.\" }}\n---END KNOWLEDGE BASE INFORMATION---",
+        "options": {
+          "systemMessage": "=Today is: {{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}\n\nYou are an expert AI assistant dedicated to answering user questions with high precision and detail. You must strictly adhere to the following operating protocols.\n\n### 1. KNOWLEDGE & ANSWERING PROTOCOLS\n* **Context-Driven:** Answer the user's question comprehensively using **only** the provided input context.\n* **Completeness:** Provide full, detailed explanations. Do not abbreviate or summarize if details are available in the text.\n* **Negative Constraint:** If the answer is not in the context, state: \"The provided context does not contain this information.\"\n* **Strict Prohibition:** **NEVER** direct the user to \"consult the documentation,\" \"check the manual,\" or \"contact support.\" If the info is missing, simply state it is missing.\n\n### 2. CITATION & SOURCE PROTOCOLS\n* **Format:** Every answer must end with a \"Sources\" section.\n* **Valid Data:** Include **URLs only**. Strip all internal filenames, paths, or non-URL identifiers.\n* **Deduplication:** The Sources list must be **STRICTLY UNIQUE**. Check the list before outputting. If a URL appears multiple times in the context, list it **only once** in the Sources section.\n\n### 3. TONE & STYLE\n* **Professionalism:** Be polite, neutral, and helpful.\n* **Flow:** Do not use meta-phrases like \"As mentioned earlier\" or \"Repeating what was said.\" Treat the current prompt as the only relevant interaction.\n\n### REQUIRED OUTPUT STRUCTURE\n[Your detailed answer here]\n\n### Sources\n* [Unique URL 1]\n* [Unique URL 2]",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -656,
+        160
+      ],
+      "id": "a5abe7f0-7bd3-4092-8327-a08ae17e056c",
+      "name": "AI Agent",
+      "notesInFlow": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "public": true,
+        "authentication": "n8nUserAuth",
+        "initialMessages": "Hi there! 👋 How can I assist you today?",
+        "options": {
+          "subtitle": "OpenRouter is a unified API gateway that provides access to hundreds of AI models from dozens of providers through a single interface, handling intelligent routing, fallbacks, and cost optimization.",
+          "title": "Knowledge Base System",
+          "responseMode": "streaming"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -2080,
+        144
+      ],
+      "id": "cd28e17a-e46b-414a-9189-7a152a6ad0e2",
+      "name": "When chat message received",
+      "webhookId": "5a1b1002-e79e-4eb3-a46e-3618e4e1906a"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Format KB Results": {
+      "main": [
+        [
+          {
+            "node": "Merge Input",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Input": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Output": {
+      "main": [
+        [
+          {
+            "node": "Call 'QueryKB'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'QueryKB'": {
+      "main": [
+        [
+          {
+            "node": "Format KB Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Large Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Small Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Query Enhancement",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Enhancement": {
+      "main": [
+        [
+          {
+            "node": "Set Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Merge Input",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Query Enhancement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b6fe820e-0cc8-4a67-a95b-5ff5a4043365",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "KpNsX7RuJQeVAhmDbK48Y",
+  "tags": []
+}

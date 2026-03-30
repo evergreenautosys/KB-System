@@ -1,0 +1,640 @@
+{
+  "name": "CopyNamespace",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1677ecd0-295d-4c54-afdd-1225dc712753",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $(\"Set Inputs\").all()[0].json.pinecone_host }}/vectors/fetch",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"ids\": [{{ $json.ids }}],\n  \"namespace\": \"{{ $('Set Inputs').all()[0].json.namespace }}\"\n}",
+        "options": {}
+      },
+      "id": "9574d328-11c9-4ca4-826a-6ca8e98ad277",
+      "name": "Fetch Vectors",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1344,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $(\"Set Inputs\").all()[0].json.target_pinecone_host }}/vectors/upsert",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "9f4ab1ff-d737-4082-bac3-5a23f9009da3",
+      "name": "Upsert to Target Namespace",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2240,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $('Get IDs').item.json.pagination.next }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8deb5498-0172-459d-87be-8d26325f7d94",
+      "name": "Has More Pages?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2464,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3662ed6e-4e90-4887-a88d-769567f4cdfa",
+              "name": "namespace",
+              "value": "={{ $(\"Set Inputs\").all()[0].json[\"target_namespace\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "1c3c7c69-1216-4199-8563-c01c9a461818",
+              "name": "vectors",
+              "value": "={{ $json.vectors }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        80
+      ],
+      "id": "024728b6-ef97-4e6d-b5b7-94f7b70da565",
+      "name": "Set Target Namespace"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "65ffbea2-6d86-4a6f-a647-d1eadfdc104f",
+              "name": "id",
+              "value": "=\"{{ $json.id }}\"",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        80
+      ],
+      "id": "e758c5f6-d1ad-465d-ab8b-4e58b4fd6180",
+      "name": "Add Quotes to IDs"
+    },
+    {
+      "parameters": {
+        "url": "={{ $(\"Set Inputs\").all()[0].json.pinecone_host }}/vectors/list",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "namespace",
+              "value": "={{ $json.namespace }}"
+            },
+            {
+              "name": "=paginationToken",
+              "value": "={{ $json.pagination_token }}"
+            },
+            {
+              "name": "limit",
+              "value": "={{ $json.limit }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ecc80921-c7b9-44f2-909a-ef3b103153cb",
+      "name": "Get IDs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "id",
+              "renameField": true,
+              "outputFieldName": "ids"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        80
+      ],
+      "id": "7d253145-a3b3-47b3-a32c-21798a64b42b",
+      "name": "Aggregate IDs"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "vectors",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        672,
+        80
+      ],
+      "id": "abb731dc-0582-460a-aff7-3dc59592c54b",
+      "name": "Split Out IDs"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "vectors",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        80
+      ],
+      "id": "ab3d606c-daab-4e28-84c2-a43bee3db6ce",
+      "name": "Split Out Vectors"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "vectors",
+        "include": "specifiedFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        80
+      ],
+      "id": "fbf873ec-4d36-44c2-9f06-41089a8fa313",
+      "name": "Aggregate Vectors"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4e16413f-887b-4b68-9389-7404108e7c11",
+              "name": "pagination_token",
+              "value": "={{ $('Get IDs').item.json.pagination.next }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2688,
+        80
+      ],
+      "id": "38b54027-564b-4bde-a1a2-1174eff3c7ce",
+      "name": "Set Pagination"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6f8f8ad-913b-4f6b-90c4-7eb4a6fbe285",
+              "name": "pinecone_host",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "id-3",
+              "name": "namespace",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "f130a913-74ee-4a57-9345-ab8e134cfa01",
+              "name": "target_pinecone_host",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a3fe38ad-87e4-43b6-ae49-23fdc6fe0384",
+              "name": "target_namespace",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "id-5",
+              "name": "limit",
+              "value": 50,
+              "type": "number"
+            },
+            {
+              "id": "354ea23f-c3fc-4806-a0fd-589e34de4c12",
+              "name": "pagination_token",
+              "value": "={{ $json.pagination_token }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "96943e55-1eb7-4ac9-8d4d-f57e41e58e1a",
+      "name": "Set Inputs",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        176,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -64,
+        176
+      ],
+      "id": "734ff230-6b1f-4a4f-abbe-e95d852d77cb",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": ""
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2912,
+        80
+      ],
+      "id": "ab578598-a6e0-490c-9e6f-f446b081ce7e",
+      "name": "Call 'CopyNamespace'"
+    },
+    {
+      "parameters": {
+        "content": "## Copy Namespace\nThis workflow copies a selected namespace from a specified index to a new namespace within a target index. \nThe target index may be the same as the source or a different index.\nEnsure this workflow is published and set as the executed workflow so the namespace copy runs correctly when triggered.",
+        "height": 124,
+        "width": 904,
+        "color": 4
+      },
+      "id": "3be2c271-cfb7-4de9-ae62-da819861b311",
+      "name": "Trigger Instructions2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        96,
+        -80
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\npinecone_Host\n(https://YOURHOST.pinecone.io)\n\nnamespace\n(demo)\n\ntarget_pinecone_host\n(https://YOURHOST.pinecone.io)\n\ntarget_namespace\n(demo2)",
+        "height": 400,
+        "width": 246,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        112,
+        80
+      ],
+      "id": "a64e8ab7-d172-4bb5-bdf0-29007d17bc6f",
+      "name": "Sticky Note42",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        384,
+        80
+      ],
+      "id": "685cab1a-9dea-4627-bc3c-165a243038b5",
+      "name": "Sticky Note43"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        80
+      ],
+      "id": "411be815-6c62-464b-80cf-0a351a033ae0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2176,
+        80
+      ],
+      "id": "cdbe8a49-5b70-4648-a741-33515c88c22e",
+      "name": "Sticky Note44"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nPublish this workflow\nSet CopyNamespace as the active workflow to execute",
+        "height": 240,
+        "width": 230
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2848,
+        80
+      ],
+      "id": "3d50c35f-e50e-42e2-871e-f8aee0fe5c48",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has More Pages?": {
+      "main": [
+        [
+          {
+            "node": "Set Pagination",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Vectors": {
+      "main": [
+        [
+          {
+            "node": "Split Out Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Target Namespace": {
+      "main": [
+        [
+          {
+            "node": "Upsert to Target Namespace",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Quotes to IDs": {
+      "main": [
+        [
+          {
+            "node": "Aggregate IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get IDs": {
+      "main": [
+        [
+          {
+            "node": "Split Out IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate IDs": {
+      "main": [
+        [
+          {
+            "node": "Fetch Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out IDs": {
+      "main": [
+        [
+          {
+            "node": "Add Quotes to IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out Vectors": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Vectors": {
+      "main": [
+        [
+          {
+            "node": "Set Target Namespace",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Pagination": {
+      "main": [
+        [
+          {
+            "node": "Call 'CopyNamespace'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "Get IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert to Target Namespace": {
+      "main": [
+        [
+          {
+            "node": "Has More Pages?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "f12e55c7-85a6-45aa-aede-4ef01e6ddf6c",
+  "meta": {
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "QAX8HurbHk2pD2GpC6p5H",
+  "tags": []
+}

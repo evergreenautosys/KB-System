@@ -1,0 +1,584 @@
+{
+  "name": "QueryKB",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        192
+      ],
+      "id": "e64d6861-80fb-4167-aab5-43ef39f119a5",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $(\"Set Inputs\").all()[0].json.pinecone_host }}/query",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1792,
+        96
+      ],
+      "id": "27a5faa2-60b4-442f-b897-fe36fdbcb297",
+      "name": "Pinecone Vector Store"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pinecone.io/embed",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Pinecone-Api-Version",
+              "value": " 2025-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        0
+      ],
+      "id": "8b9d663d-0859-4eee-a87f-d930a2aa79b0",
+      "name": "Embed Dense Vector",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pinecone.io/embed",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Pinecone-Api-Version",
+              "value": " 2025-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        192
+      ],
+      "id": "c5025432-ab26-4f35-b895-b81c8bbe653f",
+      "name": "Embed Sparse Vector",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6178329-abe5-4d50-a2c2-e58b9180cbd4",
+              "name": "model",
+              "value": "llama-text-embed-v2",
+              "type": "string"
+            },
+            {
+              "id": "5e32df2f-0047-48a8-b81c-03910c82b53f",
+              "name": "inputs",
+              "value": "={{ [{ \"text\": $json.chatInput }] }}",
+              "type": "array"
+            },
+            {
+              "id": "1e20bf2b-48f5-4f47-95b8-de79c7f6641a",
+              "name": "parameters.input_type",
+              "value": "query",
+              "type": "string"
+            },
+            {
+              "id": "80b84604-7e6a-4359-a801-103c54ba1177",
+              "name": "parameters.truncate",
+              "value": "END",
+              "type": "string"
+            },
+            {
+              "id": "91123314-7aa2-4d44-86db-c8c23b416402",
+              "name": "parameters.dimension",
+              "value": "={{ $(\"Set Inputs\").all()[0].json[\"dimensions\"] }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        0
+      ],
+      "id": "5e74c933-6854-4841-be33-8f0634d2e349",
+      "name": "Set Dense Vector"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        96
+      ],
+      "id": "b27b50a3-77d2-45b1-b8bf-1b135b8249ef",
+      "name": "Merge Vectors"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6178329-abe5-4d50-a2c2-e58b9180cbd4",
+              "name": "model",
+              "value": "pinecone-sparse-english-v0",
+              "type": "string"
+            },
+            {
+              "id": "5e32df2f-0047-48a8-b81c-03910c82b53f",
+              "name": "inputs",
+              "value": "={{ [{ \"text\": $json.chatInput }] }}",
+              "type": "array"
+            },
+            {
+              "id": "962186fa-0cae-4870-863e-0a36274daa6e",
+              "name": "parameters.input_type",
+              "value": "query",
+              "type": "string"
+            },
+            {
+              "id": "80b84604-7e6a-4359-a801-103c54ba1177",
+              "name": "parameters.truncate",
+              "value": "END",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        192
+      ],
+      "id": "71acb996-cfc7-4378-b34c-e548928658ab",
+      "name": "Set Sparse Vector"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        96
+      ],
+      "id": "8ab7c0d3-c055-421e-968a-c6fe3dcc083f",
+      "name": "Split Data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4392b117-098e-478b-bed5-b22f00757f73",
+              "name": "namespace",
+              "value": "={{ $(\"Set Inputs\").all()[0].json[\"namespace\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "ec7f27aa-0201-4572-90f8-eb2c61eaf3fa",
+              "name": "topK",
+              "value": "={{ $(\"Set Inputs\").all()[0].json[\"topk\"] }}",
+              "type": "number"
+            },
+            {
+              "id": "640e9dd6-57a2-467a-a0cd-696be1917d2b",
+              "name": "vector",
+              "value": "={{ $json.values }}",
+              "type": "array"
+            },
+            {
+              "id": "45c60a80-24ca-40cc-800b-ea615b993c5b",
+              "name": "sparse_values.values",
+              "value": "={{ $json.sparse_values }}",
+              "type": "array"
+            },
+            {
+              "id": "36332ebb-cea7-46ee-9d7b-fe5e9d7a754f",
+              "name": "sparse_values.indices",
+              "value": "={{ $json.sparse_indices }}",
+              "type": "array"
+            },
+            {
+              "id": "b8707308-9bba-4579-b9aa-6d14d9ada134",
+              "name": "include_values",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "bee03484-e77f-49c7-b3ed-886a03af0a24",
+              "name": "include_metadata",
+              "value": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1568,
+        96
+      ],
+      "id": "4a848c98-480c-4bbb-8158-b5220f67bcaa",
+      "name": "Set Query"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "957d5d86-8235-463c-a263-ce9b5f67c38c",
+              "name": "chatInput",
+              "value": "=",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ce1700ec-7406-41e6-878b-6d27f25145a7",
+      "name": "Manual"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c4ea465d-2cae-41c3-85a7-63492b15e688",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f9d597f4-4ae3-4286-aebc-4ded1b7d55a9",
+              "name": "pinecone_host",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "02bfb9f3-d368-4fa5-9540-c9bfc10c2e70",
+              "name": "namespace",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "c4268a0f-26e2-40b4-b593-8ec06e2b1be8",
+              "name": "dimensions",
+              "value": 768,
+              "type": "number"
+            },
+            {
+              "id": "9492a1c7-8ddd-46f5-904b-8b610d2a4c25",
+              "name": "topk",
+              "value": 20,
+              "type": "number"
+            },
+            {
+              "id": "de1446d7-3892-495f-adcd-179b86636ed9",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        96
+      ],
+      "id": "fd1fb909-0585-499f-9f98-0ad19b7ff356",
+      "name": "Set Inputs"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "b6059020-e6c0-413f-874c-0b10d8184a1d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        96
+      ],
+      "id": "2e9e7422-0f37-420d-bbf7-b56f92a17908",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 176,
+        "width": 214
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        832,
+        192
+      ],
+      "id": "d17b1f8d-d527-472d-b27d-698fe6d9e328",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Query Knowledge-Base\nEmbeds the user’s chat input (dense + sparse) and performs a hybrid search against the Pinecone index, returning the top matching results.",
+        "height": 108,
+        "width": 904,
+        "color": 4
+      },
+      "id": "56e9db1a-24d9-41fd-ad23-f3ee8a19b270",
+      "name": "Trigger Instructions2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -144
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\npinecone_Host\n(https://YOURHOST.pinecone.io)\n\nnamespace\nThe Pinecone namespace where your vectors are stored.\n(demo)\n\ndimensions\nThe number of dimensions configured for your Pinecone index.\nMust match the embedding model used.\n(768)\n\ntopK\nThe number of closest matching vectors returned for each query.\n\nHigher values return more results but may include less relevant matches.\nLower values return fewer, more precise matches.\n(20)",
+        "height": 672,
+        "width": 246,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        368,
+        96
+      ],
+      "id": "d59ae914-9949-48fa-9706-71c7b6c0e571",
+      "name": "Sticky Note42",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Dense Vector": {
+      "main": [
+        [
+          {
+            "node": "Merge Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Sparse Vector": {
+      "main": [
+        [
+          {
+            "node": "Merge Vectors",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Set Dense Vector": {
+      "main": [
+        [
+          {
+            "node": "Embed Dense Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Vectors": {
+      "main": [
+        [
+          {
+            "node": "Split Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Sparse Vector": {
+      "main": [
+        [
+          {
+            "node": "Embed Sparse Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Data": {
+      "main": [
+        [
+          {
+            "node": "Set Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Query": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "Set Dense Vector",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Sparse Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "03143880-2584-4d2f-9fe4-1af6d6ee9e8b",
+  "meta": {
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "ANO0VF5fKa-whkZQEjDsh",
+  "tags": []
+}

@@ -1,0 +1,1127 @@
+{
+  "name": "Manager",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        256
+      ],
+      "id": "89d0ea48-3cfa-4b30-a31d-e8c1e128d375",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9c749021-3793-4ebe-a9f5-14f50d1e504e",
+              "name": "error",
+              "value": "={{ $json.error }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        480
+      ],
+      "id": "3e30774b-a423-422b-9000-769f0a00d582",
+      "name": "Set Error"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        640
+      ],
+      "id": "b90c6090-008e-4e26-914e-8cea36b2e323",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_input }}",
+          "mode": "id"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "=row_number",
+              "lookupValue": "2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -320,
+        256
+      ],
+      "id": "204a8435-8684-42e6-b6b5-b811ecdc3e14",
+      "name": "Get Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_input }}",
+          "mode": "id"
+        },
+        "startIndex": "={{ $json.row_number }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        912,
+        -48
+      ],
+      "id": "52c6f736-3242-45dc-a659-d678776de719",
+      "name": "Delete Row Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_processed }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}",
+            "Job": "={{ $json.Job }}",
+            "Execution": "=Manager-{{ $execution.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        912,
+        112
+      ],
+      "id": "c746562d-2941-40ab-9a30-8451d2bfcf9a",
+      "name": "Append Processed",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "content": "## Start Here\nUse this node to generate the initial entry in the Input Spreadsheet\nFill in the Source (URL) - Example: https://www.ready.gov/\nJob Number - Example: 1001\nThen select Execute Step within the node itself.\n",
+        "height": 144,
+        "width": 528,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        -384
+      ],
+      "id": "6c4901fb-c1cb-488e-a01d-962a7075bdc8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Choose between the following Sub-Workflows:                                                                                                                                                                                                                     \n\nCrawl — Crawls the specified URL and extracts all links found on the page. Each extracted URL is validated and crawled in subsequent runs.\nScrape — Scrapes a given URL and saves the HTML or PDF content.\nCrawl-in-One — Runs a combined Crawl and Scrape workflow to reduce API calls.\nUpsert — Uploads scraped data to a Pinecone vector store.\nUpdate — Checks previously upserted data for changes since the last scrape.\nSitemap — Extracts URLs from a site’s sitemap.xml and validates that each URL is active.",
+        "height": 192,
+        "width": 960,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        -48
+      ],
+      "id": "2bd38da1-10dd-4d9d-b704-bbe617888146",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\nSend alerts via Telegram.",
+        "height": 208,
+        "width": 208,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        176
+      ],
+      "id": "d8f51e45-0cb3-40e6-b77e-ff0571381a22",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Set Sub-Workflow",
+        "height": 240,
+        "width": 262,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        64,
+        192
+      ],
+      "id": "98d3867e-f6b3-4c6c-913f-d9a9d7589897",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        912,
+        272
+      ],
+      "id": "6dec91b0-0613-490d-a12e-712060a315dc",
+      "name": "Loop"
+    },
+    {
+      "parameters": {
+        "content": "Delete connection to break Loop ↑",
+        "height": 80,
+        "width": 262,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        320
+      ],
+      "id": "48086334-3bf8-4587-a538-d57748905b37",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $vars.telegram_chat_id }}",
+        "text": "={{ $json.error }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        176
+      ],
+      "id": "8719b9d4-59c6-4958-a996-3b34ab1476a2",
+      "name": "Error Message",
+      "webhookId": "7179dbc8-48dd-4c0e-a139-c81294aecd68",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "https://YOURHOST.app.n8n.cloud/api/v1/executions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "n8nApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "running"
+            },
+            {
+              "name": "workflowId",
+              "value": "={{$workflow.id}}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -512,
+        944
+      ],
+      "id": "5301c418-bb8c-4899-8876-91332704022c",
+      "name": "HTTP Request",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_input }}",
+          "mode": "id"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "=row_number",
+              "lookupValue": "2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        960
+      ],
+      "id": "2cc08bd8-2ff4-429b-8b19-a0104dab55d2",
+      "name": "Check Input",
+      "alwaysOutputData": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        800,
+        624
+      ],
+      "id": "dbebe059-8677-4af5-bc1e-b22451907854",
+      "name": "Merge Error"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        144
+      ],
+      "id": "c947ce1a-4b0d-4e3b-a197-891ec16e66fa",
+      "name": "Merge Processed"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        992,
+        624
+      ],
+      "id": "feee0601-d3d6-4165-8a37-66016b4fc2b1",
+      "name": "Wait 60 Sec",
+      "executeOnce": false,
+      "webhookId": "1a22661e-a65f-4d7f-8379-c34e4e84a8f9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d0a2a2d-c9ac-40f3-967a-c9b33ce89fe3",
+              "leftValue": "={{ $runIndex }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        480
+      ],
+      "id": "9af69cf8-8e2d-4502-8e66-c48e23685235",
+      "name": "Retry 1"
+    },
+    {
+      "parameters": {
+        "operation": "deactivate",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{$workflow.id}}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        416
+      ],
+      "id": "8709a2a8-fdee-4502-8178-f6ae5b2e3897",
+      "name": "Unpublish (Error)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ec8f7eb1-fa24-4e96-aaea-23ca5b3035cd",
+              "leftValue": "={{ $json.body.data.length }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -288,
+        944
+      ],
+      "id": "56155d6d-0794-461d-b2ba-73dc5736a2fd",
+      "name": "Job Running?",
+      "executeOnce": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $vars.telegram_chat_id }}",
+        "text": "Manager has finished processing all input data.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        1152
+      ],
+      "id": "5498d34a-f9b6-43d9-af55-c3ae1d9967e5",
+      "name": "Manager Complete",
+      "webhookId": "6f761f9e-da8f-4102-8a68-9ab6c79166bf",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "deactivate",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{$workflow.id}}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        624,
+        1152
+      ],
+      "id": "a0f5846c-44ef-4f58-9bff-844b82079ef0",
+      "name": "Unpublish (Manger Complete)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ec8f7eb1-fa24-4e96-aaea-23ca5b3035cd",
+              "leftValue": "={{ Object.keys($(\"Check Input\").item.json).length }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        144,
+        960
+      ],
+      "id": "33804451-cb9f-4d08-931f-da935d2c09b7",
+      "name": "Items in Input?",
+      "executeOnce": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Automatic Restart \nUse this trigger to automatically restart this workflow after crashes or memory-related issues. \n**Not available on n8n cloud trial. Only self-hosted and active n8n subscriptions have access to the n8n API. Current as of 2/26**\nWhen the workflow and sub-workflow are published and the trigger is active, it checks every 15 minutes (adjustable) whether the workflow is still running. If it has stopped and input items remain, the previous job is restarted so processing can continue.",
+        "height": 128,
+        "width": 1712,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        784
+      ],
+      "id": "4eb5cd31-5eab-4e68-849b-edfb1d07b731",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate n8n API Key\nSet n8n Cloud Base URL",
+        "height": 240,
+        "width": 192,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        944
+      ],
+      "id": "005163f2-2af4-47b6-838a-3eb547923f37",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSend alerts via Telegram.",
+        "height": 416,
+        "width": 192,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        368,
+        960
+      ],
+      "id": "58b461bb-2572-4853-bd6a-ced2f8c80b67",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn8n API Credential",
+        "height": 224,
+        "width": 182,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        576,
+        1152
+      ],
+      "id": "410e894c-91ad-420e-8212-7be220e54ac9",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\nn8n API Credential",
+        "height": 208,
+        "width": 214,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        416
+      ],
+      "id": "0ad96417-d4f1-4d76-9f22-65d3fee85500",
+      "name": "Sticky Note24"
+    },
+    {
+      "parameters": {
+        "content": "Delete connection to break Loop ↑",
+        "height": 80,
+        "width": 262,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        1168
+      ],
+      "id": "60708d22-863b-4b53-b2f7-3e1f9395dcd7",
+      "name": "Sticky Note25"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -752,
+        944
+      ],
+      "id": "2959542c-d646-46e5-bc5b-4db564ee9a3e",
+      "name": "Check Every 15 mins",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_input }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}",
+            "Source": "=https://www.ready.gov/",
+            "Job": "=1001",
+            "Execution": "=Manager-{{ $execution.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -752,
+        -208
+      ],
+      "id": "dbc70ddb-d636-4199-aaa1-4324e68e55bc",
+      "name": "First Input Entry",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "content": "## Execute Workflow\nHover over the node below and select Execute Workflow",
+        "height": 80,
+        "width": 432,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        160
+      ],
+      "id": "2793c11e-c2a8-4b6d-a026-fba043c26d08",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $vars.telegram_chat_id }}",
+        "text": "Manager will be Restarted",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        960
+      ],
+      "id": "4dcadbf1-c1ab-4254-8737-3586bf24f98e",
+      "name": "Manager Restart",
+      "webhookId": "5a0e60fe-a37b-454d-b3b8-ad0a907e87f7",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": ""
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        256
+      ],
+      "id": "65dea96c-40e4-4815-ae26-fd83e0ea76c7",
+      "name": "Call 'Sub-Workflow'",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Error": {
+      "main": [
+        [
+          {
+            "node": "Error Message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Unpublish (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Input": {
+      "main": [
+        [
+          {
+            "node": "Call 'Sub-Workflow'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Processed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Error",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Loop": {
+      "main": [
+        [
+          {
+            "node": "Get Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Job Running?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Input": {
+      "main": [
+        [
+          {
+            "node": "Items in Input?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Error": {
+      "main": [
+        [
+          {
+            "node": "Wait 60 Sec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Processed": {
+      "main": [
+        [
+          {
+            "node": "Delete Row Input",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append Processed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60 Sec": {
+      "main": [
+        [
+          {
+            "node": "Call 'Sub-Workflow'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry 1": {
+      "main": [
+        [
+          {
+            "node": "Set Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Job Running?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Check Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manager Complete": {
+      "main": [
+        [
+          {
+            "node": "Unpublish (Manger Complete)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Items in Input?": {
+      "main": [
+        [
+          {
+            "node": "Manager Restart",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Manager Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Every 15 mins": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manager Restart": {
+      "main": [
+        [
+          {
+            "node": "Get Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Sub-Workflow'": {
+      "main": [
+        [
+          {
+            "node": "Merge Processed",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Retry 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "14b27268-b3b5-4838-bba6-2cdf5cb453ea",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "03oSr15NDSTvc2SX91Qz-",
+  "tags": []
+}

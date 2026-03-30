@@ -1,0 +1,403 @@
+{
+  "name": "ClearDocuments",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1168,
+        48
+      ],
+      "id": "c10360f1-75bb-4ea8-b2c1-e9dfb09a0427",
+      "name": "Delete Files Formatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        496,
+        48
+      ],
+      "id": "b2e38560-7ffb-4dd8-92fe-fb3202659d2a",
+      "name": "Delete Files Unformatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1840,
+        48
+      ],
+      "id": "5b79abbf-8d93-4ae1-b946-dcbbfa51bd50",
+      "name": "Delete Files Unformatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2512,
+        48
+      ],
+      "id": "058dc1a8-a7d0-4b1f-b804-76f471e10460",
+      "name": "Delete Files Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "content": "## Clear Documents\nThiis workflow clears scraped data stored in the Google Drive KB-System/Documents folder.",
+        "height": 80,
+        "width": 728,
+        "color": 4
+      },
+      "id": "c0e04527-0074-42a8-a2e4-3a557cfca0d8",
+      "name": "Trigger Instructions1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -64
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        720,
+        48
+      ],
+      "id": "fd778d17-7a53-4c8d-a745-dd9b609181f7",
+      "name": "Limit (Unformatted-HTML)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        48
+      ],
+      "id": "21413ee8-0bd5-49f5-b36e-712efbb26a9c",
+      "name": "Limit (Formatted-HTML)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        2064,
+        48
+      ],
+      "id": "e1575ca9-b164-4b36-8294-b9274e510714",
+      "name": "Limit (Unformatted-PDF)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        48,
+        48
+      ],
+      "id": "68cc0819-6b23-4beb-b32f-11bdc235da61",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "*",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $vars.folder_formatted_pdf }}",
+            "mode": "id"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2288,
+        48
+      ],
+      "id": "afd9e522-f36e-44da-8cc3-fd9883ffd631",
+      "name": "Search Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "*",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $vars.folder_unformatted_pdf }}",
+            "mode": "id"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1616,
+        48
+      ],
+      "id": "7aaa93a6-c2be-4ca5-b82c-3c9ab7605a1a",
+      "name": "Search Unformatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "*",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $vars.folder_formatted_html }}",
+            "mode": "id"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        944,
+        48
+      ],
+      "id": "d587d350-061b-4a00-a5a6-e06486303e79",
+      "name": "Search Formatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "*",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $vars.folder_unformatted_html }}",
+            "mode": "id"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        272,
+        48
+      ],
+      "id": "ab2c5462-e062-48e9-9172-37acc4429d47",
+      "name": "Search Unformatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Delete Files Formatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Limit (Formatted-HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Files Unformatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Limit (Unformatted-HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Files Unformatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Limit (Unformatted-PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit (Unformatted-HTML)": {
+      "main": [
+        [
+          {
+            "node": "Search Formatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit (Formatted-HTML)": {
+      "main": [
+        [
+          {
+            "node": "Search Unformatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit (Unformatted-PDF)": {
+      "main": [
+        [
+          {
+            "node": "Search Formatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search Unformatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Formatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Delete Files Formatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Unformatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Delete Files Unformatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Formatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Delete Files Formatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Unformatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Delete Files Unformatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d6c4e9bb-50ac-4b61-95c3-1a0a4d1db3a2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "t6E_F61dPv-3Bagy21I7f",
+  "tags": []
+}

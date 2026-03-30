@@ -1,0 +1,1528 @@
+{
+  "name": "TransloaditOCR",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1728,
+        144
+      ],
+      "id": "7198bdba-05f1-4290-87b0-c61789542d5b",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        -48
+      ],
+      "id": "3e2e6f8a-456d-4552-9dee-0798a4235850",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c835e763-1639-489c-83c6-134bc954e486",
+              "name": "Source",
+              "value": "https://www.ready.gov/sites/default/files/2020-04/ready_business_how-to-guide.pdf",
+              "type": "string"
+            },
+            {
+              "id": "2435aec3-f6fd-459d-8294-68e1f0a2158d",
+              "name": "Job",
+              "value": "7777",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1728,
+        -48
+      ],
+      "id": "257421d2-e588-4426-a0a4-fa2054f0742f",
+      "name": "Manual"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Error": "=PDF - {{ $json.error.status ?? $json.message }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1088,
+        176
+      ],
+      "id": "b6511b34-fea7-4b2c-a75c-d0f90604e40a",
+      "name": "Append Error (PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "ID",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        256,
+        128
+      ],
+      "id": "2b6105b9-0b18-48b0-b803-29e4da0495f4",
+      "name": "Merge PDF"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.documents_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.documents_sheet_unformatted_pdf }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Final PDF').item.json.Title }}",
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Filename": "={{ $('Final PDF').item.json.Filename }}.pdf",
+            "Last Modified": "={{ $('Final PDF').item.json['Last Modified'] }}",
+            "Created Date": "={{ $('Final PDF').item.json['Created Date'] }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Hash": "={{ $('Final PDF').item.json.Hash }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        224
+      ],
+      "id": "fd0b1adb-bc20-480c-af6e-fce214b93893",
+      "name": "Update Unformatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "ID",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        704,
+        320
+      ],
+      "id": "e7e916ac-1ffe-4c6b-980e-171f63e4bbda",
+      "name": "Upload Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db69125e-9e76-4c99-b7d8-074576d1e249",
+              "name": "=ID",
+              "value": "={{$execution.id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        512
+      ],
+      "id": "c2219870-9465-422a-aadf-1d0d4fe1d658",
+      "name": "Set ID"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f26df12a-662b-47dd-8391-fc6ab7bdf6e2",
+              "leftValue": "={{ $json.createdTime }}",
+              "rightValue": "={{ $json.createdTime }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        512
+      ],
+      "id": "266fab2d-2bfc-4eac-8231-bed1015c7337",
+      "name": "Success"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Set Inputs').item.json.Source.replace(/[?=]/g, '').replace(/https?:\\/\\/(www\\.)?/g, '').replace(/[\\/~]|\\.com|:|-|\\.|html/g, '').replace(/\\s/g, '') }}-{{ $now.toFormat('MMddyyyy') }}.pdf",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $vars.folder_unformatted_pdf }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        32,
+        512
+      ],
+      "id": "161f41f1-0920-47e8-99c0-52e87b38fed7",
+      "name": "Upload-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.documents_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.documents_sheet_formatted_pdf }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Final PDF').item.json.Title }}",
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Filename": "={{ $('Final PDF').item.json.Filename }}.txt",
+            "Last Modified": "={{ $('Final PDF').item.json['Last Modified'] }}",
+            "Created Date": "={{ $('Final PDF').item.json['Created Date'] }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Hash": "={{ $('Final PDF').item.json.Hash }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        32
+      ],
+      "id": "da47be45-7a0e-4e84-b1ca-49a6df6c2a9c",
+      "name": "Update Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "createFromText",
+        "content": "={{ $json.data }}",
+        "name": "={{ $json.Filename }}.txt",
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $vars.folder_formatted_pdf }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        704,
+        32
+      ],
+      "id": "cb88d66c-d4bf-4b3e-b23b-b23c4f9db36c",
+      "name": "Upload-Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0779c1ce-d087-42d3-80a0-1d18360ca697",
+              "name": "ID",
+              "value": "={{$execution.id}}",
+              "type": "string"
+            },
+            {
+              "id": "bd693022-4fc4-4c70-9b86-6b44c5f49303",
+              "name": "Title",
+              "value": "={{ $json.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "c362607c-1195-4131-b3b5-f47952e45692",
+              "name": "Created Date",
+              "value": "={{ $json.CreationDate }}",
+              "type": "string"
+            },
+            {
+              "id": "feabf9d3-b3ca-4270-8263-cce8dd7a8e13",
+              "name": "Last Modified",
+              "value": "={{ $json.ModDate }}",
+              "type": "string"
+            },
+            {
+              "id": "1b46b873-e267-4ac6-8e06-b9b347c4b308",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "4d7cfbef-f020-417a-96e6-a876f400af2d",
+              "name": "Hash",
+              "value": "={{ $json.hash }}",
+              "type": "string"
+            },
+            {
+              "id": "cd248931-97e7-4c94-8ebd-7c9077a5a1a8",
+              "name": "Filename",
+              "value": "={{ $json.Filename }}",
+              "type": "string"
+            },
+            {
+              "id": "1a1467b2-4369-4e6d-b6a0-9f7ddfa7db17",
+              "name": "data",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        128
+      ],
+      "id": "70595a9c-9dcb-4296-9e16-db1f2d1487f8",
+      "name": "Final PDF"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f0182c6-4362-4af6-bda7-d72a82e6b9b3",
+              "name": "ID",
+              "value": "={{$execution.id}}",
+              "type": "string"
+            },
+            {
+              "id": "cc073a9f-7934-4039-8e77-d288234e5792",
+              "name": "Title",
+              "value": "={{ $json.metadata.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "8979cc75-4da2-4bc8-a103-decfaa456de7",
+              "name": "source",
+              "value": "={{ $('Set Inputs').all()[0].json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "c362607c-1195-4131-b3b5-f47952e45692",
+              "name": "CreationDate",
+              "value": "={{ $json.metadata.CreationDate }}",
+              "type": "string"
+            },
+            {
+              "id": "feabf9d3-b3ca-4270-8263-cce8dd7a8e13",
+              "name": "ModDate",
+              "value": "={{ $json.metadata.ModDate }}",
+              "type": "string"
+            },
+            {
+              "id": "2ed3e942-9a58-4a78-b84d-f2bd05ee1783",
+              "name": "Filename",
+              "value": "={{ $('Set Inputs').all()[0].json.Source.replace(/[?=]/g, '').replace(/https?:\\/\\/(www\\.)?/g, '').replace(/[\\/~]|\\.com|:|-|\\.|html/g, '').replace(/\\s/g, '') }}-{{ $now.toFormat('MMddyyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "78c0c8aa-38c9-4081-93cb-affeb0323887",
+              "name": "data",
+              "value": "={{ $json.text ?? $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        32,
+        -144
+      ],
+      "id": "304284f4-b308-4455-b740-98593f1be353",
+      "name": "Set PDF Data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b2cd3550-5655-4c6d-93d5-5ff61683c966",
+              "name": "ID",
+              "value": "={{$execution.id}}",
+              "type": "string"
+            },
+            {
+              "id": "17d95b31-278d-40ca-922c-f315025e92f8",
+              "name": "hash",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        32,
+        320
+      ],
+      "id": "992729a1-8ac7-455e-b135-b9f1a73e382e",
+      "name": "Set PDF Hash"
+    },
+    {
+      "parameters": {
+        "binaryData": true,
+        "type": "SHA3-256"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        320
+      ],
+      "id": "a88fc14c-6409-4295-bda5-6dc2c1c10101",
+      "name": "PDF Hash"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.scrape_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.scrape_sheet_output }} ",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Final PDF').item.json.Title }}",
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Filename": "={{ $('Final PDF').item.json.Filename }}.txt",
+            "Last Modified": "={{ $('Final PDF').item.json['Last Modified'] }}",
+            "Created Date": "={{ $('Final PDF').item.json['Created Date'] }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Hash": "={{ $('Final PDF').item.json.Hash }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        416
+      ],
+      "id": "4cb47c61-d69b-4dee-9193-166e839b0bca",
+      "name": "Update Scrape-Output (PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -864,
+        176
+      ],
+      "id": "5bf0222b-deae-4742-aa87-a34dc207c4f4",
+      "name": "Set Workflow Output (PDF Error)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1152,
+        416
+      ],
+      "id": "2d63b15a-0767-46b5-90ff-1f4f45de691c",
+      "name": "Set Output (PDF Scrape)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "url": "={{$json.assembly_url}}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "14c47643-ecd4-414d-9a85-8fa48d7d4633",
+      "name": "Transloadit — Check Assembly Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -640,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -192,
+        48
+      ],
+      "id": "757f2aaa-f9a4-49a5-9e7a-5bf70caa858a",
+      "name": "Wait",
+      "webhookId": "6d54f2dd-625e-4258-8ca5-5085889fdd4d"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1280,
+        48
+      ],
+      "id": "9d3bc9a6-2e05-436e-a68e-ca34846d40a8",
+      "name": "PDF Binary",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae644d25-bea7-4d1e-b596-58ff9d71a6bb",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "93537efa-a757-4529-b76c-bb567fb5bb66",
+              "name": "AUTH_KEY",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "7e745660-1cd0-4d76-9588-3265959d5a1a",
+              "name": "AUTH_SECRET",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "3ca6feff-8af7-4344-85d0-35102d00aa68",
+              "name": "OCR_PROVIDER",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ebe0b982-d38c-414c-8023-6c149b14b951",
+              "name": "Job",
+              "value": "={{ $json.Job }}",
+              "type": "string"
+            },
+            {
+              "id": "09e1851d-17d2-446c-b937-4798c40b6622",
+              "name": "Execution",
+              "value": "={{ $json.Execution ?? \"TransloaditOCR-\" + $execution.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1504,
+        64
+      ],
+      "id": "0c9bb431-70ca-4a4c-9732-cedb8467bf86",
+      "name": "Set Inputs"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nconst AUTH_KEY = $node[\"Set Inputs\"].json.AUTH_KEY || '';\nconst AUTH_SECRET = $node[\"Set Inputs\"].json.AUTH_SECRET || '';\nconst OCR_PROVIDER = ($node[\"Set Inputs\"].json.OCR_PROVIDER || 'gcp').trim(); // 'gcp' or 'aws'\n\nif (!AUTH_KEY) throw new Error('Missing AUTH_KEY');\nif (!AUTH_SECRET) throw new Error('Missing AUTH_SECRET');\n\nif (!['gcp', 'aws'].includes(OCR_PROVIDER)) {\n  throw new Error(`Invalid OCR_PROVIDER: ${OCR_PROVIDER}. Use \"gcp\" or \"aws\".`);\n}\n\nconst inputItem = $input.first();\nconst inputBinary = inputItem.binary || {};\nif (!inputBinary.data) throw new Error('No binary.data found coming into Code node');\n\nconst expires = new Date(Date.now() + 5 * 60 * 1000).toISOString();\n\nconst paramsObj = {\n  auth: { key: AUTH_KEY, expires },\n  steps: {\n    ':original': { robot: '/upload/handle' },\n\n    // PDF -> one PNG per page (meta.thumb_index preserved)\n    'pdf-pages': {\n      use: ':original',\n      robot: '/document/thumbs',\n      format: 'png',\n      density: '300',\n    },\n\n    // OCR per page image; results stored in meta.recognized_text\n    'ocr-pages': {\n      use: 'pdf-pages',\n      robot: '/image/ocr',\n      provider: OCR_PROVIDER,\n      format: 'meta',\n      ignore_errors: ['execute'],\n    },\n  },\n};\n\nconst params = JSON.stringify(paramsObj);\nconst signature = crypto\n  .createHmac('sha1', AUTH_SECRET)\n  .update(params)\n  .digest('hex');\n\nreturn {\n  json: {\n    transloadit_params: params,\n    transloadit_signature: signature,\n  },\n  binary: inputBinary,\n};"
+      },
+      "id": "d553dad5-5001-489e-90ee-bf6640e8d7e7",
+      "name": "Build Transloadit Params + Signature",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputItems = $input.all();\nif (!inputItems.length) throw new Error('No input items');\n\nconst assembly = inputItems[0].json;\nconst OCR_STEP = 'ocr-pages';\n\nconst ocrPages = assembly?.results?.[OCR_STEP];\nif (!Array.isArray(ocrPages) || ocrPages.length === 0) {\n  throw new Error(`No results found at assembly.results[\"${OCR_STEP}\"]`);\n}\n\nfunction firstNonEmpty(...values) {\n  for (const v of values) {\n    if (v !== undefined && v !== null && v !== '') return v;\n  }\n  return undefined;\n}\n\nfunction decodeIfEncoded(value) {\n  if (typeof value !== 'string') return value;\n  if (!/%[0-9A-Fa-f]{2}/.test(value)) return value;\n  try {\n    return decodeURIComponent(value);\n  } catch {\n    return value;\n  }\n}\n\nfunction normalizeText(text) {\n  return String(text)\n    .replace(/\\s+([,.;:!?])/g, '$1')\n    .replace(/([(\\[])\\s+/g, '$1')\n    .replace(/\\s+([)\\]])/g, '$1')\n    .replace(/\\s{2,}/g, ' ')\n    .trim();\n}\n\nfunction getThumbIndex(page, fallbackIndex) {\n  const n = Number(page?.meta?.thumb_index);\n  return Number.isFinite(n) ? n : fallbackIndex;\n}\n\nfunction extractMetadata(pages) {\n  const meta = pages?.[0]?.meta || {};\n  return {\n    Title: decodeIfEncoded(firstNonEmpty(meta.Title, meta.title, meta['pdf:Title'], meta['dc:title'])),\n    CreationDate: firstNonEmpty(\n      meta.CreationDate,\n      meta.creation_date,\n      meta.create_date,\n      meta.creationDate,\n      meta['pdf:CreationDate'],\n      meta['xmp:CreateDate'],\n      meta['CreateDate']\n    ),\n    ModDate: firstNonEmpty(\n      meta.ModDate,\n      meta.mod_date,\n      meta.modify_date,\n      meta.modifyDate,\n      meta.modDate,\n      meta['pdf:ModDate'],\n      meta['xmp:ModifyDate'],\n      meta['ModifyDate']\n    ),\n    Author: firstNonEmpty(meta.Author, meta.author, meta['dc:creator']),\n    Producer: firstNonEmpty(meta.Producer, meta.producer),\n    Creator: firstNonEmpty(meta.Creator, meta.creator),\n    page_count: firstNonEmpty(meta.page_count, meta.pageCount),\n  };\n}\n\nfunction pageToText(page) {\n  const recognized = page?.meta?.recognized_text;\n\n  if (typeof recognized === 'string') {\n    return normalizeText(recognized);\n  }\n\n  if (!Array.isArray(recognized) || recognized.length === 0) return '';\n\n  const texts = recognized\n    .map(item => (typeof item?.text === 'string' ? item.text.trim() : ''))\n    .filter(Boolean);\n\n  if (texts.length === 0) return '';\n\n  const LONG_MIN_CHARS = 40;\n  const longish = texts.filter(t => t.length >= LONG_MIN_CHARS);\n\n  let combined;\n  if (longish.length >= 3) {\n    combined = longish.join('\\n');\n  } else {\n    combined = texts.join(' ');\n  }\n\n  combined = combined.replace(/\\s*[•·]\\s*/g, '\\n• ');\n\n  return normalizeText(combined)\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .trim();\n}\n\nconst sortedPages = ocrPages\n  .map((page, idx) => ({ page, order: getThumbIndex(page, idx) }))\n  .sort((a, b) => a.order - b.order);\n\nconst pageTexts = [];\nconst missingPages = [];\n\nfor (const { page, order } of sortedPages) {\n  const text = pageToText(page);\n  if (text) pageTexts.push(text);\n  else missingPages.push(order);\n}\n\nconst mergedText = pageTexts.join('\\n\\n');\nconst metadata = extractMetadata(ocrPages);\n\nreturn [\n  {\n    json: {\n      data: mergedText,\n      metadata,\n      missing_pages: missingPages,\n      assembly_id: assembly?.assembly_id || assembly?.id || null,\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        -144
+      ],
+      "id": "85a2526c-2dfe-4b8c-b7cb-4b3a6d87ddd9",
+      "name": "Extract Text & Metadata"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api2.transloadit.com/assemblies",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "params",
+              "value": "={{$json.transloadit_params}}"
+            },
+            {
+              "name": "signature",
+              "value": "={{$json.transloadit_signature}}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a6c681de-726f-445d-89f1-444466ba4e00",
+      "name": "Transloadit — Create Assembly",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -864,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d128158c-537d-45f0-b5ee-9e36a947efe5",
+                    "leftValue": "={{$json.ok}}",
+                    "rightValue": "ASSEMBLY_COMPLETED",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Completed"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0553efbf-7edb-4ba7-aca9-fcb2566b8ba3",
+                    "leftValue": "={{$json.ok}}",
+                    "rightValue": "ASSEMBLY_EXECUTING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Processing"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -416,
+        -224
+      ],
+      "id": "0911dd79-ce9a-43cc-8246-330b5da2c6f9",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        -336
+      ],
+      "id": "8e09abf9-bf45-43fb-b84f-e11b64ff4a06",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nCreate an account at:\nhttps://transloadit.com/\n\nSet AUTH_KEY & AUTH_SECRET\n\nOCR Providers:\nGoogle (gcp)\nAmazon (aws)",
+        "height": 304,
+        "width": 262,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1584,
+        64
+      ],
+      "id": "ac7d48a3-e159-48b6-871d-c822d7736774",
+      "name": "Sticky Note37",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Transloadit OCR\nThis optional workflow uses the Transloadit OCR service to extract text from PDF documents.\nIt is particularly useful on n8n Cloud Trial or Starter plans, where available memory is more limited compared to self-hosted or Pro environments.\nIn testing, PDF files larger than ~15 MB may cause memory-related failures during extraction. Using Transloadit provides a reliable workaround by offloading processing externally.",
+        "height": 144,
+        "width": 1088,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        -240
+      ],
+      "id": "4d156818-1305-4999-9ec6-9a4775fe52b2",
+      "name": "Sticky Note6",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge PDF": {
+      "main": [
+        [
+          {
+            "node": "Final PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Merge": {
+      "main": [
+        [
+          {
+            "node": "Update Unformatted-PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Scrape-Output (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set ID": {
+      "main": [
+        [
+          {
+            "node": "Upload Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Success": {
+      "main": [
+        [
+          {
+            "node": "Set ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload-PDF": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload-Formatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Update Formatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final PDF": {
+      "main": [
+        [
+          {
+            "node": "Upload-Formatted-PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set PDF Data": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set PDF Hash": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "PDF Hash": {
+      "main": [
+        [
+          {
+            "node": "Set PDF Hash",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Set Workflow Output (PDF Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transloadit — Check Assembly Status": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Transloadit — Check Assembly Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Binary": {
+      "main": [
+        [
+          {
+            "node": "PDF Hash",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload-PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Transloadit Params + Signature",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "PDF Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Transloadit Params + Signature": {
+      "main": [
+        [
+          {
+            "node": "Transloadit — Create Assembly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text & Metadata": {
+      "main": [
+        [
+          {
+            "node": "Set PDF Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Scrape-Output (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Set Output (PDF Scrape)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transloadit — Create Assembly": {
+      "main": [
+        [
+          {
+            "node": "Transloadit — Check Assembly Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract Text & Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "98a097c4-6540-4316-940f-d009a1381a22",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "ISiwgtWRo695VW6C",
+  "tags": []
+}

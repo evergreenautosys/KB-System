@@ -1,0 +1,1842 @@
+{
+  "name": "Update",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        112
+      ],
+      "id": "510ff2cd-986e-4870-853e-a0a4beaa6cca",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1040,
+        304
+      ],
+      "id": "d64c3149-b320-416e-a979-e63992bb3cbe",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "19700b97-afaf-4250-a0d6-1533ea88e0cc",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "3f89bcb0-8536-4773-8bb2-7046f906ea1c",
+              "name": "Title",
+              "value": "={{ $json.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "f859b251-9fca-441a-928c-25861b5716bb",
+              "name": "Created Date",
+              "value": "={{ $json['Created Date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "d3e6c521-6c69-4a22-bb2f-5ebdc5b8a842",
+              "name": "Last Modified",
+              "value": "={{ $json['Last Modified'] }}",
+              "type": "string"
+            },
+            {
+              "id": "11a29bbc-9891-47a7-bb85-dc0fb7b7e04d",
+              "name": "Etag",
+              "value": "={{ $json.Etag }}",
+              "type": "string"
+            },
+            {
+              "id": "392e3136-8055-4b00-8e40-de2563404618",
+              "name": "Hash",
+              "value": "={{ $json.Hash }}",
+              "type": "string"
+            },
+            {
+              "id": "df52acac-3bb0-4607-bdf5-00b5f11b25d0",
+              "name": "Filename",
+              "value": "={{ $json.Filename }}",
+              "type": "string"
+            },
+            {
+              "id": "44c124e5-5224-4099-bd92-71327fe78e17",
+              "name": "Job",
+              "value": "={{ $json.Job }}",
+              "type": "string"
+            },
+            {
+              "id": "9329f0da-c9c7-4e9e-bfae-3be886350902",
+              "name": "Execution",
+              "value": "=Update-{{$execution.id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -816,
+        208
+      ],
+      "id": "c4d3f7c2-3047-4fc5-80fc-9f2899959f73",
+      "name": "Set Inputs"
+    },
+    {
+      "parameters": {
+        "type": "SHA3-256",
+        "value": "={{ $json.data }}",
+        "dataPropertyName": "hash"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        336,
+        528
+      ],
+      "id": "6909b3d7-70d8-47cf-bb92-98919f49806b",
+      "name": "HTTP Hash"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8fb16ccb-2ec5-4a00-88e0-1a66498561c6",
+      "name": "Extract PDF Data"
+    },
+    {
+      "parameters": {
+        "binaryData": true,
+        "type": "SHA3-256",
+        "dataPropertyName": "hash"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        0,
+        192
+      ],
+      "id": "27014378-fd18-4b0d-bacf-f853c14ce702",
+      "name": "PDF Hash"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1e6b6a71-be3f-452a-bae1-6c90c44017aa",
+              "name": "Source",
+              "value": "={{ $('Set Inputs').all()[0].json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "346568cf-f069-4f88-a12d-56e1977eee21",
+              "name": "Last Modified",
+              "value": "={{ $json['last-modified'] }}",
+              "type": "string"
+            },
+            {
+              "id": "bdc830be-3b71-43d9-bfbd-248a6d6dff14",
+              "name": "=Etag",
+              "value": "={{ $json.etag }}",
+              "type": "string"
+            },
+            {
+              "id": "dbd66a82-3011-427f-b834-d92709b70ebe",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "100cb4ed-e662-483d-9b3a-969f023d880b",
+              "name": "Hash",
+              "value": "={{ $json.hash }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        528
+      ],
+      "id": "764fa48d-1765-4258-9568-353d32ee5137",
+      "name": "Set HTML Headers"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1d9e1677-8ef2-4646-a627-f50945274334",
+              "name": "Source",
+              "value": "={{ $('Set Inputs').all()[0].json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "036cbba0-6899-458a-af80-1d68c13917e6",
+              "name": "Created Date",
+              "value": "={{ $('Extract PDF Data').item.json.info.CreationDate }}",
+              "type": "string"
+            },
+            {
+              "id": "feabf9d3-b3ca-4270-8263-cce8dd7a8e13",
+              "name": "Last Modified",
+              "value": "={{ $('Extract PDF Data').item.json.info.ModDate }}",
+              "type": "string"
+            },
+            {
+              "id": "0ff82198-7f1b-456c-aca2-dd023727c3bd",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ccccce29-2697-4e0a-99d9-e3f6ef066455",
+              "name": "Hash",
+              "value": "={{ $json.hash }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        96
+      ],
+      "id": "a26715bd-94a9-4bf1-bc06-8e2840104733",
+      "name": "Set PDF Headers",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        96
+      ],
+      "id": "9d4f3f5d-0233-474b-a078-b9fdd8e3ae77",
+      "name": "Merge PDF"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Check Fallback"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        912
+      ],
+      "id": "a090f0a8-4670-42ce-9d10-5fe133664aae",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": ".pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "8c326d29-c843-4ca7-af58-06df08ddfece"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cca9a8b7-a815-4f13-908c-79a5c3d99b21",
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": "=^https?:\\/\\/(?!.*\\.(pdf|PDF|Pdf)(\\?|$))[^\\s\\/$.?#].[^\\s]*$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HTML"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -592,
+        192
+      ],
+      "id": "5052c3de-a419-4c35-b0ac-fe8023f3c63f",
+      "name": "Type Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c99a3ae2-b186-4d93-9d35-bb9074c2d143",
+              "name": "Title",
+              "value": "={{ $json.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "5f60b41a-b322-4aa5-9bc5-effebaf3ef01",
+              "name": "Created Date (B)",
+              "value": "={{ $json['Created Date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2dc38675-eaff-406b-938e-3a1c0ac854e6",
+              "name": "Last Modified (B)",
+              "value": "={{ $json['Last Modified'] }}",
+              "type": "string"
+            },
+            {
+              "id": "7376736b-36f1-49aa-b509-b7d17c5b519d",
+              "name": "Etag (B)",
+              "value": "={{ $json.Etag }}",
+              "type": "string"
+            },
+            {
+              "id": "51527e88-d26e-4c83-bda1-54eb3e5c6171",
+              "name": "Hash (B)",
+              "value": "={{ $json.Hash }}",
+              "type": "string"
+            },
+            {
+              "id": "02d62eb4-fbb1-48b6-971e-73e765c5ad4d",
+              "name": "Filename",
+              "value": "={{ $json.Filename }}",
+              "type": "string"
+            },
+            {
+              "id": "c42cd166-8850-4bdb-be3c-58aad9a3d9c7",
+              "name": "Job",
+              "value": "={{ $json.Job }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        720
+      ],
+      "id": "d7f9f721-5e06-41ea-a966-87a8857f4953",
+      "name": "Set Previous Data"
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "Source",
+              "field2": "Source"
+            }
+          ]
+        },
+        "resolve": "preferInput1",
+        "fuzzyCompare": true,
+        "options": {
+          "skipFields": "row_number, Title, Time, Date, Filename, Job, Execution,"
+        }
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        96
+      ],
+      "id": "60c3d53f-9822-469f-a2d5-f3c6c9efda4b",
+      "name": "Compare",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.update_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.update_sheet_different }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Filename": "={{ $json.Filename }}",
+            "Last Modified (A)": "={{ $json['Last Modified (A)'] }}",
+            "Created Date (B)": "={{ $json['Created Date (B)'] }}",
+            "Created Date (A)": "={{ $json['Created Date (A)'] }}",
+            "Etag (B)": "={{ $json['Etag (B)'] }}",
+            "Hash (B)": "={{ $json['Hash (B)'] }}",
+            "Hash (A)": "={{ $json['Hash (A)'] }}",
+            "Etag (A)": "={{ $json['Etag (A)'] }}",
+            "Last Modified (B)": "={{ $json['Last Modified (B)'] }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}",
+            "Title": "={{ $json.Title }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date (A)",
+              "displayName": "Created Date (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date (B)",
+              "displayName": "Created Date (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified (A)",
+              "displayName": "Last Modified (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified (B)",
+              "displayName": "Last Modified (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag (A)",
+              "displayName": "Etag (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag (B)",
+              "displayName": "Etag (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash (A)",
+              "displayName": "Hash (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash (B)",
+              "displayName": "Hash (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1568,
+        416
+      ],
+      "id": "229cef40-3ee0-446f-9563-4dd66be64765",
+      "name": "Append Update-Different",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a65a787-9dd0-407f-a8a2-f0bf25b7e19d",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "98173623-9de7-4759-b2cf-bb1af238d62b",
+              "name": "Last Modified (A)",
+              "value": "={{ $json['Last Modified'] }}",
+              "type": "string"
+            },
+            {
+              "id": "3582b931-635e-49a6-962b-efc0ebae3759",
+              "name": "Created Date (A)",
+              "value": "={{ $json['Created Date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "380f4b89-a050-4d84-a0a0-c90df6f57563",
+              "name": "Etag (A)",
+              "value": "={{ $json.Etag }}",
+              "type": "string"
+            },
+            {
+              "id": "43326db1-112c-4889-b561-d6a008dcfa30",
+              "name": "Hash (A)",
+              "value": "={{ $json.Hash }}",
+              "type": "string"
+            },
+            {
+              "id": "12a4c8d6-4e46-4d69-933f-c9e3b738c8e9",
+              "name": "Compare",
+              "value": "Same",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        128
+      ],
+      "id": "2b17e90e-0835-457b-9aec-395898beb3c3",
+      "name": "Set Same"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a65a787-9dd0-407f-a8a2-f0bf25b7e19d",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "98173623-9de7-4759-b2cf-bb1af238d62b",
+              "name": "Last Modified (A)",
+              "value": "={{ $json['Last Modified'] }}",
+              "type": "string"
+            },
+            {
+              "id": "3582b931-635e-49a6-962b-efc0ebae3759",
+              "name": "Created Date (A)",
+              "value": "={{ $json['Created Date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "380f4b89-a050-4d84-a0a0-c90df6f57563",
+              "name": "Etag (A)",
+              "value": "={{ $json.Etag }}",
+              "type": "string"
+            },
+            {
+              "id": "43326db1-112c-4889-b561-d6a008dcfa30",
+              "name": "Hash (A)",
+              "value": "={{ $json.Hash }}",
+              "type": "string"
+            },
+            {
+              "id": "1d98c3b1-4ec5-4cb4-85f9-4a932769d418",
+              "name": "Compare",
+              "value": "Different",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        400
+      ],
+      "id": "0532a570-d1c7-4e9a-ad0e-beb372bf3e3e",
+      "name": "Set Different"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.update_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.update_sheet_same }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Filename": "={{ $json.Filename }}",
+            "Etag (B)": "={{ $json['Etag (B)'] }}",
+            "Hash (B)": "={{ $json['Hash (B)'] }}",
+            "Hash (A)": "={{ $json['Hash (A)'] }}",
+            "Created Date (B)": "={{ $json['Created Date (B)'] }}",
+            "Created Date (A)": "={{ $json['Created Date (A)'] }}",
+            "Last Modified (A)": "={{ $json['Last Modified (A)'] }}",
+            "Last Modified (B)": "={{ $json['Last Modified (B)'] }}",
+            "Etag (A)": "={{ $json['Etag (A)'] }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Title": "={{ $json.Title }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date (A)",
+              "displayName": "Created Date (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date (B)",
+              "displayName": "Created Date (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified (A)",
+              "displayName": "Last Modified (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified (B)",
+              "displayName": "Last Modified (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag (A)",
+              "displayName": "Etag (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag (B)",
+              "displayName": "Etag (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash (A)",
+              "displayName": "Hash (A)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash (B)",
+              "displayName": "Hash (B)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1568,
+        224
+      ],
+      "id": "7b4b2fd5-d6c4-481d-aa8f-c419c54aa750",
+      "name": "Append Update-Same",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Error": "=Unreachable (PDF)",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        384
+      ],
+      "id": "0548499c-f49f-4fa9-ba91-5d9afec89ebb",
+      "name": "Append Error (PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Error": "=Unreachable (HTTP Request)",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        960
+      ],
+      "id": "7b11973d-d3c3-4afa-aaad-40c3b970a685",
+      "name": "Append Error (HTTP Request)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bfa38c19-524f-4eee-bbcf-40a7b7664c2f",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "3acd9544-4f4b-41ae-b03f-ccfa5f109521",
+              "name": "Title",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "617457b5-3f8d-43ee-8281-7fb07c74f5f5",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "4c7caebb-2578-4a08-8cb8-0606fdd71245",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "b862830a-2908-41d9-b448-28eeefc20eec",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9fc4a5f4-8439-4a1b-a041-a829d915aff1",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ca9bae57-83b3-4d6e-b054-96709e882ca5",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "35a1ca4f-0f6c-46bb-9791-1268d1950baa",
+              "name": "Job",
+              "value": "1001",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1040,
+        112
+      ],
+      "id": "74f548fe-f39e-4065-8407-f6fc8f799147",
+      "name": "Manual"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        224
+      ],
+      "id": "70eba6b3-3f90-40b9-a18e-733fc005bcab",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "651bb94b-dc5b-44fc-9305-e889fb156a38",
+                    "leftValue": "={{ $json.Compare }}",
+                    "rightValue": "Same",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Same"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Compare }}",
+                    "rightValue": "Different",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "935445c0-4d72-46bc-8942-4e7e1fc3f557"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Different"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1344,
+        224
+      ],
+      "id": "0d72731f-18f9-43a2-9610-b3a216317a6f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://production-sfo.browserless.io/chrome/bql",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "=mutation GrabTOCAndHTMLWithURL {\n  goto(url: \"{{ $('Set Inputs').item.json.Source }}\", waitUntil: networkIdle) {\n    status\n    url\n  }\n\n  pause: waitForTimeout(time: 1500) {\n    time\n  }\n\n  # Capture the main HTML document response + headers\n  documentResponse: response(type: [document], wait: false) {\n    url\n    status\n    headers {\n      name\n      value\n    }\n  }\n\n  # Capture JavaScript responses + headers\n  scripts: response(type: [script], wait: false) {\n    url\n    headers {\n      name\n      value\n    }\n    body\n  }\n\n  finalUrl: url {\n    url\n  }\n\n  fullHtml: html {\n    html\n  }\n}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -112,
+        624
+      ],
+      "id": "698fc3fb-26e4-46fa-9dde-59a4222f5818",
+      "name": "Browserless",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "143a7790-0258-479e-80f0-2f5ad09fa5f3",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -336,
+        720
+      ],
+      "typeVersion": 4.2,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        192
+      ],
+      "id": "abb81757-2c41-4b86-94fc-2ba0c827fa50",
+      "name": "PDF Binary",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate Generic Credential\nType: Query Auth\nName: token\nYour Browserless API Key",
+        "height": 288,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        624
+      ],
+      "id": "551ac0e4-48a6-4e16-9136-77391dc25d3b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Error": "=Unreachable (Browserless)",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        720
+      ],
+      "id": "c7a87674-45eb-4d43-8e2a-5a440b974aa8",
+      "name": "Append Error (Browserless)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "86f0f2b7-7b34-4821-bf08-3d817fc327d3",
+              "name": "data",
+              "value": "={{ $json?.data?.fullHtml?.html ?? $json?.data ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "fbfc015a-c354-4688-abf3-013b9ee8eb46",
+              "name": "last-modified",
+              "value": "={{\n  $json?.data?.scripts?.[0]?.headers?.find?.(\n    h => (h?.name ?? '').toLowerCase() === 'last-modified'\n  )?.value\n  ?? $json?.headers?.['last-modified']\n  ?? $json?.headers?.['Last-Modified']\n}}",
+              "type": "string"
+            },
+            {
+              "id": "9401651c-e78a-41d1-99a3-7f3c74322da9",
+              "name": "etag",
+              "value": "={{\n  (\n    $json?.data?.scripts?.[0]?.headers?.find?.(\n      h => (h?.name ?? '').toLowerCase() === 'etag'\n    )?.value\n    ?? $json?.headers?.etag\n    ?? $json?.headers?.['etag']\n    ?? $json?.headers?.['ETag']\n  )?.replace(/\"/g, '')\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        528
+      ],
+      "id": "c80be113-8537-4597-b2e4-f709f5e831c4",
+      "name": "Set Source"
+    },
+    {
+      "parameters": {
+        "content": "## Update\nChecks whether previously upserted URLs have changed since the last Upsert, avoiding a full crawl and scrape.\nCompares headers like Created Date, Last Modified, ETag, and Hash to detect changes.\nFields can be excluded in the Compare node if they cause false positives.",
+        "height": 128,
+        "width": 1088,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        -48
+      ],
+      "id": "96b4bf75-8115-40b7-8cce-e312f62ff7ed",
+      "name": "Sticky Note6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPossible Fields to Skip:\nCreated Date\nLast Modified\nETag\nHash ",
+        "height": 304,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        96
+      ],
+      "id": "cc21912f-7229-4f7a-98bd-a0e26edd5273",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "Type Switch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Compare",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Set Previous Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Hash": {
+      "main": [
+        [
+          {
+            "node": "Set HTML Headers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Data": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Hash": {
+      "main": [
+        [
+          {
+            "node": "Merge PDF",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Set HTML Headers": {
+      "main": [
+        [
+          {
+            "node": "Compare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set PDF Headers": {
+      "main": [
+        [
+          {
+            "node": "Compare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge PDF": {
+      "main": [
+        [
+          {
+            "node": "Set PDF Headers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Type Switch": {
+      "main": [
+        [
+          {
+            "node": "PDF Binary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Previous Data": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Compare": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Set Same",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Different",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Same": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Different": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Append Update-Same",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Update-Different",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (PDF)": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (HTTP Request)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Binary": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "PDF Hash",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Set Source",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (Browserless)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Source": {
+      "main": [
+        [
+          {
+            "node": "HTTP Hash",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bf7008bf-ebca-4d33-97e4-dfee981d209a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "FHdAjqiqp5zQWhkb",
+  "tags": []
+}

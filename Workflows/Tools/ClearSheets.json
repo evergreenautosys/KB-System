@@ -1,0 +1,543 @@
+{
+  "name": "ClearSheets",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.documents_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.documents_sheet_unformatted_html }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        64
+      ],
+      "id": "775be3c6-a49f-4308-ae25-5a6cb5847039",
+      "name": "Clear Unformatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.documents_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.documents_sheet_formatted_html }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1408,
+        64
+      ],
+      "id": "33e95ab9-b13c-457d-a1c0-66eb7a99ff19",
+      "name": "Clear Formatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.documents_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.documents_sheet_unformatted_pdf }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1632,
+        64
+      ],
+      "id": "ba20482b-82fc-48cc-8f47-d00505cd77ed",
+      "name": "Clear Unformatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.documents_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.documents_sheet_formatted_pdf }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1856,
+        64
+      ],
+      "id": "91537cff-6993-4e88-9819-5025315c09aa",
+      "name": "Clear Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_input }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        64,
+        64
+      ],
+      "id": "daf29158-198d-47cf-962f-45d59600c836",
+      "name": "Clear Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        288,
+        64
+      ],
+      "id": "3c25cc49-e32f-4f15-bd2e-980623e2a024",
+      "name": "Clear Error",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_processed }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        64
+      ],
+      "id": "ffbd1487-5fe6-4c6e-ab97-42d91a0be83f",
+      "name": "Clear Processed",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.crawl_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.crawl_sheet_output }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        736,
+        64
+      ],
+      "id": "c02bbba6-d0b2-41ed-83bf-d11780d5697c",
+      "name": "Clear Crawl-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.scrape_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.scrape_sheet_output }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        960,
+        64
+      ],
+      "id": "410af29f-5ea9-416c-b0a2-d32c046babce",
+      "name": "Clear Scrape-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "content": "## Clear Sheets\nThis workflow clears data in the linked Google Sheets. To prevent a sheet from being cleared, deactivate its corresponding node before running.",
+        "height": 80,
+        "width": 1128,
+        "color": 4
+      },
+      "id": "d2c2e1c6-eb01-4f06-9163-68e51d38e345",
+      "name": "Trigger Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -48
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.upsert_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.upsert_sheet_output }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2080,
+        64
+      ],
+      "id": "95119102-1b3c-4dec-8b99-62db68831c47",
+      "name": "Clear Upsert-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.update_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.update_sheet_same }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2304,
+        64
+      ],
+      "id": "385a0bb7-f3a5-4e7e-9bc1-ca0d1c560e9f",
+      "name": "Clear Update-Same",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.update_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.update_sheet_different }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2528,
+        64
+      ],
+      "id": "ab637065-203a-43c6-bece-136b07b214db",
+      "name": "Clear Update-Different",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.sitemap_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.sitemap_sheet_output }}",
+          "mode": "id"
+        },
+        "keepFirstRow": true
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2752,
+        64
+      ],
+      "id": "4f2695d6-391a-470c-9d47-2eb0a448891a",
+      "name": "Clear Sitemap-Output",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        64
+      ],
+      "id": "f8b19453-9739-4ea4-a6f9-bc16f586460a",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Clear Unformatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Clear Formatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Formatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Clear Unformatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Unformatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Clear Formatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Formatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Clear Upsert-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Input": {
+      "main": [
+        [
+          {
+            "node": "Clear Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Error": {
+      "main": [
+        [
+          {
+            "node": "Clear Processed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Processed": {
+      "main": [
+        [
+          {
+            "node": "Clear Crawl-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Crawl-Output": {
+      "main": [
+        [
+          {
+            "node": "Clear Scrape-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Scrape-Output": {
+      "main": [
+        [
+          {
+            "node": "Clear Unformatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Upsert-Output": {
+      "main": [
+        [
+          {
+            "node": "Clear Update-Same",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Update-Same": {
+      "main": [
+        [
+          {
+            "node": "Clear Update-Different",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Update-Different": {
+      "main": [
+        [
+          {
+            "node": "Clear Sitemap-Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Clear Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d6e32965-45b9-446b-a13c-f02a63367bc2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "b2uWKjJuTC5xa5-iLSdp3",
+  "tags": []
+}

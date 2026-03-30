@@ -1,0 +1,755 @@
+{
+  "name": "Manager (Supabase)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        496
+      ],
+      "id": "417c432d-74ac-4692-9c22-c186c8ce0fc6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        608
+      ],
+      "id": "82c021e9-fc7c-46d4-a934-a0eb34a1a6a1",
+      "name": "Loop"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        912,
+        416
+      ],
+      "id": "c7b94f87-0e2f-4968-bf50-e63d4bd50d6d",
+      "name": "Merge Processed"
+    },
+    {
+      "parameters": {
+        "tableId": "=Input",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "="
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "=1001"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "=Manager-{{$execution.id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        272
+      ],
+      "id": "76e4e9ca-9874-4203-8147-f463af78434c",
+      "name": "Append Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "=Input",
+        "limit": 1,
+        "filterType": "string",
+        "filterString": "order=id.asc"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        224,
+        496
+      ],
+      "id": "b8e61274-eae5-463e-a58d-04f4f87dd282",
+      "name": "Get Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "=Input",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        224
+      ],
+      "id": "cc854867-fbee-4eca-920c-c2d5d96d94cc",
+      "name": "Delete Row Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "tableId": "=Processed",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "=Manager-{{$execution.id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        416
+      ],
+      "id": "bc9aece7-ef62-492b-9c2b-ac251d953dd0",
+      "name": "Append Processed",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "url": "https://YOURHOST.app.n8n.cloud/api/v1/executions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "n8nApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "running"
+            },
+            {
+              "name": "workflowId",
+              "value": "={{$workflow.id}}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        176,
+        1280
+      ],
+      "id": "b238e77b-ea48-4e37-92f3-b56721e5ba06",
+      "name": "HTTP Request",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ec8f7eb1-fa24-4e96-aaea-23ca5b3035cd",
+              "leftValue": "={{ $json.body.data.length }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        352,
+        1280
+      ],
+      "id": "64d7a9c8-f71a-4af6-a3c3-d741fef99b82",
+      "name": "Job Running?",
+      "executeOnce": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $vars.telegram_chat_id }}",
+        "text": "Manager has finished processing all input data.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        1440
+      ],
+      "id": "3d84484e-20ec-4225-bf4f-01ff1ef9badb",
+      "name": "Manager Complete",
+      "webhookId": "4862fa81-60da-4538-b3c8-15ea946bc095",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "deactivate",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{$workflow.id}}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        1440
+      ],
+      "id": "e103a676-cf2b-4816-af54-fa31f8c8f7d2",
+      "name": "Unpublish (Manger Complete)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "=Input",
+        "limit": 1,
+        "filterType": "string",
+        "filterString": "order=id.asc"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        576,
+        1296
+      ],
+      "id": "fbe72247-1caf-47d6-b71a-0f4d88466d39",
+      "name": "Check Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": ""
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        544
+      ],
+      "id": "5863afff-9178-46bd-9927-c90f9003f81a",
+      "name": "Call 'Sitemap (Supabase)'",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ec8f7eb1-fa24-4e96-aaea-23ca5b3035cd",
+              "leftValue": "={{ Object.keys($(\"Check Input\").item.json).length }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        768,
+        1296
+      ],
+      "id": "5b07085c-d783-48d3-b619-44724385047d",
+      "name": "Items in Input?",
+      "executeOnce": true,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $vars.telegram_chat_id }}",
+        "text": "Manager will be Restarted",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        1280
+      ],
+      "id": "19267766-f2b7-4ed1-bd96-e3bf0cb9a7de",
+      "name": "Manager Restart",
+      "webhookId": "4862fa81-60da-4538-b3c8-15ea946bc095",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9c749021-3793-4ebe-a9f5-14f50d1e504e",
+              "name": "error",
+              "value": "={{ $json.error }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1216,
+        848
+      ],
+      "id": "98e159e6-2414-4993-9434-b17d6c83de4a",
+      "name": "Set Error"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        1008
+      ],
+      "id": "b02cc5b9-c104-4bff-a83a-27dfe740ccf8",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $vars.telegram_chat_id }}",
+        "text": "={{ $json.error }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1568,
+        544
+      ],
+      "id": "b0394614-acf5-4aed-9c6a-9d9f4da0a8d4",
+      "name": "Error Message",
+      "webhookId": "7179dbc8-48dd-4c0e-a139-c81294aecd68",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        992
+      ],
+      "id": "d2297501-ea99-4884-97be-81061816fa64",
+      "name": "Merge Error"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1312,
+        992
+      ],
+      "id": "1de1195f-9978-4058-86c9-059c1bc77bf8",
+      "name": "Wait 60 Sec",
+      "executeOnce": false,
+      "webhookId": "1a22661e-a65f-4d7f-8379-c34e4e84a8f9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d0a2a2d-c9ac-40f3-967a-c9b33ce89fe3",
+              "leftValue": "={{ $runIndex }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        848
+      ],
+      "id": "82b01119-06ba-42f0-bc0b-7d0894f02ce5",
+      "name": "Retry 1"
+    },
+    {
+      "parameters": {
+        "operation": "deactivate",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{$workflow.id}}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        784
+      ],
+      "id": "6016233f-0e2e-473d-99fc-f188b39871ac",
+      "name": "Unpublish (Error)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        1280
+      ],
+      "id": "ead00821-6fc5-4da1-bda2-1792d42b1f70",
+      "name": "Check Every 15 mins",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop": {
+      "main": [
+        [
+          {
+            "node": "Get Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Processed": {
+      "main": [
+        [
+          {
+            "node": "Append Processed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Delete Row Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Input": {
+      "main": [
+        [
+          {
+            "node": "Call 'Sitemap (Supabase)'",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Processed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Error",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Job Running?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Job Running?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Check Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manager Complete": {
+      "main": [
+        [
+          {
+            "node": "Unpublish (Manger Complete)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Input": {
+      "main": [
+        [
+          {
+            "node": "Items in Input?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Sitemap (Supabase)'": {
+      "main": [
+        [
+          {
+            "node": "Merge Processed",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Retry 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Items in Input?": {
+      "main": [
+        [
+          {
+            "node": "Manager Restart",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manager Restart": {
+      "main": [
+        [
+          {
+            "node": "Get Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Error": {
+      "main": [
+        [
+          {
+            "node": "Error Message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Unpublish (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Error": {
+      "main": [
+        [
+          {
+            "node": "Wait 60 Sec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry 1": {
+      "main": [
+        [
+          {
+            "node": "Set Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60 Sec": {
+      "main": [
+        [
+          {
+            "node": "Get Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Every 15 mins": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "12ce8b8c-a3e3-438f-ba30-602e436fc95c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "4toNLy6R32oincOEUqlq5",
+  "tags": []
+}

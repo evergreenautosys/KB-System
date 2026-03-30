@@ -1,0 +1,1396 @@
+{
+  "name": "Sitemap (Supabase)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        576
+      ],
+      "id": "b6de51ed-e5ba-40fd-84dc-1d82f7ba4d4b",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c835e763-1639-489c-83c6-134bc954e486",
+              "name": "Source",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "822265e4-3fdb-4ee0-8bdd-4cc10e3ff54a",
+              "name": "Job",
+              "value": "1001",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -896,
+        576
+      ],
+      "id": "db20acaf-e4a1-4a1f-8ac8-60fa2fbaa71d",
+      "name": "Manual"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cf9dcaee-b5b6-4431-8aa9-0a2ee2780696",
+              "name": "allowedSubdomains",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "8fb75e6b-e115-4683-aa76-fc6694746019",
+              "name": "blockedSubdomains",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a2bbd832-2999-4899-b7de-ce44f3223408",
+              "name": "allowedSections",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "5ac942eb-a739-4a05-8d9e-586d7007f309",
+              "name": "blockedSections",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ffd00485-169e-477d-83cf-90139c8289d5",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "1c180063-54ab-4f4a-bfdb-045c1f12110a",
+              "name": "Job",
+              "value": "={{ $json.Job }}",
+              "type": "string"
+            },
+            {
+              "id": "dfe01c80-cfab-4614-9f26-f34b00e8530b",
+              "name": "Execution",
+              "value": "=Sitemap-{{$execution.id}}",
+              "type": "string"
+            },
+            {
+              "id": "827a5756-8ebc-4db5-93e1-aea1d22894a7",
+              "name": "origin",
+              "value": "={{ $json.Source.match(/^https?:\\/\\/[^\\/]+/)[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -672,
+        672
+      ],
+      "id": "da06cff9-8c8f-4d25-8416-fffd61a5f023",
+      "name": "Set Inputs"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bae5b348-5594-4aff-9d82-72bc98285c01",
+              "name": "Source",
+              "value": "={{ $('Set Inputs').all()[0].json.origin + $json.Source }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        848
+      ],
+      "id": "9994950b-46cb-43f2-aa3b-6f5ebb1cd727",
+      "name": "Combine Origin & Source"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4f166d4d-36fa-4c13-9a35-4c3a5893f743",
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": "^https?:\\/\\/(?!.*\\.(?:pdf|xml)(?:\\?|$))[^\\s\\/$.?#].[^\\s]*$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HTML"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "13010d5d-be75-49be-85ea-99cb86d1c9a5",
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": ".pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "endsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": ".xml",
+                    "operator": {
+                      "type": "string",
+                      "operation": "endsWith"
+                    },
+                    "id": "35b59344-488d-4b64-95fb-3b0d3703fd7f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "XML"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        640
+      ],
+      "id": "fcd7f934-34b0-471c-93f1-59bb392d0e7b",
+      "name": "Input Switch"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4f166d4d-36fa-4c13-9a35-4c3a5893f743",
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": "^https?:\\/\\/(?!.*\\.(?:pdf|xml)(?:\\?|$))[^\\s\\/$.?#].[^\\s]*$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HTML"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "13010d5d-be75-49be-85ea-99cb86d1c9a5",
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": ".pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "endsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": ".xml",
+                    "operator": {
+                      "type": "string",
+                      "operation": "endsWith"
+                    },
+                    "id": "35b59344-488d-4b64-95fb-3b0d3703fd7f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "XML"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "63d0a7df-7f8e-47ad-ae5a-a4f681901169",
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": "^\\/[^?#]*\\/?$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Partial"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        736
+      ],
+      "id": "c51f874d-2957-4f75-bd55-283f5d15ed0a",
+      "name": "Output Switch"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.9"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "Upgrade-Insecure-Requests",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "f8f1ed91-5366-4708-a8c6-e4a0df224e2f",
+      "name": "HTTP Request (XML)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -224,
+        864
+      ],
+      "typeVersion": 4.2,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.9"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "Upgrade-Insecure-Requests",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "a607f854-d7a0-4497-afaf-fa0ab0e30021",
+      "name": "HTTP Request (HTML)",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -224,
+        96
+      ],
+      "typeVersion": 4.2,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -896,
+        768
+      ],
+      "id": "a47fb48e-e125-4af5-997f-de73c6c3ffe8",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        384
+      ],
+      "id": "ec35355c-67e7-4afe-8d03-bd1fef16191f",
+      "name": "Set Output (PDF)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "1d072baf-37a8-43bb-a33c-804819561868",
+      "name": "Set Output (HTML)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        192
+      ],
+      "id": "01b2f9c3-0dce-4ed8-945d-c605761685e5",
+      "name": "Set Output (HTTP Error)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.9"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "Upgrade-Insecure-Requests",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "2a6bdbb6-4f78-4b88-853c-7f2a4449fcf4",
+      "name": "PDF Binary",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -224,
+        480
+      ],
+      "typeVersion": 4.2,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Check Fallback"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        1056
+      ],
+      "id": "364d5914-41e9-4ff0-ba20-abcfccd3ad12",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "operation": "xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        768
+      ],
+      "id": "2b067335-0615-4281-9b69-9658978927b9",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "const BATCH_SIZE = 100;\nconst xmlString = $json.data;\n\nconst locRegex = /<loc>([^<]+)<\\/loc>/g;\nconst urls = [];\nlet match;\n\nwhile ((match = locRegex.exec(xmlString)) !== null) {\n  urls.push(match[1]);\n}\n\nconst batches = [];\nfor (let i = 0; i < urls.length; i += BATCH_SIZE) {\n  const batch = urls.slice(i, i + BATCH_SIZE);\n  batches.push({ json: { urls: batch, batchNumber: Math.floor(i / BATCH_SIZE) + 1, totalBatches: Math.ceil(urls.length / BATCH_SIZE) } });\n}\n\nreturn batches;"
+      },
+      "id": "59990ec9-fdbe-4b1f-a5d8-f41b931537e7",
+      "name": "Extract URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "urls",
+        "options": {
+          "destinationFieldName": "Source"
+        }
+      },
+      "id": "01fab67a-49d0-4f29-b89a-2b3e1ab9586c",
+      "name": "Split Out URLs",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        448,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "584e1945-a1c2-4996-a097-5f133766e907",
+              "leftValue": "={{\n  Boolean((() => {\n    const inputs = $('Set Inputs').first().json || {};\n\n    const normalizeHost = (s) => {\n      s = ('' + (s || '')).trim().toLowerCase();\n      if (!s) return '';\n      s = s.replace(/^https?:\\/\\//, '');\n      s = s.split('#')[0].split('?')[0];\n      let host = (s.split('/')[0] || '').replace(/\\.$/, '');\n      if (host.startsWith('www.')) host = host.slice(4);\n      return host;\n    };\n\n    const parseHosts = (v) =>\n      ('' + (v || ''))\n        .split(',')\n        .map(x => normalizeHost(x))\n        .filter(Boolean);\n\n    const srcHost = normalizeHost($json.Source);\n    if (!srcHost) return false;\n\n    const allowedSub = parseHosts(inputs.allowedSubdomains);\n    const blockedSub = parseHosts(inputs.blockedSubdomains);\n\n    // 1) allowedSubdomains is a HARD allowlist if set\n    if (allowedSub.length > 0 && !allowedSub.includes(srcHost)) return false;\n\n    // 2) blocklist always applies (override deny)\n    if (blockedSub.length > 0 && blockedSub.includes(srcHost)) return false;\n\n    return true;\n  })())\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c6803db2-45ee-4d8c-a701-a657394247d6",
+              "leftValue": "={{\n  Boolean((() => {\n    const src = ('' + ($json.Source || '')).toLowerCase();\n    if (!src) return false;\n\n    const parse = v =>\n      ('' + (v || ''))\n        .split(',')\n        .map(s => s.trim().toLowerCase())\n        .filter(Boolean);\n\n    const allowed = parse($('Set Inputs').first().json.allowedSections);\n    const blocked = parse($('Set Inputs').first().json.blockedSections);\n\n    // Match section as:\n    //  - \"/section/\" anywhere (directory)\n    //  - \"/section-<something>/\" anywhere (hyphenated directory)\n    // NOT filenames like \"/section-thing.htm\"\n    const matches = (section) => {\n      const re = new RegExp(`/${section}(?:/|-[^/]+/)`);\n      return re.test(src);\n    };\n\n    // 1) blocklist wins\n    if (blocked.some(matches)) return false;\n\n    // 2) no allowlist => allow\n    if (allowed.length === 0) return true;\n\n    // 3) otherwise must match allowlist\n    return allowed.some(matches);\n  })())\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1568,
+        768
+      ],
+      "id": "076e16b8-c1a9-4434-bf6e-0a0c6a0dd539",
+      "name": "Domain Filter",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        736
+      ],
+      "id": "dba38ee0-74e3-42f2-b67a-f4551ae6801d",
+      "name": "Switch Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        960
+      ],
+      "id": "bf36aec0-f203-4aee-91fb-00dda6b31c69",
+      "name": "Set Output (XML Error)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "tableId": "=Sitemap-Output",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Execution }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "617d6013-3fa1-44ae-8309-84365b88ff0e",
+      "name": "Append Sitemap-Output (HTML)"
+    },
+    {
+      "parameters": {
+        "tableId": "=Input",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Execution }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        672
+      ],
+      "id": "74be1b72-dc33-42c9-b599-e1dee03a555f",
+      "name": "Append Input"
+    },
+    {
+      "parameters": {
+        "tableId": "=Error",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Execution }}"
+            },
+            {
+              "fieldId": "=Error",
+              "fieldValue": "Domain Filter"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        864
+      ],
+      "id": "df22f740-56e2-412a-a3f2-30c9dd999164",
+      "name": "Append Error (Domain Filter)"
+    },
+    {
+      "parameters": {
+        "tableId": "=Error",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Execution }}"
+            },
+            {
+              "fieldId": "=Error",
+              "fieldValue": "=XML - {{ $json.error.status ?? $json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        960
+      ],
+      "id": "1099339d-27c2-4090-9f6d-eb852fd5155c",
+      "name": "Append Error (XML Error)"
+    },
+    {
+      "parameters": {
+        "tableId": "=Error",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Execution }}"
+            },
+            {
+              "fieldId": "=Error",
+              "fieldValue": "=HTTP Request - {{ $json.error.status ?? $json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        192
+      ],
+      "id": "ca1b90d2-9184-4d81-8227-67a659b3925f",
+      "name": "Append Error (HTTP Request)"
+    },
+    {
+      "parameters": {
+        "tableId": "=Sitemap-Output",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Execution }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        384
+      ],
+      "id": "c97c7fa5-7414-475d-b300-6d1a182f4334",
+      "name": "Append Sitemap-Output (PDF)"
+    },
+    {
+      "parameters": {
+        "tableId": "=Error",
+        "dataToSend": "=defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "=Source",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Source }}"
+            },
+            {
+              "fieldId": "=Job",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Job }}"
+            },
+            {
+              "fieldId": "=Execution",
+              "fieldValue": "={{ $('Set Inputs').all()[0].json.Execution }}"
+            },
+            {
+              "fieldId": "=Error",
+              "fieldValue": "=PDF - {{ $json.error.status ?? $json.message }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        0,
+        576
+      ],
+      "id": "087c31d9-fa4d-4819-b807-2abcf1c1e104",
+      "name": "Append Error (PDF)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        576
+      ],
+      "id": "92cc8c06-ac47-44f6-b45b-240261f19064",
+      "name": "Set Output (PDF Error)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "batchSize": 500,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1344,
+        768
+      ],
+      "id": "1e3494f9-3b38-431b-9a3e-8a96119effa5",
+      "name": "Batch Size 500 items"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2016,
+        768
+      ],
+      "id": "8312084e-2b09-4593-b30f-bea13d1fa7e0",
+      "name": "Merge",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1568,
+        576
+      ],
+      "id": "f06969be-85f6-4d68-b569-04395132f297",
+      "name": "Set Output (XML)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2240,
+        848
+      ],
+      "id": "341cc80e-1873-4858-94b3-088784106b6b",
+      "name": "Set Output (Batch)",
+      "executeOnce": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "Input Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Origin & Source": {
+      "main": [
+        [
+          {
+            "node": "Switch Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Input Switch": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request (HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PDF Binary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request (XML)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output Switch": {
+      "main": [
+        [
+          {
+            "node": "Switch Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Switch Merge",
+            "type": "main",
+            "index": 2
+          }
+        ],
+        [
+          {
+            "node": "Combine Origin & Source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request (XML)": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (XML Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request (HTML)": {
+      "main": [
+        [
+          {
+            "node": "Append Sitemap-Output (HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (HTTP Request)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Binary": {
+      "main": [
+        [
+          {
+            "node": "Append Sitemap-Output (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Extract URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract URLs": {
+      "main": [
+        [
+          {
+            "node": "Split Out URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out URLs": {
+      "main": [
+        [
+          {
+            "node": "Output Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Domain Filter": {
+      "main": [
+        [
+          {
+            "node": "Append Input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (Domain Filter)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Merge": {
+      "main": [
+        [
+          {
+            "node": "Batch Size 500 items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Sitemap-Output (HTML)": {
+      "main": [
+        [
+          {
+            "node": "Set Output (HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Input": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (Domain Filter)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Append Error (XML Error)": {
+      "main": [
+        [
+          {
+            "node": "Set Output (XML Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (HTTP Request)": {
+      "main": [
+        [
+          {
+            "node": "Set Output (HTTP Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Sitemap-Output (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Set Output (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Set Output (PDF Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Batch Size 500 items": {
+      "main": [
+        [
+          {
+            "node": "Set Output (XML)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Domain Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Set Output (Batch)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Output (Batch)": {
+      "main": [
+        [
+          {
+            "node": "Batch Size 500 items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c8fe4cba-ce70-409f-b498-a28e98c5ce22",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "P6PsHOAU3Y49DvuLsGhBs",
+  "tags": []
+}

@@ -1,0 +1,2677 @@
+{
+  "name": "Crawl",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://production-sfo.browserless.io/chrome/bql",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "=mutation GrabTOCAndHTMLWithURL {\n  goto(url: \"{{ $('Set Inputs').item.json.Source }}\", waitUntil: networkIdle) {\n    status\n    url\n  }\n\n  pause: waitForTimeout(time: 1500) {\n    time\n  }\n\n  # Capture the main HTML document response + headers\n  documentResponse: response(type: [document], wait: false) {\n    url\n    status\n    headers {\n      name\n      value\n    }\n  }\n\n  # Capture JavaScript responses + headers\n  scripts: response(type: [script], wait: false) {\n    url\n    headers {\n      name\n      value\n    }\n    body\n  }\n\n  finalUrl: url {\n    url\n  }\n\n  fullHtml: html {\n    html\n  }\n}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        368
+      ],
+      "id": "b9a21901-03d8-42e4-88ff-5aa57430a2ba",
+      "name": "Browserless",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "id": "38ad48dd-7abe-4875-a360-ded2680e632b",
+      "name": "Spilt-Out HTML href",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        896,
+        528
+      ],
+      "typeVersion": 1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "=body",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "=output",
+              "cssSelector": "a",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        528
+      ],
+      "id": "7f7ed2d7-eb00-4d98-be61-a8686f08527f",
+      "name": "Extract HTML href",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "scripts",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        544,
+        752
+      ],
+      "id": "880bfa9a-64e7-4af2-a462-ce4ceb439ac2",
+      "name": "Split-Out Scripts",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cca9a8b7-a815-4f13-908c-79a5c3d99b21",
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": "=^https?:\\/\\/(?!.*\\.(pdf|PDF|Pdf)(\\?|$))[^\\s\\/$.?#].[^\\s]*$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HTML"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Source }}",
+                    "rightValue": ".pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "8c326d29-c843-4ca7-af58-06df08ddfece"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1120,
+        512
+      ],
+      "id": "c230cd4a-b357-4c15-a316-0162066600d4",
+      "name": "Type Switch"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1568,
+        624
+      ],
+      "id": "384c8c10-3e95-4fa4-ae69-01ab7f463f50",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        432
+      ],
+      "id": "ea6f9f1d-c379-4edb-b771-7756fa85312d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "5b9b7353-bd04-4af2-9480-8de135ff4223",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.output }}",
+              "rightValue": ""
+            },
+            {
+              "id": "1dc4be92-7c3e-42e8-b63e-0a2412d24aae",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "#",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "f90ef375-4137-492c-be53-727f14bd81fe",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "javascript:void(0);",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "eeb1f8ad-0135-47f0-86bb-21ba93767fc3",
+      "name": "Junk Filter",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        1344,
+        560
+      ],
+      "typeVersion": 2,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        560
+      ],
+      "id": "91105b7c-5d18-40aa-867b-1f47a691ebd5",
+      "name": "Merge HTML",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * n8n Code node (JavaScript)\n *\n * Purpose:\n * - Extract likely human-facing page paths from text (item.json.body)\n * - Filter out assets, APIs, tracking, and plumbing URLs\n * - Output one item per valid page path\n */\n\nconst items = $input.all();\nconst output = [];\n\n/**\n * ===============================\n * REGEX DEFINITIONS\n * ===============================\n */\n\n// Find URL-like strings in text\nconst CANDIDATE_RE =\n  /(?:(?:\"|')((?:https?:\\/\\/|\\/\\/|\\/|\\.{1,2}\\/)[^\"' \\t\\r\\n<>]+)(?:\"|'))|((?:https?:\\/\\/|\\/\\/|\\/|\\.{1,2}\\/)[^\\s\"'<>]+)/g;\n\n// Accept .html / .htm pages\nconst PAGE_EXT = /\\.(?:html?)(?:[?#]|$)/i;\n\n// Reject static assets\nconst STATIC_ASSET_EXT =\n  /\\.(?:js|mjs|cjs|css|map|png|jpe?g|gif|svg|webp|ico|pdf|zip|gz|tar|rar|7z|mp4|mp3|wav|webm|woff2?|ttf|eot)(?:[?#]|$)/i;\n\n// Reject numeric-only paths\nconst NUMERIC_PATH = /^\\/\\d+(?:\\/\\d+)*\\/?$/;\n\n// Reject code-like fragments\nconst CODE_SMELL = /[\\[\\]\\(\\)\\{\\}\\\\\\^\\$|]|\\\\[dDsSwWbBuxpP]/;\n\n// Reject APIs, auth, static dirs, internal routes\nconst HARD_REJECT =\n  /(?:^|\\/)(api|apis|service|services|asmx|svc|wsdl|graphql|rest|rpc|oauth|auth|signin|login|logout|token|session|callback|webhook|debug|health|status|metrics|internal|admin|plugins?|scripts?|assets?|static|cdn|media|img|images|fonts?|css|js|ccm|form-data|upload|download)(?:\\/|$)/i;\n\n// Reject analytics / tracking keywords\nconst TRACKING_KEYWORDS =\n  /(?:^|[\\/?#])(adserver|ads|adservice|adserving|adtrack|adtracking|affiliates?|beacon|banners?|click|clicktrack|clickthrough|clk|conv|conversion|conversions|convert|cvt|collect|collector|event|events|eventhub|eventtrack|eventtracking|impression|impressions|pixel|pixels|tag|tags|tagging|tracker|trackers|tracking|telemetry|analytics|measurement|metrics|stats|stat|log|logger|logging|gtag|gtm|googletagmanager|google-analytics|ga4|urchin|gen_204|doubleclick|ddm|floodlight|activity|fb|facebook|fbevents|meta|mp|tr|pixel_id|tiktok|ttq|snap|snapchat|pinterest|pintrk|linkedin|licdn|insight|segment|analyticsjs|amplitude|mixpanel|mparticle|heap|hotjar|fullstory|clarity)(?:[\\/?#]|$)/i;\n\n// Reject known tracking path shapes\nconst TRACKING_SHAPES =\n  /(?:^|\\/)(ddm\\/activity|g\\/collect|collect$|pagead\\/|gtag\\/js|tr\\/|pixel\\/)(?:[\\/?#]|$)/i;\n\n// Explicit Google Ads reject\nconst PAGEAD_REJECT = /(?:^|\\/)pagead(?:\\/|$)/i;\n\n// Reject versioned API routes\nconst VERSIONED_API_REJECT =\n  /^\\/(?:v\\d+|gm\\/v\\d+|mms\\/v\\d+|ctx\\/v\\d+)(?:\\/|$)/i;\n\n// Reject consent / config / ad plumbing\nconst PLUMBING_REJECT =\n  /(?:^|\\/)(consent|privacy-manager|vendor-list|choice|consent-status|meta-data|tcfv2|wrapper|openrtb2?|auction|usync|authorize|keys|messages|configuration|config|signals|targeting|schain|bid|ids|get-treatments|treatments|auxia|sampling|record|toolbox|marker|init|listeners|prepend|store)(?:\\/|$)/i;\n\n// Reject noisy protocol-relative hosts\nconst NOISE_HOST_RE =\n  /^\\/\\/(?:c\\.amazon-adsystem\\.com|ep\\d+\\.adtrafficquality\\.google)\\//i;\n\n/**\n * ===============================\n * HELPER FUNCTIONS\n * ===============================\n */\n\nfunction normalize(s) {\n  // Strip punctuation that sticks to URLs\n  return s.replace(/[),.;:!?`]+$/, \"\").replace(/\\\\+\"?$/, \"\");\n}\n\nfunction isPathOrProtocolRelative(s) {\n  return (\n    s.startsWith(\"/\") ||\n    s.startsWith(\"./\") ||\n    s.startsWith(\"../\") ||\n    s.startsWith(\"//\")\n  );\n}\n\n// Allow human-friendly URLs without .html\nfunction looksLikePrettyContent(s) {\n  if (!/^\\/[a-z0-9][a-z0-9-]+\\/[a-z0-9][a-z0-9-]+/i.test(s)) return false;\n  if (/[A-Z_+=]/.test(s)) return false;\n  if (/\\.[a-z0-9]{1,6}(?:[?#]|$)/i.test(s) && !PAGE_EXT.test(s)) return false;\n  return true;\n}\n\n/**\n * ===============================\n * MAIN LOOP\n * ===============================\n */\n\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  const text = item.json?.body;\n\n  // Skip items without text\n  if (!text) continue;\n\n  // Prevent duplicates per input item\n  const seen = new Set();\n\n  // Reset regex cursor (important!)\n  CANDIDATE_RE.lastIndex = 0;\n\n  let match;\n  while ((match = CANDIDATE_RE.exec(text)) !== null) {\n    const candidate = normalize(match[1] || match[2]);\n\n    if (!candidate) continue;\n    if (!isPathOrProtocolRelative(candidate)) continue;\n    if (NOISE_HOST_RE.test(candidate)) continue;\n\n    // Filter junk\n    if (STATIC_ASSET_EXT.test(candidate)) continue;\n    if (NUMERIC_PATH.test(candidate)) continue;\n    if (CODE_SMELL.test(candidate)) continue;\n    if (HARD_REJECT.test(candidate)) continue;\n    if (PAGEAD_REJECT.test(candidate)) continue;\n    if (TRACKING_SHAPES.test(candidate)) continue;\n    if (TRACKING_KEYWORDS.test(candidate)) continue;\n    if (VERSIONED_API_REJECT.test(candidate)) continue;\n    if (PLUMBING_REJECT.test(candidate)) continue;\n\n    // Keep only human pages\n    if (!PAGE_EXT.test(candidate) && !looksLikePrettyContent(candidate)) continue;\n\n    // De-dupe\n    if (seen.has(candidate)) continue;\n    seen.add(candidate);\n\n    // Output item (clean schema)\n    output.push({\n      json: {\n        output: candidate,\n      },\n    });\n  }\n}\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        752
+      ],
+      "id": "fc3ae3da-2ab0-4f15-899e-04cf36686335",
+      "name": "Extract Partial URLs",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "Source",
+              "field2": "Source"
+            }
+          ]
+        },
+        "resolve": "preferInput1",
+        "fuzzyCompare": true,
+        "options": {
+          "skipFields": "row_number, Time, Date, Job, Execution, Error, Title, Created Date, Last Modified, Etag, Hash, Filename"
+        }
+      },
+      "type": "n8n-nodes-base.compareDatasets",
+      "typeVersion": 2.3,
+      "position": [
+        2912,
+        528
+      ],
+      "id": "b111367d-f883-40ff-8d97-e9f029c349f6",
+      "name": "Compare",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a4ecb076-ded5-4acd-a40d-32990555ab9a",
+              "name": "partialUrl",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "bd313833-de6a-4359-9f1f-b6dcb63cc01d",
+              "name": "sourceUrl",
+              "value": "={{ $('Set Source').all()[0].json.Source }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1568,
+        560
+      ],
+      "id": "4e337a63-91d9-4050-9558-58ed08688894",
+      "name": "Set Partial\\Source URL",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "/*\n  Rebuild full URLs from partial URLs extracted from HTML.\n\n  Handles:\n  - Absolute URLs: \"https://example.com/x\"\n  - Protocol-relative: \"//example.com/x\"\n  - Root-relative: \"/x\"\n  - Relative with dot segments: \"../x\", \"../../../x\"\n\n  Special case (mount path):\n  If the source page is under a sub-path like:\n    https://example.com/app/content/page.html\n  and a partial URL starts with:\n    /content/other.html\n  then we treat it as:\n    https://example.com/app/content/other.html\n*/\n\n// -------------------- Utility helpers --------------------\n\nfunction stripQuotesAndWhitespace(value) {\n  return String(value ?? \"\")\n    .trim()\n    .replace(/^['\"]+|['\"]+$/g, \"\")\n    .trim();\n}\n\nfunction isLikelyFilePath(url) {\n  try {\n    // If URL() exists, use it (safe)\n    const u = new URL(url);\n    const lastSegment = u.pathname.split(\"/\").filter(Boolean).pop() || \"\";\n    return /\\.[a-z0-9]{1,6}$/i.test(lastSegment);\n  } catch {\n    // Fallback: simple segment check\n    const lastSegment = String(url)\n      .split(\"?\")[0]\n      .split(\"#\")[0]\n      .split(\"/\")\n      .filter(Boolean)\n      .pop() || \"\";\n    return /\\.[a-z0-9]{1,6}$/i.test(lastSegment);\n  }\n}\n\nfunction normalizeDoubleSlashes(url) {\n  return String(url).replace(/^(https?:\\/\\/)(.*)$/i, (match, protocol, rest) => {\n    return protocol + rest.replace(/\\/{2,}/g, \"/\");\n  });\n}\n\nfunction addTrailingSlashIfDirectory(url) {\n  if (!url) return url;\n\n  // Trim + remove control chars (e.g., \\r) that can break URL parsing\n  const s = String(url).replace(/[\\u0000-\\u001F\\u007F]/g, \"\").trim();\n  if (!s) return s;\n\n  // Preserve query/hash while deciding about the path\n  const m = s.match(/^([^?#]*)(\\?[^#]*)?(#.*)?$/);\n  const base = m?.[1] ?? s;\n  const query = m?.[2] ?? \"\";\n  const hash  = m?.[3] ?? \"\";\n\n  // Only operate on absolute http(s) URLs; otherwise leave as-is\n  if (!/^https?:\\/\\//i.test(base)) return s;\n\n  // If base is just the origin (no path), force a trailing slash:\n  // https://example.com  -> https://example.com/\n  if (/^https?:\\/\\/[^\\/]+$/i.test(base)) return base + \"/\" + query + hash;\n\n  // If already has trailing slash, keep as-is\n  if (base.endsWith(\"/\")) return base + query + hash;\n\n  // Don't add slash to likely files (extensions)\n  if (isLikelyFilePath(base)) return base + query + hash;\n\n  // Otherwise add trailing slash (directory-like)\n  return base + \"/\" + query + hash;\n}\n\n/*\n  Removes \".\" and \"..\" segments from a path.\n  Example:\n    /a/b/../c  -> /a/c\n*/\nfunction removeDotSegments(path) {\n  const parts = String(path).split(\"/\");\n  const out = [];\n\n  for (const part of parts) {\n    if (part === \"\" || part === \".\") continue;\n    if (part === \"..\") {\n      out.pop();\n      continue;\n    }\n    out.push(part);\n  }\n\n  return \"/\" + out.join(\"/\");\n}\n\n// -------------------- URL resolution logic --------------------\n\nfunction resolveUrl(baseUrl, partialUrl) {\n  const rel = stripQuotesAndWhitespace(partialUrl);\n  const base = stripQuotesAndWhitespace(baseUrl);\n\n  if (!rel) return \"\";\n\n  // Absolute URL\n  if (/^https?:\\/\\//i.test(rel)) return rel;\n\n  // Base must be absolute to resolve properly\n  if (!/^https?:\\/\\//i.test(base)) return rel;\n\n  // Protocol-relative URL: inherit scheme from base\n  if (rel.startsWith(\"//\")) {\n    const scheme = base.toLowerCase().startsWith(\"https:\") ? \"https:\" : \"http:\";\n    return scheme + rel;\n  }\n\n  // Extract origin (scheme + host)\n  const origin = base.match(/^(https?:\\/\\/[^\\/]+)/i)?.[1] ?? \"\";\n\n  // Get the base path (no query/hash)\n  const basePath = base\n    .slice(origin.length)\n    .split(\"?\")[0]\n    .split(\"#\")[0];\n\n  // Root-relative path\n  if (rel.startsWith(\"/\")) {\n    // Mount-path heuristic:\n    // If basePath looks like \"/<mount>/<segment>/...\"\n    // and rel starts with \"/<segment>/...\"\n    // then return \"/<mount>\" + rel instead of just rel\n    const relFirst = rel.split(\"/\").filter(Boolean)[0];\n    const baseSegs = basePath.split(\"/\").filter(Boolean);\n\n    if (relFirst && baseSegs.length >= 2 && baseSegs[1] === relFirst) {\n      const mount = baseSegs[0];\n      return origin + \"/\" + mount + rel;\n    }\n\n    return origin + rel;\n  }\n\n  // Relative path (includes \"../\" and \"../../../\")\n  // Resolve it against the directory of the base page:\n  // baseDir = \"/a/b/c/\" if basePath is \"/a/b/c/page.html\"\n  const baseDir = basePath.endsWith(\"/\")\n    ? basePath\n    : basePath.substring(0, basePath.lastIndexOf(\"/\") + 1);\n\n  const combined = baseDir + rel;             // may include ../ segments\n  const cleanedPath = removeDotSegments(combined);\n\n  return origin + cleanedPath;\n}\n\n// -------------------- n8n execution --------------------\n\nreturn items.map((item) => {\n  const partialUrl = stripQuotesAndWhitespace(item.json.partialUrl ?? item.json.url ?? \"\");\n  const sourceUrl = stripQuotesAndWhitespace(item.json.sourceUrl ?? \"\");\n  const domain = stripQuotesAndWhitespace(item.json.domain ?? \"\");\n\n  let outputUrl = \"\";\n\n  // Prefer resolving against the full page URL\n  if (partialUrl && sourceUrl) {\n    outputUrl = resolveUrl(sourceUrl, partialUrl);\n  }\n  // Fallback: resolve against a domain if provided\n  else if (partialUrl && domain) {\n    outputUrl = resolveUrl(domain, partialUrl);\n  }\n  // Last resort: return the partial string\n  else {\n    outputUrl = partialUrl;\n  }\n\n  // Normalize and make directory URLs consistent\n  outputUrl = normalizeDoubleSlashes(outputUrl);\n  outputUrl = addTrailingSlashIfDirectory(outputUrl);\n\n  return {\n    json: {\n      ...item.json,\n      output: outputUrl,\n    },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1792,
+        560
+      ],
+      "id": "614b29a2-e08d-4ac8-9f2b-607209bb324b",
+      "name": "Rebuild URL",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "errorMessage": "Check Fallback"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        720
+      ],
+      "id": "66ae0446-667e-40f6-98da-8aeaf28a986d",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "5b9b7353-bd04-4af2-9480-8de135ff4223",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.Source }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9b329055-03de-4250-8a3a-17c6cc2f13fa",
+      "name": "Drop Empty",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        3360,
+        560
+      ],
+      "typeVersion": 2,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "id": "72e69b3b-8dd5-4429-ae53-3ec156828c53",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -224,
+        272
+      ],
+      "typeVersion": 4.2,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Error": "=HTTP Request - {{ $json.error.status ?? $json.message }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e2b45b15-5aaf-4c5d-9ecb-4878497fe133",
+      "name": "Append Error (HTTP Request)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        736,
+        752
+      ],
+      "id": "1e5394d9-70d6-45ac-8657-b40a83a19990",
+      "name": "Split Out body",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Error": "=Browserless - {{ $json.error.status ?? $json.message }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        192
+      ],
+      "id": "38089c16-9e94-4905-89bd-0a3c172af305",
+      "name": "Append Error (Browserless)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "400ac833-9ce4-4b40-8981-bae327459f03",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3136,
+        560
+      ],
+      "id": "1171dd2e-e8e8-446a-a2e1-69a1349e1aa4",
+      "name": "Compare Output"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ada5a0d3-1b72-4aea-86ae-82151dc6f472",
+              "name": "Source",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2016,
+        560
+      ],
+      "id": "1fb296c2-bcd3-4f54-b1e9-da75f087758b",
+      "name": "Compare Input",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27b599da-f9af-4259-8a3b-2fb77af04eac",
+              "name": "Source",
+              "value": "={{\n  (() => {\n    const html = ($json?.data ?? '').toString?.() ?? '';\n\n    const canonical =\n      html.match(/<link[^>]*rel=[\"']canonical[\"'][^>]*href=[\"']([^\"']+)[\"']/i)?.[1] ?? '';\n\n    const finalUrl =\n      $json?.data?.finalUrl?.url ?? $json?.finalUrl?.url ?? '';\n\n    const source =\n      $('Set Inputs').all?.()?.[0]?.json?.Source ?? '';\n\n    const clean = (v) => String(v ?? '').replace(/[\\u0000-\\u001F\\u007F]/g, '').trim();\n\n    const untouched = clean(finalUrl) || clean(source) || '';\n    const canon = clean(canonical);\n\n    const host = (u) => (String(u).match(/^https?:\\/\\/([^\\/?#]+)/i)?.[1] ?? '').toLowerCase();\n\n    return (canon && untouched && host(canon) && host(untouched) && host(canon) !== host(untouched))\n      ? canon\n      : untouched;\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "86f0f2b7-7b34-4821-bf08-3d817fc327d3",
+              "name": "body",
+              "value": "={{ $json?.data?.fullHtml?.html ?? $json?.data ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "d51d17ea-010d-4c55-8bf0-1a3418fc0b34",
+              "name": "title",
+              "value": "={{\n  (\n    $json?.data?.fullHtml?.html\n      ?.match?.(/<title>(.*?)<\\/title>/i)\n      ?.[1]\n    ?? $json?.data\n      ?.match?.(/<title>(.*?)<\\/title>/i)\n      ?.[1]\n    ?? ''\n  )\n}}",
+              "type": "string"
+            },
+            {
+              "id": "fbfc015a-c354-4688-abf3-013b9ee8eb46",
+              "name": "last-modified",
+              "value": "={{\n  $json?.data?.scripts?.[0]?.headers?.find?.(\n    h => (h?.name ?? '').toLowerCase() === 'last-modified'\n  )?.value\n  ?? $json?.headers?.['last-modified']\n  ?? $json?.headers?.['Last-Modified']\n}}",
+              "type": "string"
+            },
+            {
+              "id": "9401651c-e78a-41d1-99a3-7f3c74322da9",
+              "name": "etag",
+              "value": "={{\n  (\n    $json?.data?.scripts?.[0]?.headers?.find?.(\n      h => (h?.name ?? '').toLowerCase() === 'etag'\n    )?.value\n    ?? $json?.headers?.etag\n    ?? $json?.headers?.['etag']\n    ?? $json?.headers?.['ETag']\n  )?.replace(/\"/g, '')\n}}",
+              "type": "string"
+            },
+            {
+              "id": "6a2f3c37-86e1-4fc6-b300-582e9bb1999a",
+              "name": "scripts",
+              "value": "={{ $json?.data?.scripts ?? [] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        512
+      ],
+      "id": "6c29811d-06be-4ffa-a826-b9812a68dab8",
+      "name": "Set Source"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c835e763-1639-489c-83c6-134bc954e486",
+              "name": "Source",
+              "value": "https://www.ready.gov/",
+              "type": "string"
+            },
+            {
+              "id": "2435aec3-f6fd-459d-8294-68e1f0a2158d",
+              "name": "Job",
+              "value": "1001",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1568,
+        432
+      ],
+      "id": "562e4713-cc81-4bb8-a4ea-3671487e596e",
+      "name": "Manual"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4f4d5c38-57a2-4fd0-8463-33ddb61be0cc",
+              "name": "allowedDomains",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "4d7904db-f454-4b39-a43b-9f59a75f88ab",
+              "name": "allowedSubdomains",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "0d7e85bc-8100-4aae-bcba-4f4475928d73",
+              "name": "blockedSubdomains",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "65e0bbd2-bedf-41c9-93fe-c2f07ebfb12f",
+              "name": "allowedSections",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "b230b059-d3f1-4f5d-baa3-2ec180a06522",
+              "name": "blockedSections",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "6e77569e-8d19-4386-88c2-c93095a8c7bc",
+              "name": "dataTypes",
+              "value": "^https?:\\/\\/[^\\n]*\\.(?:html?|pdf)\\b[^\\n]*$",
+              "type": "string"
+            },
+            {
+              "id": "7c65d6d7-1b45-4ec1-aede-461101a9afe6",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "a13a4dad-b477-41b8-a066-2963e42de13d",
+              "name": "Job",
+              "value": "={{ $json.Job }}",
+              "type": "string"
+            },
+            {
+              "id": "ff496dbd-bf79-4ef7-a811-a80b1a3890fd",
+              "name": "Execution",
+              "value": "=Crawl-{{$execution.id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1344,
+        528
+      ],
+      "id": "8d88bd51-b63c-4fde-9d38-38a0bb128f8f",
+      "name": "Set Inputs"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2912,
+        928
+      ],
+      "id": "25fb4f7e-6a41-4079-bd91-9812f7433886",
+      "name": "Set Workflow Output (Crawl)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        2688,
+        560
+      ],
+      "id": "082aa227-e35b-49ef-ac76-378a6d38ad91",
+      "name": "Remove Duplicates",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_input }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2464,
+        704
+      ],
+      "id": "9cc88074-abb3-4e6f-b0c2-aa197a93c4f9",
+      "name": "Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2464,
+        896
+      ],
+      "id": "337c078c-3149-4977-9c38-6bb1e218b30b",
+      "name": "Error",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_processed }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2464,
+        1088
+      ],
+      "id": "6d4e0b8f-da81-4efa-86ea-f9c89926ac6e",
+      "name": "Processed",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "executeOnce": false,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2688,
+        816
+      ],
+      "id": "f50ec854-cf0d-461b-89a4-e799753cfac9",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        800
+      ],
+      "id": "b8ac396d-9be2-4f2d-96b3-8e0a8877dd4c",
+      "name": "Limit Input",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Error": "Data Type Filter",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3808,
+        512
+      ],
+      "id": "3d8102ab-a573-4f52-9771-fee45ddb53b6",
+      "name": "Append Error (Data Type Filter)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a901e90d-8063-48f6-89b1-79c4da0d62d6",
+              "leftValue": "={{ $json.Source }}",
+              "rightValue": "={{ $(\"Set Inputs\").all()[0].json.dataTypes }}",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            },
+            {
+              "id": "9b8315c2-8375-4cd1-b3b8-8c27a961b05a",
+              "leftValue": "={{ $json.Source }}",
+              "rightValue": "^https?:\\/\\/[^/\\n]+(?!.*\\/[^?\\n#]*\\.[A-Za-z0-9]{2,6}(?:[?#]|$))[^\\n]*$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3584,
+        560
+      ],
+      "id": "794681ab-8b1b-4bc1-a77a-73ca3fc5cf81",
+      "name": "Data Type Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "31069597-4422-40c5-987b-3f50fafe2fa1",
+              "leftValue": "={{ $json.headers['content-type'] }}",
+              "rightValue": "html",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -672,
+        432
+      ],
+      "id": "2018af52-8d64-4933-a418-ee6e1e54a6fe",
+      "name": "HTML Catch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "450a4e34-4915-44b5-8308-a754d3ec15a7",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        336
+      ],
+      "id": "4d960401-0f6a-45f3-a2a4-d575e79348d5",
+      "name": "HTML Failover"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_input }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4032,
+        896
+      ],
+      "id": "41b71ad5-d85d-4899-aac5-5e37166c5be7",
+      "name": "Append Input",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Error": "=PDF - {{ $json.error.status ?? $json.message }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -672,
+        720
+      ],
+      "id": "a86e8d26-fa3f-47a3-b184-ca4674b67ba3",
+      "name": "Append Error (PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.crawl_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.crawl_sheet_output }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        368
+      ],
+      "id": "349ba32b-fd39-4212-8e63-d802abf0f6bb",
+      "name": "Append Crawl-Output (HTML)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.crawl_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.crawl_sheet_output }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -448,
+        528
+      ],
+      "id": "f724637e-89c0-41a1-b3d5-61b1def27690",
+      "name": "Append Crawl-Output (PDF)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        528
+      ],
+      "id": "21a96b9d-3a2f-49d8-af10-9a00ecfd272e",
+      "name": "Set Workflow Output (PDF)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4032,
+        512
+      ],
+      "id": "72a6721f-458e-4ffd-bfad-70fa62680984",
+      "name": "Set Workflow Output (Data Type Filter)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4256,
+        896
+      ],
+      "id": "c8fb01e2-a12b-4825-a6a5-e75be023606d",
+      "name": "Set Workflow Output (Append Input)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Set Inputs').item.json.Source }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $('Set Inputs').item.json.Source.split('/').slice(0,3).join('/') + '/' }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          },
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -896,
+        528
+      ],
+      "id": "1d1d6967-37e9-4725-a8b0-a4983fa52e66",
+      "name": "PDF Binary",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreate Generic Credential\nType: Query Auth\nName: token\nYour Browserless API Key",
+        "height": 288,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        368
+      ],
+      "id": "56359d5b-85fb-4ea8-9e86-4d60746f41c5",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Check HTTP Request: {{ $json.Error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "id": "22535afb-ffd1-4ad5-809b-8e46d4e23ccc",
+      "name": "Stop and Error (HTTP Request)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Check Browserless: {{ $json.Error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        416,
+        192
+      ],
+      "id": "ceedfb4a-c709-40be-9a54-10dbfd137d6b",
+      "name": "Stop and Error (Browserless)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Check PDF: {{ $json.Error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        720
+      ],
+      "id": "86ee449d-b77b-44ff-97e7-2e35e7ffa15d",
+      "name": "Stop and Error (PDF)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nallowedDomains\nOnly crawl URLs from specified root domains.\nhttps://ready.gov/\n→ ready.gov, fema.gov,\n\nallowedSubdomains\nOnly crawl specific subdomains (instead of all).\nhttps://nasa.gov/\n→ science.nasa.gov, nasa.gov,\n\nblockedSubdomains\nCrawl all subdomains except those listed.\nhttps://nasa.gov/\n→ plus.nasa.gov\n\nallowedSections\nOnly crawl URLs containing specified path segments.\nhttps://nps.gov/subjects/fossils/\n→ fossils, articles\n\nblockedSections\nCrawl all sections except those containing specified path segments.\nhttps://ready.gov/\n→ ar,es,fr,ht,ja,ko,ru,tl,vi,zh-hans,hi,pt-br,\n\ndataTypes\nRegex filter for allowed file types.\ne.g., allow: HTML, PDF (customizable)",
+        "height": 864,
+        "width": 256,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        528
+      ],
+      "id": "82cbffdf-e879-403a-a735-00091a58d720",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Crawl\nCrawls the specified URL and extracts all links found on the page. Each extracted URL is validated and crawled in subsequent runs.\nThere are multiple filters available in the Sets Inputs node to help refine what data is collected during a run.\n",
+        "height": 112,
+        "width": 976,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1808,
+        288
+      ],
+      "id": "ef2b94a2-9b7c-47ed-94df-b7aa31922628",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Error": "Domain Filter (Pre-Crawl)",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        688,
+        192
+      ],
+      "id": "d5e4cad3-0c38-4da6-b811-f999df3089bd",
+      "name": "Append Error (Domain Filter Pre-Crawl)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        864,
+        192
+      ],
+      "id": "6b6f5273-536e-4f9d-80d3-33bfcf33d3f2",
+      "name": "Set Workflow Output (Domain Filter Pre-Crawl)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "512c981d-9fe4-48da-8b8a-980ae65ba92a",
+              "leftValue": "={{\n  Boolean((() => {\n    const srcRaw = (($json.Source || '') + '').trim().toLowerCase();\n    if (!srcRaw) return false;\n\n    const parseHostPath = (s) => {\n      s = (s || '').trim().toLowerCase();\n      if (!s) return null;\n\n      s = s.replace(/^https?:\\/\\//, '');\n      s = s.split('#')[0].split('?')[0];\n\n      const parts = s.split('/');\n      const host = (parts.shift() || '').replace(/\\.$/, '');\n      let path = '/' + parts.join('/');\n\n      if (path === '/') path = '';\n      path = path.replace(/\\/+$/, '');\n\n      return host ? { host, path } : null;\n    };\n\n    const src = parseHostPath(srcRaw);\n    if (!src) return false;\n\n    const allowedRaw = (($('Set Inputs').first().json.allowedDomains || '') + '')\n      .split(',')\n      .map(s => s.trim())\n      .filter(Boolean);\n\n    // allow all if empty\n    if (allowedRaw.length === 0) return true;\n\n    const allowed = allowedRaw\n      .map(parseHostPath)\n      .filter(Boolean);\n\n    const hostMatches = (srcHost, allowedHost) =>\n      srcHost === allowedHost || srcHost.endsWith('.' + allowedHost);\n\n    return allowed.some(a => {\n      if (!hostMatches(src.host, a.host)) return false;\n      if (!a.path) return true;\n      return src.path === a.path || src.path.startsWith(a.path + '/');\n    });\n  })())\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "a901e90d-8063-48f6-89b1-79c4da0d62d6",
+              "leftValue": "={{\n  Boolean((() => {\n    const inputs = $('Set Inputs').first().json || {};\n\n    const normalizeHost = (s) => {\n      s = ('' + (s || '')).trim().toLowerCase();\n      if (!s) return '';\n      s = s.replace(/^https?:\\/\\//, '');\n      s = s.split('#')[0].split('?')[0];\n      let host = (s.split('/')[0] || '').replace(/\\.$/, '');\n      if (host.startsWith('www.')) host = host.slice(4);\n      return host;\n    };\n\n    const parseHosts = (v) =>\n      ('' + (v || ''))\n        .split(',')\n        .map(x => normalizeHost(x))\n        .filter(Boolean);\n\n    const srcHost = normalizeHost($json.Source);\n    if (!srcHost) return false;\n\n    const allowedSub = parseHosts(inputs.allowedSubdomains);\n    const blockedSub = parseHosts(inputs.blockedSubdomains);\n\n    // 1) allowedSubdomains is a HARD allowlist if set\n    if (allowedSub.length > 0 && !allowedSub.includes(srcHost)) return false;\n\n    // 2) blocklist always applies (override deny)\n    if (blockedSub.length > 0 && blockedSub.includes(srcHost)) return false;\n\n    return true;\n  })())\n}}",
+              "rightValue": "={{ $('Set Inputs').first().json.allowedDomains }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "709b6e78-9034-4a46-b893-7b059203ec95",
+              "leftValue": "={{\n  Boolean((() => {\n    const src = ('' + ($json.Source || '')).toLowerCase();\n    if (!src) return false;\n\n    const parse = v =>\n      ('' + (v || ''))\n        .split(',')\n        .map(s => s.trim().toLowerCase())\n        .filter(Boolean);\n\n    const allowed = parse($('Set Inputs').first().json.allowedSections);\n    const blocked = parse($('Set Inputs').first().json.blockedSections);\n\n    // Match section as:\n    //  - \"/section/\" anywhere (directory)\n    //  - \"/section-<something>/\" anywhere (hyphenated directory)\n    // NOT filenames like \"/section-thing.htm\"\n    const matches = (section) => {\n      const re = new RegExp(`/${section}(?:/|-[^/]+/)`);\n      return re.test(src);\n    };\n\n    // 1) blocklist wins\n    if (blocked.some(matches)) return false;\n\n    // 2) no allowlist => allow\n    if (allowed.length === 0) return true;\n\n    // 3) otherwise must match allowlist\n    return allowed.some(matches);\n  })())\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        528
+      ],
+      "id": "61bedf21-4a2e-4d4a-99a1-1115a74df8df",
+      "name": "Domain Filter (Pre-Crawl)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "512c981d-9fe4-48da-8b8a-980ae65ba92a",
+              "leftValue": "={{\n  Boolean((() => {\n    const srcRaw = (($json.Source || '') + '').trim().toLowerCase();\n    if (!srcRaw) return false;\n\n    const parseHostPath = (s) => {\n      s = (s || '').trim().toLowerCase();\n      if (!s) return null;\n\n      s = s.replace(/^https?:\\/\\//, '');\n      s = s.split('#')[0].split('?')[0];\n\n      const parts = s.split('/');\n      const host = (parts.shift() || '').replace(/\\.$/, '');\n      let path = '/' + parts.join('/');\n\n      if (path === '/') path = '';\n      path = path.replace(/\\/+$/, '');\n\n      return host ? { host, path } : null;\n    };\n\n    const src = parseHostPath(srcRaw);\n    if (!src) return false;\n\n    const allowedRaw = (($('Set Inputs').first().json.allowedDomains || '') + '')\n      .split(',')\n      .map(s => s.trim())\n      .filter(Boolean);\n\n    // allow all if empty\n    if (allowedRaw.length === 0) return true;\n\n    const allowed = allowedRaw\n      .map(parseHostPath)\n      .filter(Boolean);\n\n    const hostMatches = (srcHost, allowedHost) =>\n      srcHost === allowedHost || srcHost.endsWith('.' + allowedHost);\n\n    return allowed.some(a => {\n      if (!hostMatches(src.host, a.host)) return false;\n      if (!a.path) return true;\n      return src.path === a.path || src.path.startsWith(a.path + '/');\n    });\n  })())\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "a901e90d-8063-48f6-89b1-79c4da0d62d6",
+              "leftValue": "={{\n  Boolean((() => {\n    const inputs = $('Set Inputs').first().json || {};\n\n    const normalizeHost = (s) => {\n      s = ('' + (s || '')).trim().toLowerCase();\n      if (!s) return '';\n      s = s.replace(/^https?:\\/\\//, '');\n      s = s.split('#')[0].split('?')[0];\n      let host = (s.split('/')[0] || '').replace(/\\.$/, '');\n      if (host.startsWith('www.')) host = host.slice(4);\n      return host;\n    };\n\n    const parseHosts = (v) =>\n      ('' + (v || ''))\n        .split(',')\n        .map(x => normalizeHost(x))\n        .filter(Boolean);\n\n    const srcHost = normalizeHost($json.Source);\n    if (!srcHost) return false;\n\n    const allowedSub = parseHosts(inputs.allowedSubdomains);\n    const blockedSub = parseHosts(inputs.blockedSubdomains);\n\n    // 1) allowedSubdomains is a HARD allowlist if set\n    if (allowedSub.length > 0 && !allowedSub.includes(srcHost)) return false;\n\n    // 2) blocklist always applies (override deny)\n    if (blockedSub.length > 0 && blockedSub.includes(srcHost)) return false;\n\n    return true;\n  })())\n}}",
+              "rightValue": "={{ $('Set Inputs').first().json.allowedDomains }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "709b6e78-9034-4a46-b893-7b059203ec95",
+              "leftValue": "={{\n  Boolean((() => {\n    const src = ('' + ($json.Source || '')).toLowerCase();\n    if (!src) return false;\n\n    const parse = v =>\n      ('' + (v || ''))\n        .split(',')\n        .map(s => s.trim().toLowerCase())\n        .filter(Boolean);\n\n    const allowed = parse($('Set Inputs').first().json.allowedSections);\n    const blocked = parse($('Set Inputs').first().json.blockedSections);\n\n    // Match section as:\n    //  - \"/section/\" anywhere (directory)\n    //  - \"/section-<something>/\" anywhere (hyphenated directory)\n    // NOT filenames like \"/section-thing.htm\"\n    const matches = (section) => {\n      const re = new RegExp(`/${section}(?:/|-[^/]+/)`);\n      return re.test(src);\n    };\n\n    // 1) blocklist wins\n    if (blocked.some(matches)) return false;\n\n    // 2) no allowlist => allow\n    if (allowed.length === 0) return true;\n\n    // 3) otherwise must match allowlist\n    return allowed.some(matches);\n  })())\n}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3808,
+        752
+      ],
+      "id": "eb5257ee-f280-4e3a-937f-05af4109d755",
+      "name": "Domain Filter (Post-Crawl)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $json.Source }}",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Error": "Domain Filter (Post-Crawl)",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4032,
+        704
+      ],
+      "id": "04652d2c-e290-4fd7-b86b-5dedc486d704",
+      "name": "Append Error (Domain Filter Post-Crawl)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4256,
+        704
+      ],
+      "id": "6bed0c5d-32da-4fd1-bb8b-b7aa1de1cf79",
+      "name": "Set Workflow Output (Domain Filter Post-Crawl)",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\nStop Workflow on Error",
+        "width": 192,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        720
+      ],
+      "id": "fb604d5d-f9b4-4a9d-8880-68f63af37485",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nStop Workflow on Error",
+        "height": 192,
+        "width": 192,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "aa484d16-9e49-4676-b7f1-c190884804d7",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nStop Workflow on Error",
+        "height": 192,
+        "width": 192,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        368,
+        192
+      ],
+      "id": "622ec17b-8340-4e93-8c50-33e7a971fa4d",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Set Source",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (Browserless)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spilt-Out HTML href": {
+      "main": [
+        [
+          {
+            "node": "Merge HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract HTML href": {
+      "main": [
+        [
+          {
+            "node": "Spilt-Out HTML href",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split-Out Scripts": {
+      "main": [
+        [
+          {
+            "node": "Split Out body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Type Switch": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PDF Binary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Junk Filter": {
+      "main": [
+        [
+          {
+            "node": "Set Partial\\Source URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge HTML": {
+      "main": [
+        [
+          {
+            "node": "Junk Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Partial URLs": {
+      "main": [
+        [
+          {
+            "node": "Merge HTML",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Compare": {
+      "main": [
+        [
+          {
+            "node": "Compare Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Partial\\Source URL": {
+      "main": [
+        [
+          {
+            "node": "Rebuild URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rebuild URL": {
+      "main": [
+        [
+          {
+            "node": "Compare Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drop Empty": {
+      "main": [
+        [
+          {
+            "node": "Data Type Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (HTTP Request)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out body": {
+      "main": [
+        [
+          {
+            "node": "Extract Partial URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare Output": {
+      "main": [
+        [
+          {
+            "node": "Drop Empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare Input": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Limit Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Source": {
+      "main": [
+        [
+          {
+            "node": "Domain Filter (Pre-Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "Type Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Compare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Processed": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Compare",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Set Workflow Output (Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit Input": {
+      "main": [
+        [
+          {
+            "node": "Processed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Input",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Type Filter": {
+      "main": [
+        [
+          {
+            "node": "Domain Filter (Post-Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (Data Type Filter)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Catch": {
+      "main": [
+        [
+          {
+            "node": "HTML Failover",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Crawl-Output (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Failover": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Crawl-Output (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Set Workflow Output (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (HTTP Request)": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error (HTTP Request)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (Browserless)": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error (Browserless)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (Data Type Filter)": {
+      "main": [
+        [
+          {
+            "node": "Set Workflow Output (Data Type Filter)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Input": {
+      "main": [
+        [
+          {
+            "node": "Set Workflow Output (Append Input)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (PDF)": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF Binary": {
+      "main": [
+        [
+          {
+            "node": "HTML Catch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (PDF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (Domain Filter Pre-Crawl)": {
+      "main": [
+        [
+          {
+            "node": "Set Workflow Output (Domain Filter Pre-Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Domain Filter (Pre-Crawl)": {
+      "main": [
+        [
+          {
+            "node": "Append Crawl-Output (HTML)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract HTML href",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split-Out Scripts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (Domain Filter Pre-Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Domain Filter (Post-Crawl)": {
+      "main": [
+        [
+          {
+            "node": "Append Input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append Error (Domain Filter Post-Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Error (Domain Filter Post-Crawl)": {
+      "main": [
+        [
+          {
+            "node": "Set Workflow Output (Domain Filter Post-Crawl)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "633cd345-35a6-4725-98bd-383c116615af",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "G3qiX1Nase9QrlCY",
+  "tags": []
+}

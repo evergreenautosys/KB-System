@@ -1,0 +1,2020 @@
+{
+  "name": "Upsert",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "694f33bc-5984-4a07-b1cc-1c91755bb9d3",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -3584,
+        720
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -3792,
+        528
+      ],
+      "id": "f52aa56e-79dd-43f7-9073-b5e4c11581f1",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2688,
+        624
+      ],
+      "id": "7e0680e1-fe7e-4305-b4b8-cc3483e8eaba",
+      "name": "Download HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "destinationKey": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -2464,
+        624
+      ],
+      "id": "359a751f-447e-4f69-a45e-b4aac698bec8",
+      "name": "Extract HTML Data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0810981d-cea1-4cdb-bc18-36ddbcd6334c",
+              "name": "CHUNK_SIZE",
+              "value": 1000,
+              "type": "number"
+            },
+            {
+              "id": "9c1d8a5a-10f1-4438-8546-0c5d38dcb07b",
+              "name": "CHUNK_OVERLAP",
+              "value": 200,
+              "type": "number"
+            },
+            {
+              "id": "c4268a0f-26e2-40b4-b593-8ec06e2b1be8",
+              "name": "dimensions",
+              "value": "768",
+              "type": "string"
+            },
+            {
+              "id": "cdb393fe-a4ea-43af-b44e-7b7973773812",
+              "name": "dense_model",
+              "value": "llama-text-embed-v2",
+              "type": "string"
+            },
+            {
+              "id": "2f93a1d8-8d07-4b89-998a-30aee5accadc",
+              "name": "sparse_model",
+              "value": "pinecone-sparse-english-v0",
+              "type": "string"
+            },
+            {
+              "id": "e9a60253-93c1-4397-b07c-6c917e1df4ae",
+              "name": "pinecone_host",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "02bfb9f3-d368-4fa5-9540-c9bfc10c2e70",
+              "name": "namespace",
+              "value": "demo",
+              "type": "string"
+            },
+            {
+              "id": "a448d0c5-50b7-4fb0-8496-ee8a76253c86",
+              "name": "Source",
+              "value": "={{ $json.Source }}",
+              "type": "string"
+            },
+            {
+              "id": "3cc45ff6-6d54-4879-a722-ba80ef8d45c3",
+              "name": "Title",
+              "value": "={{ $json.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "c63ac3c6-2cd1-4788-b095-39c504b9063d",
+              "name": "Created Date",
+              "value": "={{ $json['Created Date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9a0624cf-6a26-42a0-b225-a57b4c084856",
+              "name": "Last Modified",
+              "value": "={{ $json['Last Modified'] }}",
+              "type": "string"
+            },
+            {
+              "id": "57eed031-4760-44f2-9238-c6fbc5073f7a",
+              "name": "Etag",
+              "value": "={{ $json.Etag }}",
+              "type": "string"
+            },
+            {
+              "id": "ebf55028-d9cc-4a21-898a-50000202fac6",
+              "name": "Hash",
+              "value": "={{ $json.Hash }}",
+              "type": "string"
+            },
+            {
+              "id": "0cb3eaf6-41a8-4c8f-9016-1323b8e1087c",
+              "name": "Filename",
+              "value": "={{ $json.Filename }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9833c0-18b8-4bfa-8854-8cdec4d47a23",
+              "name": "Job",
+              "value": "={{ $json.Job }}",
+              "type": "number"
+            },
+            {
+              "id": "a74282d8-8f11-4bef-b14c-5a2cb3cee8fb",
+              "name": "Execution",
+              "value": "=Upsert-{{$execution.id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3360,
+        624
+      ],
+      "id": "844c6cab-3bb8-4ef4-8b53-1bea579b0e18",
+      "name": "Set Inputs"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cca9a8b7-a815-4f13-908c-79a5c3d99b21",
+                    "leftValue": "={{ $json.Filename }}",
+                    "rightValue": "=.md",
+                    "operator": {
+                      "type": "string",
+                      "operation": "endsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HTML"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Filename }}",
+                    "rightValue": ".txt",
+                    "operator": {
+                      "type": "string",
+                      "operation": "endsWith"
+                    },
+                    "id": "8c326d29-c843-4ca7-af58-06df08ddfece"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -3136,
+        608
+      ],
+      "id": "8032a13f-d0e8-44f9-81aa-da51ae463f89",
+      "name": "File Type Switch"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "={{ 'name=\"' + $json.Filename + '\"' }}",
+        "limit": 1,
+        "filter": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2912,
+        624
+      ],
+      "id": "692760ad-8019-4634-ad7d-55437b311ecb",
+      "name": "Search Formatted-HTML",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4776302c-88d2-4e7c-9bfb-57ce24b7cf01",
+              "leftValue": "={{ $json.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2240,
+        720
+      ],
+      "id": "1928c5e0-2be2-4d72-aa44-1c1b562ad2a8",
+      "name": "If Empty"
+    },
+    {
+      "parameters": {
+        "batchSize": 96,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1344,
+        1312
+      ],
+      "id": "4feb03b3-13ae-45f3-a5b3-b4761e90e91c",
+      "name": "96 Max Items",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        1344
+      ],
+      "id": "e2ca490d-ef3b-4bd5-b0d3-6d4404a5c2cf",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "content.parts[0].text",
+        "options": {
+          "destinationFieldName": "text"
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        768
+      ],
+      "id": "c535510a-6c1d-496a-9015-0fc20a8cb9c4",
+      "name": "Split Text"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pinecone.io/embed",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Pinecone-Api-Version",
+              "value": " 2025-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -448,
+        448
+      ],
+      "id": "39defc8a-7794-498b-b6ac-5f2fe427a103",
+      "name": "Embed Dense Vector",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "executeOnce": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pinecone.io/embed",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Pinecone-Api-Version",
+              "value": " 2025-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -448,
+        1008
+      ],
+      "id": "c9ee99dc-f18b-4089-8266-f7bbe493822b",
+      "name": "Embed Sparse Vector",
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "executeOnce": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6178329-abe5-4d50-a2c2-e58b9180cbd4",
+              "name": "model",
+              "value": "={{ $(\"Set Inputs\").all()[0].json.dense_model }}",
+              "type": "string"
+            },
+            {
+              "id": "962186fa-0cae-4870-863e-0a36274daa6e",
+              "name": "parameters.input_type",
+              "value": "passage",
+              "type": "string"
+            },
+            {
+              "id": "80b84604-7e6a-4359-a801-103c54ba1177",
+              "name": "parameters.truncate",
+              "value": "END",
+              "type": "string"
+            },
+            {
+              "id": "91123314-7aa2-4d44-86db-c8c23b416402",
+              "name": "parameters.dimension",
+              "value": "={{ $(\"Set Inputs\").all()[0].json[\"dimensions\"] }}",
+              "type": "number"
+            },
+            {
+              "id": "5e32df2f-0047-48a8-b81c-03910c82b53f",
+              "name": "inputs",
+              "value": "={{ $json.inputs }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -672,
+        496
+      ],
+      "id": "c08193fb-b5b7-45b1-81b8-f5caee4b6b0a",
+      "name": "Set Dense Vector"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "inputs",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        768
+      ],
+      "id": "1cea9dd7-7057-46b1-8ca9-9bc96285e5c9",
+      "name": "Aggregate Text",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -224,
+        192
+      ],
+      "id": "a3dc9478-3a66-4c23-9042-7f817c414208",
+      "name": "Merge Vectors"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6178329-abe5-4d50-a2c2-e58b9180cbd4",
+              "name": "model",
+              "value": "={{ $(\"Set Inputs\").all()[0].json.sparse_model }}",
+              "type": "string"
+            },
+            {
+              "id": "962186fa-0cae-4870-863e-0a36274daa6e",
+              "name": "parameters.input_type",
+              "value": "passage",
+              "type": "string"
+            },
+            {
+              "id": "80b84604-7e6a-4359-a801-103c54ba1177",
+              "name": "parameters.truncate",
+              "value": "END",
+              "type": "string"
+            },
+            {
+              "id": "5e32df2f-0047-48a8-b81c-03910c82b53f",
+              "name": "inputs",
+              "value": "={{ $json.inputs }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -672,
+        1088
+      ],
+      "id": "d556cb9a-27fe-4252-9597-c75bbbd505e4",
+      "name": "Set Sparse Vector"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        0,
+        192
+      ],
+      "id": "7c499333-241b-49b4-956f-0758d9298e93",
+      "name": "Split Data"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        192
+      ],
+      "id": "5f7b04a4-5f5e-47c2-b5cf-71c0c7f6a10a",
+      "name": "Merge Metadata"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec7f27aa-0201-4572-90f8-eb2c61eaf3fa",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "640e9dd6-57a2-467a-a0cd-696be1917d2b",
+              "name": "values",
+              "value": "={{ $json.values }}",
+              "type": "array"
+            },
+            {
+              "id": "45c60a80-24ca-40cc-800b-ea615b993c5b",
+              "name": "sparse_values.values",
+              "value": "={{ $json.sparse_values }}",
+              "type": "array"
+            },
+            {
+              "id": "36332ebb-cea7-46ee-9d7b-fe5e9d7a754f",
+              "name": "sparse_values.indices",
+              "value": "={{ $json.sparse_indices }}",
+              "type": "array"
+            },
+            {
+              "id": "c9605203-4537-48f9-8b29-d60e8ea0900c",
+              "name": "metadata",
+              "value": "={{ $json.metadata }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        192
+      ],
+      "id": "6736725d-523a-4488-9eb9-a75db34c5608",
+      "name": "Set Upsert"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "vectors",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        672,
+        192
+      ],
+      "id": "136da21e-88bf-4edc-9c9a-3f111d9cb91a",
+      "name": "Aggregate Vectors"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c3c7c69-1216-4199-8563-c01c9a461818",
+              "name": "vectors",
+              "value": "={{ $json.vectors }}",
+              "type": "array"
+            },
+            {
+              "id": "3662ed6e-4e90-4887-a88d-769567f4cdfa",
+              "name": "namespace",
+              "value": "={{ $('Set Inputs').all()[0].json.namespace }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        192
+      ],
+      "id": "3917721d-60e7-4ae3-b828-4de22a95b158",
+      "name": "Set Namespace"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "={{ 'name=\"' + $json.Filename + '\"' }}",
+        "limit": 1,
+        "filter": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2912,
+        816
+      ],
+      "id": "dd46ab31-260b-454b-9666-0824ac78dd76",
+      "name": "Search Formatted-PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2688,
+        816
+      ],
+      "id": "de2ac08a-63d6-4737-9f7a-03d3c3cb89d0",
+      "name": "Download PDF",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "destinationKey": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -2464,
+        816
+      ],
+      "id": "0685e62c-3a2a-4562-b7dd-9496df023554",
+      "name": "Extract PDF Data"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---- Config ----\nconst input = $input.first().json;\nconst CHUNK_SIZE = input.CHUNK_SIZE;\nconst CHUNK_OVERLAP = input.CHUNK_OVERLAP;\n\n// ---- Input ----\nconst rawText = input.text;\nif (!rawText || typeof rawText !== \"string\" || !rawText.trim()) {\n  return [];\n}\n\n// ---- Helpers to classify lines ----\nfunction isHeading(line) {\n  const trimmed = line.trim();\n  // Markdown-style headings: #, ##, ### etc.\n  return /^#{1,6}\\s+/.test(trimmed);\n}\n\nfunction isTableLine(line) {\n  const trimmed = line.trim();\n  if (!trimmed) return false;\n  // Simple Markdown table heuristic: line starts with '|' or contains pipes on both sides\n  if (trimmed.startsWith(\"|\")) return true;\n  return /\\|.+\\|/.test(trimmed);\n}\n\n// ---- Step 1: Group lines into logical blocks (heading, table, text) ----\nconst lines = rawText.split(/\\r?\\n/);\n\nconst blocks = [];\nlet currentBlock = { type: null, text: \"\" };\n\nfunction pushCurrentBlock() {\n  if (currentBlock.type && currentBlock.text.trim().length > 0) {\n    blocks.push({\n      type: currentBlock.type,\n      text: currentBlock.text.trimEnd() + \"\\n\"\n    });\n  }\n  currentBlock = { type: null, text: \"\" };\n}\n\nfor (let idx = 0; idx < lines.length; idx++) {\n  const line = lines[idx];\n  const trimmed = line.trim();\n\n  // Blank line: terminate current block\n  if (!trimmed) {\n    pushCurrentBlock();\n    continue;\n  }\n\n  const heading = isHeading(line);\n  const table = isTableLine(line);\n  const lineType = heading ? \"heading\" : (table ? \"table\" : \"text\");\n\n  if (!currentBlock.type) {\n    // Start a new block\n    currentBlock.type = lineType;\n    currentBlock.text = line + \"\\n\";\n  } else {\n    // Special case: allow heading + table to be merged into one block\n    if (currentBlock.type === \"heading\" && lineType === \"table\") {\n      currentBlock.type = \"heading_table\";\n      currentBlock.text += line + \"\\n\";\n    } else if (lineType === currentBlock.type) {\n      // Same type: continue the block (e.g. multi-line table or paragraph)\n      currentBlock.text += line + \"\\n\";\n    } else {\n      // Different type: close current block and start a new one\n      pushCurrentBlock();\n      currentBlock.type = lineType;\n      currentBlock.text = line + \"\\n\";\n    }\n  }\n}\npushCurrentBlock(); // flush last block\n\n// ---- Step 2: Turn blocks into chunks without splitting tables ----\nconst chunkTexts = [];\nlet chunkStartIndex = 0;\nlet currentLen = 0;\n\n// Precompute block lengths for convenience\nconst blockLengths = blocks.map(b => b.text.length);\n\nfor (let i = 0; i < blocks.length; i++) {\n  const blockLen = blockLengths[i];\n\n  // If adding this block would exceed CHUNK_SIZE and we already have some content, cut a chunk here\n  if (currentLen > 0 && currentLen + blockLen > CHUNK_SIZE) {\n    // Build chunk from [chunkStartIndex, i)\n    const chunk = blocks\n      .slice(chunkStartIndex, i)\n      .map(b => b.text)\n      .join(\"\\n\")\n      .trim();\n\n    if (chunk.length > 10) {\n      chunkTexts.push(chunk);\n    }\n\n    // ---- Overlap: move start index backward to include previous blocks up to CHUNK_OVERLAP chars ----\n    let overlapLen = 0;\n    let newStart = i - 1;\n    while (newStart > chunkStartIndex && overlapLen + blockLengths[newStart] <= CHUNK_OVERLAP) {\n      overlapLen += blockLengths[newStart];\n      newStart--;\n    }\n\n    chunkStartIndex = Math.max(0, newStart);\n    // Recompute currentLen from newStart up to (but not including) i\n    currentLen = 0;\n    for (let j = chunkStartIndex; j < i; j++) {\n      currentLen += blockLengths[j];\n    }\n  }\n\n  // Add current block to the running chunk\n  currentLen += blockLen;\n}\n\n// Flush the final chunk\nif (chunkStartIndex < blocks.length) {\n  const finalChunk = blocks\n    .slice(chunkStartIndex)\n    .map(b => b.text)\n    .join(\"\\n\")\n    .trim();\n  if (finalChunk.length > 10) {\n    chunkTexts.push(finalChunk);\n  }\n}\n\n// ---- Step 3: Build embedding requests ----\nconst requests = chunkTexts.map((chunkText) => ({\n  content: {\n    parts: [{ text: chunkText }]\n  }\n}));\n\n// ---- Output ----\nreturn [{ json: { requests } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1792,
+        1328
+      ],
+      "id": "88dc3088-18c9-4a51-8d63-4d7f33699fb1",
+      "name": "Chunking"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "abc26527-794c-45fa-bb27-1fc979a990c6",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "ca2129e1-4324-4fee-8b89-1d04817b1c33",
+              "name": "CHUNK_SIZE",
+              "value": "={{ $('Set Inputs').all()[0].json.CHUNK_SIZE }}",
+              "type": "number"
+            },
+            {
+              "id": "7324d387-a472-431e-99f4-ee112218add2",
+              "name": "CHUNK_OVERLAP",
+              "value": "={{ $('Set Inputs').all()[0].json.CHUNK_OVERLAP }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2016,
+        1328
+      ],
+      "id": "037c8f3c-4c7a-4a06-8a2a-0a83cd996fed",
+      "name": "Set Chunk Size and Overlap"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "requests",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1568,
+        1328
+      ],
+      "id": "55087927-07ae-47e1-b126-0b5fd33e74e3",
+      "name": "Split Requests"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $(\"Set Inputs\").all()[0].json.pinecone_host }}/vectors/upsert",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "pineconeApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        896
+      ],
+      "id": "566864d0-0b20-48e7-b709-24408a1ea1bc",
+      "name": "Upsert",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1792,
+        992
+      ],
+      "id": "aac7e0a9-1206-4a3b-8e68-31bf46de09e9",
+      "name": "Upsert Error"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        960
+      ],
+      "id": "9d6be011-35e6-48ab-92dd-75737f5db21e",
+      "name": "Wait 60 Sec (Sparse)",
+      "webhookId": "c890dc0d-8e1f-455c-9ded-ec4f24802973",
+      "executeOnce": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        1152
+      ],
+      "id": "55775804-d965-4be1-a9fd-9472fc7df764",
+      "name": "Sparse Error"
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        816
+      ],
+      "id": "7e1a2376-4cc6-453f-bdce-15deab62798b",
+      "name": "Wait 60 Sec (Upsert)",
+      "webhookId": "c890dc0d-8e1f-455c-9ded-ec4f24802973",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "amount": 60
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -224,
+        432
+      ],
+      "id": "b4cc06ac-707a-4dd9-b719-7cda89968d66",
+      "name": "Wait 60 Sec (Dense)",
+      "webhookId": "c890dc0d-8e1f-455c-9ded-ec4f24802973",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        592
+      ],
+      "id": "cc7220ec-4548-4562-ade9-5051ff82c0c4",
+      "name": "Dense Error"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Dense Embedding Error"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        224,
+        384
+      ],
+      "id": "a4630991-2791-465f-91f0-a89ec2b74755",
+      "name": "Error (Dense Embedding)"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Sparse Embedding Error"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        224,
+        912
+      ],
+      "id": "a40cde74-8def-44c1-924b-c097751da8c3",
+      "name": "Error (Sparse Embedding)"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Upsert Error"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        768
+      ],
+      "id": "4f112a9d-b4ab-49ab-9115-f0e8275ae0e1",
+      "name": "Error (Upsert)"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.upsert_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.upsert_sheet_output }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $(\"Set Inputs\").all()[0].json.Title }}",
+            "Source": "={{ $(\"Set Inputs\").all()[0].json.Source }}",
+            "Filename": "={{ $(\"Set Inputs\").all()[0].json.Filename }}",
+            "Hash": "={{ $(\"Set Inputs\").all()[0].json.Hash }}",
+            "Last Modified": "={{ $(\"Set Inputs\").all()[0].json['Last Modified'] }}",
+            "Created Date": "=",
+            "Job": "={{ $(\"Set Inputs\").all()[0].json.Job }}",
+            "Etag": "={{ $(\"Set Inputs\").all()[0].json.Etag }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Modified",
+              "displayName": "Last Modified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etag",
+              "displayName": "Etag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hash",
+              "displayName": "Hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Filename",
+              "displayName": "Filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -896,
+        1344
+      ],
+      "id": "a47feba2-2adb-474b-bf18-c8739a61b9a2",
+      "name": "Update Upsert-Output (HTML)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb1e7c54-6de0-4e9f-85f7-ea7355b8e247",
+              "name": "id",
+              "value": "={{$execution.id}}_{{$runIndex}}_{{ $itemIndex }}",
+              "type": "string"
+            },
+            {
+              "id": "0e061ee7-cff4-4b57-ae24-fff7f588deb6",
+              "name": "metadata.source",
+              "value": "={{ $(\"Set Inputs\").all()[0].json[\"Source\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "2d0f61ea-bf10-424c-9f78-71ecc65d1dd4",
+              "name": "metadata.filename",
+              "value": "={{ $('Set Inputs').all()[0].json.Filename }}",
+              "type": "string"
+            },
+            {
+              "id": "d3b387ed-c2f6-486e-a04b-6a3fb419bea7",
+              "name": "metadata.last-modified",
+              "value": "={{ $(\"Set Inputs\").all()[0].json[\"Last Modified\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "14e3388b-b380-4314-8001-bd0559902e47",
+              "name": "metadata.chunk_text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "a7b8df3d-f98b-41bb-9cae-bf2723712ad4",
+              "name": "metadata.chunk_order",
+              "value": "={{ $itemIndex }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "67206bed-b701-4e60-a42d-621174af8174",
+      "name": "Set Metadata"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bfa38c19-524f-4eee-bbcf-40a7b7664c2f",
+              "name": "Source",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "617457b5-3f8d-43ee-8281-7fb07c74f5f5",
+              "name": "Created Date",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "4c7caebb-2578-4a08-8cb8-0606fdd71245",
+              "name": "Last Modified",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "b862830a-2908-41d9-b448-28eeefc20eec",
+              "name": "Etag",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9fc4a5f4-8439-4a1b-a041-a829d915aff1",
+              "name": "Hash",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ca9bae57-83b3-4d6e-b054-96709e882ca5",
+              "name": "Filename",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "17c87252-71ab-42cc-9974-48c21953796f",
+              "name": "Job",
+              "value": "1001",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3584,
+        528
+      ],
+      "id": "efef2aa0-b6fe-44fa-8fbf-678eb2d99ef3",
+      "name": "Manual"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d0a2a2d-c9ac-40f3-967a-c9b33ce89fe3",
+              "leftValue": "={{$itemIndex}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        432
+      ],
+      "id": "685e4d0d-1d89-47ff-a82c-b64136da5974",
+      "name": "Retry 1 (Dense Embedding)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d0a2a2d-c9ac-40f3-967a-c9b33ce89fe3",
+              "leftValue": "={{$itemIndex}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        960
+      ],
+      "id": "32de542e-681d-466f-bc07-7339746155d9",
+      "name": "Retry 1 (Sparse Embedding)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d0a2a2d-c9ac-40f3-967a-c9b33ce89fe3",
+              "leftValue": "={{$itemIndex}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1568,
+        816
+      ],
+      "id": "3238ad3a-3044-4814-8bcf-a9f30e2f87d1",
+      "name": "Retry 1 (Upsert)"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 192,
+        "width": 230
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        1008
+      ],
+      "id": "f2336846-d22c-42f1-9b47-959e00f55c53",
+      "name": "Sticky Note43"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Check Fallback"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -2912,
+        1008
+      ],
+      "id": "b4bf91c6-cf1a-4f4f-87b5-5c89b752f194",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.manager_doc }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $vars.manager_sheet_error }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Source": "={{ $('Set Inputs').all()[0].json.Source }}",
+            "Error": "Empty",
+            "Job": "={{ $('Set Inputs').all()[0].json.Job }}",
+            "Execution": "={{ $('Set Inputs').all()[0].json.Execution }}",
+            "Datetime": "={{ $now.toFormat(\"yyyy-MM-dd HH:mm:ss\") }}"
+          },
+          "matchingColumns": [
+            "Source"
+          ],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Datetime",
+              "displayName": "Datetime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error",
+              "displayName": "Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Job",
+              "displayName": "Job",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Execution",
+              "displayName": "Execution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2016,
+        608
+      ],
+      "id": "0826f3dc-f0c7-4023-a5e4-bcd9c8b64b6e",
+      "name": "Update Error (Empty)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 192,
+        "width": 230
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        448
+      ],
+      "id": "d0f5d48d-d89e-482f-86c8-b3eadda1608f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nPinecone API Credientals",
+        "height": 192,
+        "width": 230
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        896
+      ],
+      "id": "e1172bf6-5541-4a4c-89cf-1da4e2646380",
+      "name": "Sticky Note44"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nCHUNK_SIZE\nDefines the size of each text chunk before embedding.\nie: 1000\n\nCHUNK_OVERLAP\nSets how much text overlaps between adjacent chunks.\nie: 200\n\ndimensions\nSpecifies the dimensional size of the embeddings stored in Pinecone.\nie: 768\n\ndense_model\nEmbedding model used for dense vector generation.\nie: llama-text-embed-v2\n\nsparse_model\nEmbedding model used for sparse vector generation\nie: pinecone-sparse-english-v0\n\npinecone_host\nThe Pinecone index host where vectors are stored.\nhttps://YOURHOST.pinecone.io\n\nnamespace\nDefines the namespace within the index for logical data separation.\nie: demo",
+        "height": 832,
+        "width": 288,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3456,
+        624
+      ],
+      "id": "5e124ada-67c4-474a-aac0-7be76e2d479f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Upsert\nUploads scraped data to a Pinecone vector store.\nThere are multiple configuration options available in the Set Inputs node to control how data is chunked, embedded, and stored in Pinecone.\n",
+        "height": 96,
+        "width": 992,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3792,
+        400
+      ],
+      "id": "fb78d63a-bb06-4e88-9650-7b56bad5bea0",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Manual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download HTML": {
+      "main": [
+        [
+          {
+            "node": "Extract HTML Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract HTML Data": {
+      "main": [
+        [
+          {
+            "node": "If Empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs": {
+      "main": [
+        [
+          {
+            "node": "File Type Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "File Type Switch": {
+      "main": [
+        [
+          {
+            "node": "Search Formatted-HTML",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search Formatted-PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Formatted-HTML": {
+      "main": [
+        [
+          {
+            "node": "Download HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Empty": {
+      "main": [
+        [
+          {
+            "node": "Update Error (Empty)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Chunk Size and Overlap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "96 Max Items": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Split Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Update Upsert-Output (HTML)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Text": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Text",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Dense Vector": {
+      "main": [
+        [
+          {
+            "node": "Merge Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait 60 Sec (Dense)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Sparse Vector": {
+      "main": [
+        [
+          {
+            "node": "Merge Vectors",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Wait 60 Sec (Sparse)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Dense Vector": {
+      "main": [
+        [
+          {
+            "node": "Embed Dense Vector",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Dense Error",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Aggregate Text": {
+      "main": [
+        [
+          {
+            "node": "Set Sparse Vector",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set Dense Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Vectors": {
+      "main": [
+        [
+          {
+            "node": "Split Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Sparse Vector": {
+      "main": [
+        [
+          {
+            "node": "Embed Sparse Vector",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Sparse Error",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Split Data": {
+      "main": [
+        [
+          {
+            "node": "Merge Metadata",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Metadata": {
+      "main": [
+        [
+          {
+            "node": "Set Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Upsert": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Vectors": {
+      "main": [
+        [
+          {
+            "node": "Set Namespace",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Namespace": {
+      "main": [
+        [
+          {
+            "node": "Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Formatted-PDF": {
+      "main": [
+        [
+          {
+            "node": "Download PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download PDF": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Data": {
+      "main": [
+        [
+          {
+            "node": "If Empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chunking": {
+      "main": [
+        [
+          {
+            "node": "Split Requests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Chunk Size and Overlap": {
+      "main": [
+        [
+          {
+            "node": "Chunking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Requests": {
+      "main": [
+        [
+          {
+            "node": "96 Max Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert": {
+      "main": [
+        [
+          {
+            "node": "96 Max Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upsert Error",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Wait 60 Sec (Upsert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert Error": {
+      "main": [
+        [
+          {
+            "node": "Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60 Sec (Sparse)": {
+      "main": [
+        [
+          {
+            "node": "Retry 1 (Sparse Embedding)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sparse Error": {
+      "main": [
+        [
+          {
+            "node": "Embed Sparse Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60 Sec (Upsert)": {
+      "main": [
+        [
+          {
+            "node": "Retry 1 (Upsert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 60 Sec (Dense)": {
+      "main": [
+        [
+          {
+            "node": "Retry 1 (Dense Embedding)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dense Error": {
+      "main": [
+        [
+          {
+            "node": "Embed Dense Vector",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Metadata": {
+      "main": [
+        [
+          {
+            "node": "Merge Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry 1 (Dense Embedding)": {
+      "main": [
+        [
+          {
+            "node": "Dense Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error (Dense Embedding)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry 1 (Sparse Embedding)": {
+      "main": [
+        [
+          {
+            "node": "Sparse Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error (Sparse Embedding)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry 1 (Upsert)": {
+      "main": [
+        [
+          {
+            "node": "Upsert Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error (Upsert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b0067fd2-1e0a-40ee-bce1-c1d8df3867dc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ced82f3dd62dad32cd39eb1289b45acdf2f6f463c9cc2cacaca667f3bd5cac2"
+  },
+  "id": "uMx9m64_4fwuS4iGR_-FN",
+  "tags": []
+}
